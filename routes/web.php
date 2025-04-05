@@ -47,3 +47,4 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/users',[UserController::class,'index']);
 });
+

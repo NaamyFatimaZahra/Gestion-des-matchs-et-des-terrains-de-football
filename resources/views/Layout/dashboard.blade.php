@@ -83,6 +83,15 @@
         <div class="text-gray-400 hover:text-white cursor-pointer mt-auto p-3">
             <i class="fas fa-cog"></i>
         </div>
+        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
+    
+     <form method="POST" action="{{ route('logout') }}" class="px-6">
+                @csrf
+               <button type="submit">
+        <i class="fas fa-sign-out-alt"></i>
+              </button>
+              </form>
+</div>
     </div>  
 
    
