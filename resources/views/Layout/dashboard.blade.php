@@ -33,74 +33,36 @@
            </a>
         </div>
         
-     
-        
-        <!-- Chart Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3 mt-[3rem]">
+        <!-- Chart Icon (Dashboard) -->
+        <div class="{{ request()->routeIs('admin.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3 mt-[3rem]">
             <a href="{{ route('admin.dashboard') }}"><i class="fas fa-chart-line"></i></a>
         </div>
         
-        <!-- Table Icon -->
-      <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <a href="{{ route('admin.terrains.index') }}"> <i class="fas fa-futbol"></i></a>
+        <!-- Terrains Icon -->
+        <div class="{{ request()->routeIs('admin.terrains.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('admin.terrains.index') }}"><i class="fas fa-futbol"></i></a>
         </div>
         
-        <!-- Heart Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <a href=""><i class="fas fa-users"></i></a>
-        </div>
-        
-        <!-- Divider -->
-        <div class="w-8 h-px bg-gray-700 my-2"></div>
-        
-        <!-- Soccer Ball Icon (Active) -->
-        <div class="bg-red-600 rounded-md text-white cursor-pointer p-3">
-           <a href=""> <i class="fas fa-futbol"></i></a>
-        </div>
-        <!-- services -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-           <a href=""> <i class="fa-solid fa-tags"></i></a>
+        <!-- Users Icon -->
+        <div class="{{ request()->routeIs('admin.users.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('admin.users.index') ?? '#' }}"><i class="fas fa-users"></i></a>
         </div>
         
         <!-- Divider -->
         <div class="w-8 h-px bg-gray-700 my-2"></div>
         
-       
-        <!-- User Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <i class="fas fa-user"></i>
-        </div>
-       
-       
-        <!-- Divider -->
-        <div class="w-8 h-px bg-gray-700 my-2"></div>
-        
-        <!-- Search Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <i class="fas fa-search"></i>
-        </div>
-        
-       
-        
-        <!-- Divider -->
-        <div class="w-8 h-px bg-gray-700 my-2"></div>
-        
-        <!-- Settings Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer mt-auto p-3">
-            <i class="fas fa-cog"></i>
-        </div>
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-    
-     <form method="POST" action="{{ route('logout') }}" class="px-6">
-                @csrf
-               <button type="submit">
-        <i class="fas fa-sign-out-alt"></i>
-              </button>
-              </form>
-</div>
-    </div>  
+     
 
-   
+        <!-- Logout Icon -->
+        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>  
 
     <!-- Middle Panel -->
     <div class="flex-1 bg-gray-800 flex flex-col">
@@ -121,9 +83,7 @@
                 </div>
             </div>
         </div>
-    @yield('content')
+        @yield('content')
     </div>
-    
-   
 </body>
 </html>

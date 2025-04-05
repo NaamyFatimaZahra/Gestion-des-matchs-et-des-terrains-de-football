@@ -45,6 +45,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         'destroy' => 'admin.terrains.destroy',
     ]);
 
-    Route::get('/users',[UserController::class,'index']);
+    Route::get('/users',[UserController::class,'index'])->name('admin.users.index');
+    
 });
 
