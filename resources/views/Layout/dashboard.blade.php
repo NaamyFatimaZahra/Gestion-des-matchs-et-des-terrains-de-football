@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interface de Paris Sportifs</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @vite('resources/css/app.css')
     <title> @yield('title') </title>
     <style>
         body {
@@ -21,27 +22,32 @@
 <body class="flex h-screen text-white">
      <!-- Sidebar -->
     <div class="h-screen bg-gray-900 w-16 flex flex-col items-center py-4">
-        <!-- Menu Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer mb-6 p-3">
-            <i class="fas fa-bars"></i>
+        <!-- logo -->
+        <div class="text-gray-400 hover:text-white cursor-pointer h-[3rem] w-[5rem] relative e-spin">
+           <a href="{{ route('home') }}" class="">
+            <img
+            src="{{ asset('assets/img/soccer-red-removebg-preview.png') }}"
+            class="w-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  "
+            alt="Soccer ball"
+          />
+           </a>
         </div>
         
-        <!-- Divider -->
-        <div class="w-8 h-px bg-gray-700 my-2"></div>
+     
         
         <!-- Chart Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <i class="fas fa-chart-line"></i>
+        <div class="text-gray-400 hover:text-white cursor-pointer p-3 mt-[3rem]">
+            <a href="{{ route('admin.dashboard') }}"><i class="fas fa-chart-line"></i></a>
         </div>
         
         <!-- Table Icon -->
-        <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <i class="fas fa-table"></i>
+      <div class="text-gray-400 hover:text-white cursor-pointer p-3">
+            <a href="{{ route('admin.terrains.index') }}"> <i class="fas fa-futbol"></i></a>
         </div>
         
         <!-- Heart Icon -->
         <div class="text-gray-400 hover:text-white cursor-pointer p-3">
-            <i class="fas fa-heart"></i>
+            <a href=""><i class="fas fa-users"></i></a>
         </div>
         
         <!-- Divider -->
