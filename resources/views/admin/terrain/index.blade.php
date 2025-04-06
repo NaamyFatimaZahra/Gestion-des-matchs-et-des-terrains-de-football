@@ -1,336 +1,192 @@
 @extends('Layout.dashboard')
 @section('title', 'Gestion des Terrains')
 @section('content')
-<div class="flex-1 overflow-auto p-6 bg-gray-100">
-    <div class="mb-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-800">Liste des terrains</h1>
-        <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg flex items-center">
-            <a href="{{ route('admin.terrains.create') }}"><i class="fas fa-plus mr-2"></i> Ajouter un terrain</a>
-        </button>
+
+<div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-300">
+    <!-- En-tête avec titre et boutons d'action -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-white">Gestion des Terrains</h1>
+      
+    </div>
+   @if(session('success'))
+    <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
     </div>
 
+    <script>
+        // Faire disparaître le message après 2 secondes
+        setTimeout(function() {
+            const alert = document.getElementById('success-alert');
+            if(alert) {
+                // Option 1: Suppression immédiate
+                // alert.remove();
+                
+                // Option 2: Disparition en fondu (plus élégant)
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 500);
+            }
+        }, 2000);
+    </script>
+@endif
+
     <!-- Filtres et recherche -->
-    <div class="bg-white rounded-lg shadow p-4 mb-6">
+    <div class="bg-gray-900 rounded-lg shadow-md p-4 mb-6 border border-gray-700">
         <div class="flex flex-wrap justify-between gap-4">
             <div class="flex items-center">
                 <div class="relative">
-                    <input type="text" placeholder="Rechercher un terrain..." class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64">
+                    <input type="text" placeholder="Rechercher un terrain..." 
+                           class="bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 w-64 text-white">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </div>
             </div>
             <div class="flex gap-3">
-                <select class="border border-gray-300 rounded-lg px-4 py-2">
-                    <option value="">Status</option>
-                    <option value="active">Actif</option>
-                    <option value="inactive">Inactif</option>
-                    <option value="pending">En attente</option>
+                <!-- Filtre par Statut -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Tous les Statuts</option>
+                    <option value="disponible">Disponible</option>
+                    <option value="occupe">Occupé</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="en_attente">En Attente</option>
                 </select>
-                <select class="border border-gray-300 rounded-lg px-4 py-2">
-                    <option value="">Disponibilité</option>
-                    <option value="available">Disponible</option>
-                    <option value="booked">Réservé</option>
-                    <option value="maintenance">En maintenance</option>
+
+                <!-- Filtre par Approbation -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Toutes les Approbations</option>
+                    <option value="en_attente">En Attente</option>
+                    <option value="approuve">Approuvé</option>
+                    <option value="rejete">Rejeté</option>
+                    <option value="suspended">suspendu</option>
                 </select>
-                <select class="border border-gray-300 rounded-lg px-4 py-2">
-                    <option value="">Photos validées</option>
-                    <option value="validated">Validées</option>
-                    <option value="pending">En attente</option>
-                    <option value="rejected">Rejetées</option>
+
+                <!-- Filtre par Ville -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Toutes les Villes</option>
+                   
                 </select>
             </div>
         </div>
     </div>
 
     <!-- Tableau des terrains -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Terrain <i class="fas fa-sort ml-1"></i>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Localisation <i class="fas fa-sort ml-1"></i>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Status <i class="fas fa-sort ml-1"></i>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Disponibilité
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Photos
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div class="flex items-center">
-                            Dernière mise à jour <i class="fas fa-sort ml-1"></i>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <!-- Terrain 1 -->
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/40/40" alt="Terrain" class="h-10 w-10 rounded-md mr-3">
-                            <div>
-                                <div class="font-medium text-gray-900">Terrain Parc Central</div>
-                                <div class="text-sm text-gray-500">Football à 7</div>
+    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden border border-gray-700">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-700">
+                <thead class="bg-gray-800">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            ID
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Terrain
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Propriétaire
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Ville
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Prix
+                        </th>
+                      
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Statut
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Approbation
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-gray-900 divide-y divide-gray-800">
+                    @forelse($terrains  as $terrain)
+                    <tr class="hover:bg-gray-800 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            {{ $terrain->id }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-white">
+                                        {{ $terrain->name }}
+                                    </div>
+                                    <div class="text-sm text-gray-400 truncate max-w-xs">
+                                        {{ \Illuminate\Support\Str::limit($terrain->description, 50) ?? 'Aucune description' }}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Paris 19ème</div>
-                        <div class="text-sm text-gray-500">10 Avenue du Parc</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Actif
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="h-3 w-3 rounded-full bg-green-500 mr-2"></span>
-                            <span class="text-sm text-gray-900">Disponible</span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-calendar-alt mr-1"></i> Gérer
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="px-2 py-1 text-xs rounded bg-green-100 text-green-800">
-                                <i class="fas fa-check mr-1"></i> Validées (5)
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            {{ $terrain->proprietaire->name ?? 'N/A' }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            {{ $terrain->city }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            {{ number_format($terrain->price, 2) }} MAD
+                        </td>
+                       
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded
+                                {{ $terrain->status === 'disponible' ? 'bg-green-900 text-green-100' : 
+                                ($terrain->status === 'occupé' ? 'bg-blue-900 text-blue-100' : 
+                                ($terrain->status === 'maintenance' ? 'bg-yellow-900 text-yellow-100' : 'bg-gray-700 text-gray-300')) }}">
+
+                                {{ $terrain->status === 'disponible' ? 'Disponible' : 
+                                ($terrain->status === 'occupé' ? 'Occupé' : 
+                                ($terrain->status === 'maintenance' ? 'Maintenance' : 'En attente')) }}
                             </span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-images mr-1"></i> Voir
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        15/03/2025
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div class="flex justify-end gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-900">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Terrain 2 -->
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/40/40" alt="Terrain" class="h-10 w-10 rounded-md mr-3">
-                            <div>
-                                <div class="font-medium text-gray-900">Terrain République</div>
-                                <div class="text-sm text-gray-500">Football à 5</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                                <form action="{{ route('admin.terrains.update-approval', $terrain->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="admin_approval" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold rounded border-0
+                                        {{ $terrain->admin_approval === 'approuve' ? 'bg-[green] text-green-100' : 
+                                        ($terrain->admin_approval === 'rejete' || $terrain->admin_approval === 'suspended' ? 'bg-[#ff0000dc] text-red-100' : 'bg-yellow-300 text-yellow-900') }}
+                                        px-2 py-1">
+                                        @if ( $terrain->admin_approval === 'en_attente')
+                                        <option value="en_attente" {{ $terrain->admin_approval === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                                        @endif
+                                        <option value="approuve" {{ $terrain->admin_approval === 'approuve' ? 'selected' : '' }}>Approuvé</option>
+                                        <option value="rejete" {{ $terrain->admin_approval === 'rejete' ? 'selected' : '' }}>Rejeté</option>
+                                        <option value="suspended" {{ $terrain->admin_approval === 'suspended' ? 'selected' : '' }}>suspended</option>
+                                    </select>
+                                </form>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                            <div class="flex justify-end space-x-2">
+                                <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                               
                             </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Paris 11ème</div>
-                        <div class="text-sm text-gray-500">25 Rue Oberkampf</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                            En attente
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="h-3 w-3 rounded-full bg-red-500 mr-2"></span>
-                            <span class="text-sm text-gray-900">Réservé</span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-calendar-alt mr-1"></i> Gérer
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-800">
-                                <i class="fas fa-clock mr-1"></i> En attente (3)
-                            </span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-images mr-1"></i> Valider
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        10/03/2025
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div class="flex justify-end gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-900">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Terrain 3 -->
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/40/40" alt="Terrain" class="h-10 w-10 rounded-md mr-3">
-                            <div>
-                                <div class="font-medium text-gray-900">Terrain Stade Nord</div>
-                                <div class="text-sm text-gray-500">Football à 11</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Paris 18ème</div>
-                        <div class="text-sm text-gray-500">35 Boulevard Ney</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                            Inactif
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="h-3 w-3 rounded-full bg-gray-500 mr-2"></span>
-                            <span class="text-sm text-gray-900">En maintenance</span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-calendar-alt mr-1"></i> Gérer
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="px-2 py-1 text-xs rounded bg-red-100 text-red-800">
-                                <i class="fas fa-times mr-1"></i> Rejetées (2)
-                            </span>
-                        </div>
-                        <button class="text-xs text-blue-600 hover:text-blue-800 mt-1">
-                            <i class="fas fa-images mr-1"></i> Voir
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        05/03/2025
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div class="flex justify-end gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-900">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <!-- Pagination -->
-        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-700">
-                        Affichage de <span class="font-medium">1</span> à <span class="font-medium">3</span> sur <span class="font-medium">12</span> terrains
-                    </p>
-                </div>
-                <div>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
-                            1
-                        </a>
-                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            2
-                        </a>
-                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            3
-                        </a>
-                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            4
-                        </a>
-                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </nav>
-                </div>
-            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-400">
+                            Aucun terrain trouvé.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
+       
     </div>
-    
-    <!-- Modals (en commentaire pour référence future) -->
-    <!--
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 class="text-xl font-bold mb-4">Gérer les disponibilités</h2>
-            <div class="mb-4">
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    Calendrier des disponibilités à implémenter
-                </div>
-            </div>
-            <div class="flex justify-end gap-3">
-                <button class="px-4 py-2 bg-gray-300 rounded-lg">Annuler</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-    
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 class="text-xl font-bold mb-4">Validation des photos</h2>
-            <div class="mb-4 grid grid-cols-2 gap-4">
-                <div>
-                    <img src="/api/placeholder/200/150" alt="Photo du terrain" class="w-full h-32 object-cover rounded-lg">
-                    <div class="flex justify-between mt-2">
-                        <button class="text-red-600"><i class="fas fa-times"></i> Rejeter</button>
-                        <button class="text-green-600"><i class="fas fa-check"></i> Valider</button>
-                    </div>
-                </div>
-                <div>
-                    <img src="/api/placeholder/200/150" alt="Photo du terrain" class="w-full h-32 object-cover rounded-lg">
-                    <div class="flex justify-between mt-2">
-                        <button class="text-red-600"><i class="fas fa-times"></i> Rejeter</button>
-                        <button class="text-green-600"><i class="fas fa-check"></i> Valider</button>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end gap-3">
-                <button class="px-4 py-2 bg-gray-300 rounded-lg">Fermer</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">Enregistrer tout</button>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
+
+
+
+
 @endsection

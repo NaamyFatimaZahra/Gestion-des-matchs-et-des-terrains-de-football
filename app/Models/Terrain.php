@@ -30,6 +30,9 @@ class Terrain extends Model
     public function terrain(){
           return $this->belongsToMany(Terrain::class,'terrain_service');
     }
+    public function  proprietaire(){
+        return $this->belongsTo(User::class);
+    }
 
 
      public function Documents(){

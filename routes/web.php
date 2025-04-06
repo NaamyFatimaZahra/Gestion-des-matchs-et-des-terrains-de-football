@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\TerrainController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Models\Terrain;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,20 +35,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         'destroy' => 'admin.services.destroy',
     ]);
     
-    // Vous pouvez également ajouter une resource pour la gestion des terrains
-    Route::resource('terrains', TerrainController::class)->names([
-        'index' => 'admin.terrains.index',
-        'create' => 'admin.terrains.create',
-        'store' => 'admin.terrains.store',
-        'show' => 'admin.terrains.show',
-        'edit' => 'admin.terrains.edit',
-        'update' => 'admin.terrains.update',
-        'destroy' => 'admin.terrains.destroy',
-    ]);
+    Route::get('/terrains',action: [TerrainController::class,'index'])->name('admin.terrains.index');
+    Route::patch('terrains/{terrain}/updateApproval', [TerrainController::class, 'updateApproval'])->name('admin.terrains.update-approval'); //Route model binding =>Implicit
+    Route::get('/terrains/{terrain}',action: [TerrainController::class,'show'])->name('admin.terrain.show');
 
-    Route::get('/users',[UserController::class,'index'])->name('admin.users.index');
-    Route::patch('admin/users/{user}/update-status', [UserController::class, 'updateStatus'])->name('admin.users.update-status'); //Route model binding =>Implicit
-    Route::get('admin/users/{id}',[UserController::class,'details'])->name('admin.users.detailsUser');
+
+   
+
+    Route::get('/users',action: [UserController::class,'index'])->name('admin.users.index');
+    Route::patch('users/{user}/update-status', [UserController::class, 'updateStatus'])->name('admin.users.update-status'); //Route model binding =>Implicit
+    Route::get('users/{id}',[UserController::class,'details'])->name('admin.users.detailsUser');
       
 });
 

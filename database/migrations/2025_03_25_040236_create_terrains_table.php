@@ -18,7 +18,7 @@ return new class extends Migration
     $table->integer('capacity')->nullable();
     $table->decimal('price', 10, 2);
     $table->enum('status', ['disponible', 'occupé', 'maintenance', 'en_attente'])->default('en_attente');
-    $table->enum('admin_approval',  ['en_attente', 'approuve', 'rejete'])->default('en_attente');
+    $table->enum('admin_approval',  ['en_attente', 'approuve', 'rejete','suspended'])->default('en_attente');
     $table->integer('reservation_count')->default(0); 
     $table->text('description')->nullable();
     $table->enum('payment_method', ['en_ligne', 'sur_place', 'les_deux']);

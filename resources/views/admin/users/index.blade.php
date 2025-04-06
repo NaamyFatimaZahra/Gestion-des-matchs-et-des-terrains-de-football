@@ -2,294 +2,163 @@
 @section('title', 'Gestion des Utilisateurs')
 @section('content')
 
+<div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-300">
+    <!-- En-tête avec titre et boutons d'action -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-white">Gestion des Utilisateurs</h1>
+    </div>
 
-    <div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-500">
-       
-
-        <!-- Filtres et recherche -->
-        <div class="bg-white rounded-lg shadow p-4 mb-6">
-            <div class="flex flex-wrap justify-between gap-4">
-                <div class="flex items-center">
-                    <div class="relative">
-                        <input type="text" placeholder="Rechercher un utilisateur..." 
-                               class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <!-- Filtre par Rôle -->
-                    <select class="border border-gray-300 rounded-lg px-4 py-2">
-                        <option value="">Tous les Rôles</option>
-                        <option value="1">Administrateur</option>
-                        <option value="2">Modérateur</option>
-                        <option value="3">Utilisateur</option>
-                    </select>
-
-                    <!-- Filtre par Statut -->
-                    <select class="border border-gray-300 rounded-lg px-4 py-2">
-                        <option value="">Tous les Statuts</option>
-                        <option value="active">Actif</option>
-                        <option value="inactive">Inactif</option>
-                        <option value="suspended">Suspendu</option>
-                    </select>
-
-                    <!-- Filtre par Ville -->
-                    <select class="border border-gray-300 rounded-lg px-4 py-2">
-                        <option value="">Toutes les Villes</option>
-                        <option value="Paris">Paris</option>
-                        <option value="Lyon">Lyon</option>
-                        <option value="Marseille">Marseille</option>
-                        <option value="Toulouse">Toulouse</option>
-                        <option value="Nice">Nice</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tableau des utilisateurs -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                   <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            ID
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Utilisateur
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Email
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Ville
-                        </th>
-                        
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Rôle
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Statut
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Créé le
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                       <!-- Exemple d'utilisateur 2 -->
-                   
-                    @forelse($users as $user)
-    <tr>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {{ $user->id }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
+    <!-- Filtres et recherche -->
+    <div class="bg-gray-900 rounded-lg shadow-md p-4 mb-6 border border-gray-700">
+        <div class="flex flex-wrap justify-between gap-4">
             <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-12 w-12 rounded-full object-cover"
-                     src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('assets/img/Profile.png') }}" 
-                     alt="Photo de profil">
-                </div>
-                <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                        {{ $user->name }}
-                    </div>
-                    <div class="text-sm text-gray-500 truncate max-w-xs">
-                        {{ $user->bio ?? 'Aucune biographie' }}
-                    </div>
+                <div class="relative">
+                    <input type="text" placeholder="Rechercher un utilisateur..." 
+                           class="bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 w-64 text-white">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </div>
             </div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {{ $user->email }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {{ $user->city }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-           {{ $user->role->name }}
-        </td>
-       <td class="px-6 py-4 whitespace-nowrap">
-    <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
-        @csrf
-        @method('PATCH')
-        <select name="status" onchange="this.form.submit()" class="px-2 py-1 text-xs font-semibold rounded border-0
-            {{ $user->status === 'active' ? 'bg-green-100 text-green-800' : 
-               ($user->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-            <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Actif</option>
-           @if ($user->status==='pending')
-             <option value="pending" {{ $user->status === 'pending' ? 'selected' : '' }}>En attente</option>
-           @endif
-            <option value="suspended" {{ $user->status === 'suspended' ? 'selected' : '' }}>Suspendu</option>
-        </select>
-    </form>
-</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {{ $user->created_at->format('d/m/Y') }}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-               <form action="{{ route('admin.users.detailsUser',$user->id) }}">
-                 <button type="submit" class="text-blue-600 hover:text-blue-900">
-                    <i class="fas fa-eye text-lg"></i>
-                </button>
-               </form>
-                
-            </div>
-        </td>
-    </tr>
-    @empty
+            <div class="flex gap-3">
+                <!-- Filtre par Rôle -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Tous les Rôles</option>
+                    <option value="1">Administrateur</option>
+                    <option value="2">Modérateur</option>
+                    <option value="3">Utilisateur</option>
+                </select>
 
+                <!-- Filtre par Statut -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Tous les Statuts</option>
+                    <option value="active">Actif</option>
+                    <option value="pending">En attente</option>
+                    <option value="suspended">Suspendu</option>
+                </select>
+
+                <!-- Filtre par Ville -->
+                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
+                    <option value="">Toutes les Villes</option>
+                    <option value="Paris">Paris</option>
+                    <option value="Lyon">Lyon</option>
+                    <option value="Marseille">Marseille</option>
+                    <option value="Toulouse">Toulouse</option>
+                    <option value="Nice">Nice</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden border border-gray-700">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-800">
                 <tr>
-
-                    <td colspan="8">There are no users.</td>
-
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Utilisateur
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Email
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Ville
+                    </th>
+                    
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Rôle
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Statut
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Créé le
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Actions
+                    </th>
                 </tr>
-    @endforelse
-                
-                </tbody>
-            </table>
-            
-            <!-- Pagination
-            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-sm text-gray-700">
-                            Affichage de <span class="font-medium">1</span> à <span class="font-medium">3</span> sur <span class="font-medium">12</span> utilisateurs
-                        </p>
-                    </div>
-                    <div>
-                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                <i class="fas fa-chevron-left"></i>
+            </thead>
+            <tbody class="bg-gray-900 divide-y divide-gray-800">
+                @forelse($users as $user)
+                <tr class="hover:bg-gray-800 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ $user->id }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <img class="h-10 w-10 rounded-full object-cover"
+                                src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('assets/img/Profile.png') }}" 
+                                alt="Photo de profil">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-white">
+                                    {{ $user->name }}
+                                </div>
+                                <div class="text-sm text-gray-400 truncate max-w-xs">
+                                    {{ $user->bio ?? 'Aucune biographie' }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ $user->email }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ $user->city }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    {{ $user->role->name }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold rounded border-0
+                                {{ $user->status === 'active' ? 'bg-[green] text-green-100' : 
+                                ($user->status === 'pending' ? 'bg-yellow-900 text-yellow-100' : 'bg-red-900 text-red-100') }}
+                                px-2 py-1">
+                                <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Actif</option>
+                                @if ($user->status === 'pending')
+                                    <option value="pending" {{ $user->status === 'pending' ? 'selected' : '' }}>En attente</option>
+                                @endif
+                                <option value="suspended" {{ $user->status === 'suspended' ? 'selected' : '' }}>Suspendu</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ $user->created_at->format('d/m/Y') }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex justify-end space-x-2">
+                           <a href="{{ route('admin.users.detailsUser', $user->id) }}">
+                                <button type="submit" class="text-gray-300 hover:text-white transition-colors duration-150">
+                                    <i class="fas fa-eye text-lg"></i>
+                                </button>
                             </a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
-                                1
-                            </a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                2
-                            </a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                3
-                            </a>
-                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-       
-    
-    Modals pour les détails de l'utilisateur et actions supplémentaires
-    
-          Modal de détails de l'utilisateur
-    <div id="user-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-2xl relative">
-            <button class="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onclick="closeModal()">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-            
-            <div class="flex items-center mb-6">
-                <img src="/api/placeholder/120/120" alt="Utilisateur" class="w-32 h-32 rounded-full mr-6 border-4 border-gray-200">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">John Doe</h2>
-                    <p class="text-gray-600">john.doe@example.com</p>
-                    <div class="mt-2">
-                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Actif</span>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm ml-2">Utilisateur</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">Informations Personnelles</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nom Complet</label>
-                            <p class="text-gray-900">John Doe</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Date de Naissance</label>
-                            <p class="text-gray-900">15 Janvier 1990</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Téléphone</label>
-                            <p class="text-gray-900">+33 6 12 34 56 78</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">Activité du Compte</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Inscrit le</label>
-                            <p class="text-gray-900">15 Mars 2024</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Dernière Connexion</label>
-                            <p class="text-gray-900">15 Mars 2025 à 14:30</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nombre de Connexions</label>
-                            <p class="text-gray-900">42</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-6 border-t pt-4 flex justify-end space-x-3">
-                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                    Fermer
-                </button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Éditer le Profil
-                </button>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Modal de Confirmation de Suspension -->
-    <!-- <div id="suspend-user-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md text-center">
-            <div class="mb-4">
-                <i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>
-            </div>
-            <h2 class="text-xl font-bold mb-4">Suspendre l'Utilisateur</h2>
-            <p class="mb-6 text-gray-600">Êtes-vous sûr de vouloir suspendre le compte de John Doe ? Cette action peut être annulée ultérieurement.</p>
-            
-            <div class="flex justify-center space-x-4">
-                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                    Annuler
-                </button>
-                <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                    Confirmer la Suspension
-                </button>
-            </div>
-        </div>
-    </div> --> 
-
-    <!-- Script pour gérer les modals -->
-    <!-- <script>
-        function openUserDetailsModal(userId) {
-            document.getElementById('user-details-modal').classList.remove('hidden');
-        }
-
-        function openSuspendUserModal(userId) {
-            document.getElementById('suspend-user-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('user-details-modal').classList.add('hidden');
-            document.getElementById('suspend-user-modal').classList.add('hidden');
-        }
-    </script> -->
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-400">
+                        Aucun utilisateur trouvé.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    /* Style pour les options du select en thème sombre */
+    select option {
+        background-color: #1f2937; /* bg-gray-800 */
+        color: white;
+    }
+</style>
+
 @endsection

@@ -3,19 +3,29 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Terrain;
 use Illuminate\Http\Request;
 
 class TerrainController extends Controller
 {
     
     public function index(){
-         return view('admin.terrain.index');
+        $terrains= Terrain::all();
+         return view('admin.terrain.index',['terrains'=>$terrains]);
     }
-    public function create(){
-        return view('admin.terrain.form');
+   
+
+     public function show(Terrain $terrain){
+         return view('admin.terrain.terrainDetails',['terrain'=>$terrain]);
     }
 
-     public function store(Request $request){
-        
+    public function updateApproval(Request $request, Terrain $terrain){
+        $request->validate(['admin_approval'=>'required | in:approuve,rejete,suspended']);
+        $terrain->admin_approval=  $request->admin_approval;
+        if ($request->admin_approval == 'approuve') {
+            $terrain->status = 'disponible'; 
+        } 
+         $terrain->save();
+          return back()->with('success', 'La modification a été effectuée avec succès.');
     }
 }
