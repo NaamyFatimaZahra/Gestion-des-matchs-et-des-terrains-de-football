@@ -3,13 +3,8 @@
 @section('content')
 
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="mb-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">Liste des utilisateurs</h1>
-            <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg flex items-center">
-                <i class="fas fa-plus mr-2"></i> Ajouter un utilisateur
-            </button>
-        </div>
+    <div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-500">
+       
 
         <!-- Filtres et recherche -->
         <div class="bg-white rounded-lg shadow p-4 mb-6">
@@ -55,31 +50,28 @@
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
-                    <tr>
+                   <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                Utilisateur <i class="fas fa-sort ml-1"></i>
-                            </div>
+                            ID
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                Email <i class="fas fa-sort ml-1"></i>
-                            </div>
+                            Utilisateur
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                Ville <i class="fas fa-sort ml-1"></i>
-                            </div>
+                            Email
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                Rôle <i class="fas fa-sort ml-1"></i>
-                            </div>
+                            Ville
+                        </th>
+                        
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Rôle
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                Statut
-                            </div>
+                            Statut
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Créé le
                         </th>
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
@@ -87,141 +79,79 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <!-- Utilisateur 1 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img src="https://via.placeholder.com/40" alt="Utilisateur" class="h-10 w-10 rounded-full mr-3">
-                                <div>
-                                    <div class="font-medium text-gray-900">John Doe</div>
-                                    <div class="text-sm text-gray-500">ID: #1234</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">john.doe@example.com</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Paris</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm">
-                                <option selected>Administrateur</option>
-                                <option>Modérateur</option>
-                                <option>Utilisateur</option>
-                            </select>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Actif
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2">
-                                <button class="text-blue-600 hover:text-blue-900" title="Détails">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900" title="Éditer">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-red-600 hover:text-red-900" title="Désactiver">
-                                    <i class="fas fa-ban"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                       <!-- Exemple d'utilisateur 2 -->
+                   
+                    @forelse($users as $user)
+    <tr>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ $user->id }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                    <img class="h-12 w-12 rounded-full object-cover"
+                     src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('assets/img/Profile.png') }}" 
+                     alt="Photo de profil">
+                </div>
+                <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                        {{ $user->name }}
+                    </div>
+                    <div class="text-sm text-gray-500 truncate max-w-xs">
+                        {{ $user->bio ?? 'Aucune biographie' }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ $user->email }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ $user->city }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+           {{ $user->role->name }}
+        </td>
+       <td class="px-6 py-4 whitespace-nowrap">
+    <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
+        @csrf
+        @method('PATCH')
+        <select name="status" onchange="this.form.submit()" class="px-2 py-1 text-xs font-semibold rounded border-0
+            {{ $user->status === 'active' ? 'bg-green-100 text-green-800' : 
+               ($user->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+            <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Actif</option>
+           @if ($user->status==='pending')
+             <option value="pending" {{ $user->status === 'pending' ? 'selected' : '' }}>En attente</option>
+           @endif
+            <option value="suspended" {{ $user->status === 'suspended' ? 'selected' : '' }}>Suspendu</option>
+        </select>
+    </form>
+</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ $user->created_at->format('d/m/Y') }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <div class="flex justify-end space-x-2">
+                <button class="text-blue-600 hover:text-blue-900">
+                    <i class="fas fa-eye text-lg"></i>
+                </button>
+                
+            </div>
+        </td>
+    </tr>
+    @empty
 
-                    <!-- Utilisateur 2 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img src="https://via.placeholder.com/40" alt="Utilisateur" class="h-10 w-10 rounded-full mr-3">
-                                <div>
-                                    <div class="font-medium text-gray-900">Jane Smith</div>
-                                    <div class="text-sm text-gray-500">ID: #5678</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">jane.smith@example.com</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Lyon</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm">
-                                <option>Administrateur</option>
-                                <option selected>Modérateur</option>
-                                <option>Utilisateur</option>
-                            </select>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                Inactif
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2">
-                                <button class="text-blue-600 hover:text-blue-900" title="Détails">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900" title="Éditer">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900" title="Activer">
-                                    <i class="fas fa-check-circle"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
 
-                    <!-- Utilisateur 3 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img src="https://via.placeholder.com/40" alt="Utilisateur" class="h-10 w-10 rounded-full mr-3">
-                                <div>
-                                    <div class="font-medium text-gray-900">Alice Martin</div>
-                                    <div class="text-sm text-gray-500">ID: #9012</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">alice.martin@example.com</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Marseille</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm">
-                                <option>Administrateur</option>
-                                <option>Modérateur</option>
-                                <option selected>Utilisateur</option>
-                            </select>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                Suspendu
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2">
-                                <button class="text-blue-600 hover:text-blue-900" title="Détails">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900" title="Éditer">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900" title="Réactiver">
-                                    <i class="fas fa-user-check"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    <td colspan="8">There are no users.</td>
+
+                </tr>
+    @endforelse
+                
                 </tbody>
             </table>
             
-            <!-- Pagination -->
+            <!-- Pagination
             <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
@@ -254,9 +184,9 @@
 
        
     
-    <!-- Modals pour les détails de l'utilisateur et actions supplémentaires -->
+    Modals pour les détails de l'utilisateur et actions supplémentaires
     
-    <!-- Modal de détails de l'utilisateur -->
+          Modal de détails de l'utilisateur
     <div id="user-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 w-full max-w-2xl relative">
             <button class="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onclick="closeModal()">
@@ -322,10 +252,10 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Modal de Confirmation de Suspension -->
-    <div id="suspend-user-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <!-- <div id="suspend-user-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 w-full max-w-md text-center">
             <div class="mb-4">
                 <i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>
@@ -342,10 +272,10 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> --> 
 
     <!-- Script pour gérer les modals -->
-    <script>
+    <!-- <script>
         function openUserDetailsModal(userId) {
             document.getElementById('user-details-modal').classList.remove('hidden');
         }
@@ -358,6 +288,6 @@
             document.getElementById('user-details-modal').classList.add('hidden');
             document.getElementById('suspend-user-modal').classList.add('hidden');
         }
-    </script>
+    </script> -->
 </div>
 @endsection
