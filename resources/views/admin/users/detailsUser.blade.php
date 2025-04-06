@@ -153,7 +153,7 @@
 </div>
 
 <!-- Modal de Confirmation de Suspension -->
-<div id="suspend-user-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+<div id="suspend-user-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
     <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md text-center border border-gray-700">
         <div class="mb-4">
             <i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>
