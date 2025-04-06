@@ -45,6 +45,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/users',action: [UserController::class,'index'])->name('admin.users.index');
     Route::patch('users/{user}/update-status', [UserController::class, 'updateStatus'])->name('admin.users.update-status'); //Route model binding =>Implicit
     Route::get('users/{id}',[UserController::class,'details'])->name('admin.users.detailsUser');
-      
+         
+    
 });
 
