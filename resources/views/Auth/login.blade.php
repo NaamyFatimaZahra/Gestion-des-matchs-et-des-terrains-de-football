@@ -33,6 +33,12 @@
                         <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
                 @endif
+                <!-- Affichage des messages d'erreur -->
+                @if(session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <span class="block sm:inline">{{ session('error') }}</span>
+                    </div>
+                @endif
 
                 <!-- Titre du formulaire -->
                 <h2 class="text-2xl font-medium text-center text-[#580a21] mb-6">Connexion</h2>

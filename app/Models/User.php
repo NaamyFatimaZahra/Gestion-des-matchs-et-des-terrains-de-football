@@ -53,4 +53,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+     public function hasRole($role) {
+       return $this->role && $this->role->name === $role;
+    }
+
+    public function terrains(){
+        return $this->hasMany(Terrain::class);
+    }
 }
