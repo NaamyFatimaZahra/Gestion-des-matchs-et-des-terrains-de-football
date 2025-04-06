@@ -15,19 +15,26 @@ class UserController extends Controller
                    
                 })
                 ->get();
-        return view('admin.users',['users'=>$users]);
+        return view('admin.users.index',['users'=>$users]);
     }
 
             public function updateStatus(Request $request, User $user)
         {
-            dd( $user);
-            // $request->validate([
-            //     'status' => 'required|in:active,pending,suspended',
-            // ]);
+           
+            $request->validate([
+                'status' => 'required|in:active,pending,suspended',
+            ]);
 
-            // $user->status = $request->status;
-            // $user->save();
+            $user->status = $request->status;
+            $user->save();
 
-            // return redirect()->back()->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
+            return redirect()->back()->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
         }
+        public function details($id){
+            $user=User::find($id);
+           
+
+           return view('admin.users.detailsUser',['user'=>$user]);
+    }
+        
 }

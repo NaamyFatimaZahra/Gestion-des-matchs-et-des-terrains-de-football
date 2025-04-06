@@ -19,9 +19,9 @@
         }
     </style>
 </head>
-<body class="flex h-screen text-white">
-     <!-- Sidebar -->
-    <div class="h-screen bg-gray-900 w-16 flex flex-col items-center py-4">
+<body class="flex h-screen text-white overflow-hidden">
+     <!-- Sidebar (maintenant fixed) -->
+    <div class="fixed top-0 left-0 h-screen bg-gray-900 w-16 flex flex-col items-center py-4 z-50">
         <!-- logo -->
         <div class="text-gray-400 hover:text-white cursor-pointer h-[3rem] w-[5rem] relative e-spin">
            <a href="{{ route('home') }}" class="">
@@ -51,8 +51,6 @@
         <!-- Divider -->
         <div class="w-8 h-px bg-gray-700 my-2"></div>
         
-     
-
         <!-- Logout Icon -->
         <div class="text-gray-400 hover:text-white cursor-pointer p-3">
             <form method="POST" action="{{ route('logout') }}">
@@ -64,10 +62,10 @@
         </div>
     </div>  
 
-    <!-- Middle Panel -->
-    <div class="flex-1 bg-gray-800 flex flex-col">
+    <!-- Middle Panel (avec marge à gauche pour la sidebar) -->
+    <div class="flex-1 bg-gray-800 flex flex-col ml-16">
         <!-- Search Bar -->
-        <div class="bg-gray-900 p-3 flex items-center justify-between border-b border-gray-700">
+        <div class="bg-gray-900 p-3 flex items-center justify-between border-b border-gray-700 sticky top-0 z-40">
             <div class="flex items-center bg-gray-800 rounded-lg px-3 py-2 w-64">
                 <input type="text" placeholder="Type to Search..." class="bg-transparent border-none outline-none text-sm flex-1">
                 <i class="fas fa-search text-gray-400 ml-2"></i>
@@ -83,7 +81,9 @@
                 </div>
             </div>
         </div>
-        @yield('content')
+        <div class="overflow-y-auto flex-1">
+            @yield('content')
+        </div>
     </div>
 </body>
 </html>

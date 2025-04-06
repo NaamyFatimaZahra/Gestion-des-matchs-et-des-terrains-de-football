@@ -132,9 +132,11 @@
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
             <div class="flex justify-end space-x-2">
-                <button class="text-blue-600 hover:text-blue-900">
+               <form action="{{ route('admin.users.detailsUser',$user->id) }}">
+                 <button type="submit" class="text-blue-600 hover:text-blue-900">
                     <i class="fas fa-eye text-lg"></i>
                 </button>
+               </form>
                 
             </div>
         </td>
