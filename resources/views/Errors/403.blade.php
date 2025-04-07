@@ -14,10 +14,6 @@
     </p>
     </div>
            <div class="flex justify-center space-x-4">
-                <a href="{{ route('login') }}" class="px-4 py-2 bg-[#580a21] text-white rounded-md hover:bg-[#7a0d2b] transition duration-300 flex items-center justify-center">
-                    <i class="fas fa-sign-in-alt mr-2"></i>
-                    Se connecter
-                </a>
                 
                 <a href="{{ route('home') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300 flex items-center justify-center">
                     <i class="fas fa-home mr-2"></i>

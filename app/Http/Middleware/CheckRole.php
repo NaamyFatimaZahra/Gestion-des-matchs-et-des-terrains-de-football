@@ -21,9 +21,9 @@ class CheckRole
                 ->with('error', 'Vous devez être connecté pour accéder à cette page.');
         }
        $user = Auth::user() ;
-// if (!$user->hasRole($role)) {
-//     return response()->view('errors.403', [], 403);
-// }
+if (!$user->hasRole($role)) {
+    return response()->view('errors.403', [], 403);
+}
         return $next($request);
     }
 }

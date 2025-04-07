@@ -75,8 +75,6 @@
                 <i class="fas fa-bell text-gray-400"></i>
                 <i class="fas fa-fire text-gray-400"></i>
                 <div class="flex space-x-2">
-                    <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center">FC</div>
-                    <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center">AR</div>
                     <div class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center">BV</div>
                 </div>
             </div>

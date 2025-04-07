@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/home', [HomeController::class,'index'])->name('home');
-Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/',[DashboardController::class,'index'])->name('admin.dashboard'); 
     Route::get('/dashboard',[DashboardController::class,'index'])->name('admin.dashboard'); 
     
