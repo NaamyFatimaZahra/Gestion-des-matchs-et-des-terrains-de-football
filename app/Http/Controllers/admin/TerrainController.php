@@ -11,12 +11,12 @@ class TerrainController extends Controller
     
     public function index(){
         $terrains= Terrain::all();
-         return view('admin.terrain.index',['terrains'=>$terrains]);
+         return view('admin.terrains.index',['terrains'=>$terrains]);
     }
    
 
      public function show(Terrain $terrain){
-         return view('admin.terrain.terrainDetails',['terrain'=>$terrain]);
+         return view('admin.terrains.terrainDetails',['terrain'=>$terrain]);
     }
 
     public function updateApproval(Request $request, Terrain $terrain){
