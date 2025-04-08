@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckStatus
@@ -15,6 +16,10 @@ class CheckStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
+       $user=Auth::user();
+        if($user->role->name==="Propriétaire" && $user->status==='pending'){
+               return response()->view('Errors.423');
+        }
         return $next($request);
     }
 }

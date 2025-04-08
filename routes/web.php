@@ -47,7 +47,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
 
 
-Route::prefix('proprietaire')->middleware(['auth','role:proprietaire',])->group(function(){
+Route::prefix('proprietaire')->middleware(['auth','role:Propriétaire','status'])->group(function(){
 
     
 

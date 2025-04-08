@@ -82,9 +82,9 @@ class AuthController extends Controller
 
            //send mail
 
-        // $usermail=Auth::user()->email;
-        Mail::to( 'naamy.fatima.zahra@student.youcode.ma')->send(new SendEmailConfirmation());
-        dd('message sent');
+        // // $usermail=Auth::user()->email;
+        // Mail::to( 'naamy.fatima.zahra@student.youcode.ma')->send(new SendEmailConfirmation());
+        // dd('message sent');
        
         Auth::logout();
         
