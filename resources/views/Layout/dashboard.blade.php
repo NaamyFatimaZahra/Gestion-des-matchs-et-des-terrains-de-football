@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface de Paris Sportifs</title>
+  
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite('resources/css/app.css')
@@ -19,9 +19,9 @@
         }
     </style>
 </head>
-<body class="flex h-screen text-white overflow-hidden">
+<body class="flex h-screen text-white ">
      <!-- Sidebar (maintenant fixed) -->
-    <div class="fixed top-0 left-0 h-screen bg-gray-900 w-16 flex flex-col items-center py-4 z-50">
+    <div class="fixed top-0 left-0 h-screen bg-gray-900 w-16 flex flex-col items-center py-4 z-50 hover:w-[5rem]">
         <!-- logo -->
         <div class="text-gray-400 hover:text-white cursor-pointer h-[3rem] w-[5rem] relative e-spin">
            <a href="{{ route('home') }}" class="">
@@ -33,8 +33,13 @@
            </a>
         </div>
         
+        <!-- home -->
+        <div class="{{ request()->routeIs('home') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3 mt-[3rem]">
+            <a href="{{ route('home') }}"><i class="fas fa-house"></i></a>
+        </div>
+
         <!-- Chart Icon (Dashboard) -->
-        <div class="{{ request()->routeIs('admin.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3 mt-[3rem]">
+        <div class="{{ request()->routeIs('admin.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3 ">
             <a href="{{ route('admin.dashboard') }}"><i class="fas fa-chart-line"></i></a>
         </div>
         
@@ -43,11 +48,16 @@
             <a href="{{ route('admin.terrains.index') }}"><i class="fas fa-futbol"></i></a>
         </div>
         
+        
         <!-- Users Icon -->
         <div class="{{ request()->routeIs('admin.users.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('admin.users.index') ?? '#' }}"><i class="fas fa-users"></i></a>
         </div>
-        
+      
+         <!-- Settings Icon -->
+        <div class="{{ request()->routeIs('admin.services.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('admin.services.index') ?? '#' }}"><i class="fas fa-gear"></i></a>
+        </div>
         <!-- Divider -->
         <div class="w-8 h-px bg-gray-700 my-2"></div>
         
