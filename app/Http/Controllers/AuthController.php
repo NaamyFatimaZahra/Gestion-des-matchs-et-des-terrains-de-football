@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\SendEmailConfirmation;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -59,7 +61,10 @@ class AuthController extends Controller
 
        
         Auth::login($user);
-        
+        // //send mail
+
+        // $usermail=Auth::user()->email;
+        // Mail::to( $usermail)->send(new SendEmailConfirmation());
        
     if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
       
@@ -73,11 +78,20 @@ class AuthController extends Controller
     // Logout method
     public function logout(Request $request)
     {
+
+
+           //send mail
+
+        // $usermail=Auth::user()->email;
+        Mail::to( 'naamy.fatima.zahra@student.youcode.ma')->send(new SendEmailConfirmation());
+        dd('message sent');
+       
         Auth::logout();
         
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
         return redirect()->route('showLogin')->with('success', 'Déconnexion réussie !');
+    
     }
 }

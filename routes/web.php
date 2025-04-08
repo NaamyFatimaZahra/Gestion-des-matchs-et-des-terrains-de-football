@@ -44,3 +44,15 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     
 });
 
+
+
+
+Route::prefix('proprietaire')->middleware(['auth','role:proprietaire',])->group(function(){
+
+    
+
+
+
+
+
+});
