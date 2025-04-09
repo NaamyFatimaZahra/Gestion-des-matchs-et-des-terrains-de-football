@@ -55,16 +55,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'city' => $request->city, 
             'role_id' => $request->role,
-            'status'=>$request->role===3 ?'active':'pending',
+            'status'=>$request->role===2 ?'pending':'active',
             'profile_picture' => 'default.jpg' 
         ]);
 
        
         Auth::login($user);
-        // //send mail
-
-        // $usermail=Auth::user()->email;
-        // Mail::to( $usermail)->send(new SendEmailConfirmation());
        
     if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
       
@@ -78,16 +74,7 @@ class AuthController extends Controller
     // Logout method
     public function logout(Request $request)
     {
-
-
-           //send mail
-
-        // // $usermail=Auth::user()->email;
-        // Mail::to( 'naamy.fatima.zahra@student.youcode.ma')->send(new SendEmailConfirmation());
-        // dd('message sent');
-       
         Auth::logout();
-        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         

@@ -26,9 +26,9 @@ class SendEmailConfirmation extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'Send Email Confirmation',
-        );
+       return new Envelope(
+    subject: 'Confirmation de votre compte Gestion Match',
+);
     }
 
     /**

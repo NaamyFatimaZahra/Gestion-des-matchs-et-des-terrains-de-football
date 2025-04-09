@@ -31,7 +31,7 @@
                     
                     <!-- Barre de progression -->
                     <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-                        <div class="bg-[#580a21] h-2.5 rounded-full w-2/3 animate-pulse"></div>
+                        <div class="bg-[#580a21] h-2.5 rounded-full w-2/3 "></div>
                     </div>
                     
                     <div class="text-sm text-gray-500 mb-8">

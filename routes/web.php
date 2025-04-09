@@ -49,7 +49,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
 Route::prefix('proprietaire')->middleware(['auth','role:Propriétaire','status'])->group(function(){
 
-    
+    Route::get('/', [HomeController::class,'index'])->name('home');
 
 
 
