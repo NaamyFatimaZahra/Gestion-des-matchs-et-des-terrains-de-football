@@ -23,12 +23,12 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'name' => 'Propriétaire',
+                'name' => 'proprietaire',
                 'created_at' => now(),
                 'updated_at' => now()
             ], [
                 'id' => 3,
-                'name' => 'Joueur',
+                'name' => 'joueur',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

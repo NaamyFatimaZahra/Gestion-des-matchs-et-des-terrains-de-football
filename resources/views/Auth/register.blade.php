@@ -87,9 +87,9 @@
                 <!-- Sélection du rôle -->
                 <div class="mb-4">
                     <label for="role" class="block text-sm font-medium text-gray-600 mb-1">Rôle : <span class="text-red-500">*</span></label>
-                    <select id="role" name="role" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#580a21]" required>
+                    <select id="role" name="role" class="w-full capitalize px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#580a21]" required>
                         @foreach ($roles as $role)
-                        <option value="{{ $role['id'] }}">{{$role['name']}}</option>
+                        <option class="capitalize" value="{{ $role['id'] }}">{{$role['name']==='proprietaire'?'propriétaire':$role['name']}}</option>
                         @endforeach
                     </select>
                     @error('role')
