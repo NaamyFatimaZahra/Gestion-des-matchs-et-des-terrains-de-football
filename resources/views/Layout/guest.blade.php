@@ -17,7 +17,7 @@
             <ul class="uppercase hidden md:flex items-center justify-center gap-8 text-white">
             @if (Auth::check())
                 <li><a href="
-              {{ Auth::user()->role->name==='admin'? route('admin.dashboard'): route('proprietaire.dashboard')  }}
+              {{ Auth::user()->role->name==='admin' ? route('admin.dashboard') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.dashboard'):'kljjj')  }}
               
               " class="nav-link hover:text-gray-300 transition duration-300">dashboard</a></li>
             @endif

@@ -43,7 +43,7 @@
 
         <!-- Chart Icon (Dashboard) -->
         <div class=" h-[3rem] flex p-3 px-5  {{ request()->routeIs('*.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer  ">
-            <a href="{{ Auth::user()->role->name==='admin ' ? route('admin.dashboard') :  route('proprietaire.dashboard')}}" class="flex gap-3 justify-center items-center">
+            <a href="{{ Auth::user()->role->name==='admin' ? route('admin.dashboard') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.dashboard'):'ll') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-chart-line"></i>    
                 <p class="capitalize hidden group-hover:block">dashboard</p>
             </a>
@@ -54,7 +54,7 @@
             <a href="{{ route('admin.terrains.index') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-futbol "></i>
                 <p class="capitalize hidden group-hover:block">terrains</p>
-            </a>
+            </a> 
         </div>
         
         
