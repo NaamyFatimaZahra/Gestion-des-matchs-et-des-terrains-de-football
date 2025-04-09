@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\DashboardController as dashboard_admin;
+use App\Http\Controllers\proprietaire\DashboardController as dashboard_proprietaire;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TerrainController;
 use App\Http\Controllers\admin\UserController;
@@ -21,8 +22,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
-    Route::get('/',[DashboardController::class,'index'])->name('admin.dashboard'); 
-    Route::get('/dashboard',[DashboardController::class,'index'])->name('admin.dashboard'); 
+    Route::get('/',[dashboard_admin::class,'index'])->name('admin.dashboard'); 
+    Route::get('/dashboard',[dashboard_admin::class,'index'])->name('admin.dashboard'); 
     
 
 
@@ -48,11 +49,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
 
 Route::prefix('proprietaire')->middleware(['auth','role:Propriétaire','status'])->group(function(){
-
-    Route::get('/', [HomeController::class,'index'])->name('home');
-
-
-
-
+    Route::get('/',[dashboard_proprietaire::class,'index'])->name('proprietaire.dashboard'); 
+    Route::get('/dashboard',[dashboard_proprietaire::class,'index'])->name('proprietaire.dashboard');
 
 });

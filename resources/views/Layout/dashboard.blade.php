@@ -42,8 +42,8 @@
         </div>
 
         <!-- Chart Icon (Dashboard) -->
-        <div class=" h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer  ">
-            <a href="{{ route('admin.dashboard') }}" class="flex gap-3 justify-center items-center">
+        <div class=" h-[3rem] flex p-3 px-5  {{ request()->routeIs('*.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer  ">
+            <a href="{{ Auth::user()->role->name==='admin ' ? route('admin.dashboard') :  route('proprietaire.dashboard')}}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-chart-line"></i>    
                 <p class="capitalize hidden group-hover:block">dashboard</p>
             </a>
@@ -107,7 +107,15 @@
         </div>
         <div class="overflow-y-auto flex-1 px-4 ">
             @yield('content')
+            <footer class="bg-gray-800 border-t border-gray-700 p-4 mt-8">
+        <div class="container mx-auto text-center text-gray-400 text-sm">
+            &copy; 2025 SportStats - Tous droits réservés
         </div>
+    </footer>
+        </div>
+        
     </div>
+      <!-- Footer -->
+    
 </body>
 </html>
