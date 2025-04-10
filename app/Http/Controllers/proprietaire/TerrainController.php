@@ -32,7 +32,8 @@ class TerrainController extends Controller
 
 
     public function create(){
-        
+      return view('proprietaire.terrains.create');
+
     }
 
     public function store(Request $request){

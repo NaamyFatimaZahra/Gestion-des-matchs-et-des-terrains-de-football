@@ -6,7 +6,6 @@
     <!-- En-tête avec titre et boutons d'action -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-white">Gestion des Terrains</h1>
-      
     </div>
    @if(session('success'))
     <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -58,7 +57,7 @@
                     <option value="en_attente">En Attente</option>
                     <option value="approuve">Approuvé</option>
                     <option value="rejete">Rejeté</option>
-                    <option value="suspended">suspendu</option>
+                    <option value="suspended">Suspendu</option>
                 </select>
 
                 <!-- Filtre par Ville -->
@@ -104,7 +103,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-gray-900 divide-y divide-gray-800">
-                    @forelse($terrains  as $terrain)
+                    @forelse($terrains as $terrain)
                     <tr class="hover:bg-gray-800 transition-colors duration-200">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                             {{ $terrain->id }}
@@ -136,38 +135,38 @@
                        
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 py-1 text-xs font-semibold rounded
-                                {{ $terrain->status === 'disponible' ? 'bg-green-900 text-green-100' : 
-                                ($terrain->status === 'occupé' ? 'bg-blue-900 text-blue-100' : 
-                                ($terrain->status === 'maintenance' ? 'bg-yellow-900 text-yellow-100' : 'bg-gray-700 text-gray-300')) }}">
-
+                                {{ $terrain->status === 'disponible' ? 'bg-emerald-500 text-white' : 
+                                ($terrain->status === 'occupé' ? 'bg-rose-500 text-white' : 
+                                ($terrain->status === 'maintenance' ? 'bg-amber-500 text-white' : 
+                                'bg-blue-500 text-white')) }}">
                                 {{ $terrain->status === 'disponible' ? 'Disponible' : 
                                 ($terrain->status === 'occupé' ? 'Occupé' : 
                                 ($terrain->status === 'maintenance' ? 'Maintenance' : 'En attente')) }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                                <form action="{{ route('admin.terrains.update-approval', $terrain->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <select name="admin_approval" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold rounded border-0
-                                        {{ $terrain->admin_approval === 'approuve' ? 'bg-[green] text-green-100' : 
-                                        ($terrain->admin_approval === 'rejete' || $terrain->admin_approval === 'suspended' ? 'bg-[#ff0000dc] text-red-100' : 'bg-yellow-300 text-yellow-900') }}
-                                        px-2 py-1">
-                                        @if ( $terrain->admin_approval === 'en_attente')
-                                        <option value="en_attente" {{ $terrain->admin_approval === 'en_attente' ? 'selected' : '' }}>En attente</option>
-                                        @endif
-                                        <option value="approuve" {{ $terrain->admin_approval === 'approuve' ? 'selected' : '' }}>Approuvé</option>
-                                        <option value="rejete" {{ $terrain->admin_approval === 'rejete' ? 'selected' : '' }}>Rejeté</option>
-                                        <option value="suspended" {{ $terrain->admin_approval === 'suspended' ? 'selected' : '' }}>suspended</option>
-                                    </select>
-                                </form>
+                            <form action="{{ route('admin.terrains.update-approval', $terrain->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <select name="admin_approval" onchange="this.form.submit()" class="text-xs font-semibold rounded border-0 px-2 py-1
+                                    {{ $terrain->admin_approval === 'approuve' ? 'bg-emerald-700 text-white' : 
+                                    ($terrain->admin_approval === 'rejete' ? 'bg-red-600 text-white' : 
+                                    ($terrain->admin_approval === 'suspended' ? 'bg-violet-600 text-white' : 
+                                    'bg-gray-600 text-white')) }}">
+                                    @if ($terrain->admin_approval === 'en_attente')
+                                    <option value="en_attente" {{ $terrain->admin_approval === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                                    @endif
+                                    <option value="approuve" {{ $terrain->admin_approval === 'approuve' ? 'selected' : '' }}>Approuvé</option>
+                                    <option value="rejete" {{ $terrain->admin_approval === 'rejete' ? 'selected' : '' }}>Rejeté</option>
+                                    <option value="suspended" {{ $terrain->admin_approval === 'suspended' ? 'selected' : '' }}>Suspendu</option>
+                                </select>
+                            </form>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                             <div class="flex justify-end space-x-2">
                                 <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                               
                             </div>
                         </td>
                     </tr>
@@ -181,12 +180,7 @@
                 </tbody>
             </table>
         </div>
-
-       
     </div>
 </div>
-
-
-
 
 @endsection

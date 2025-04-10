@@ -29,8 +29,10 @@ class AuthController extends Controller
         $user = Auth::user();
         
         // Vérifier si l'utilisateur est admin
-        if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
+        if ($user->role_id == Role::where('name','=', 'admin')->value('id')) {
             return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
+        } else if ($user->role_id == Role::where('name','=', 'proprietaire')->value('id')) {
+            return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
         } else {
             return redirect('/home')->with('success', 'Connexion réussie !');
         }
@@ -62,10 +64,11 @@ class AuthController extends Controller
        
         Auth::login($user);
        
-    if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
-      
+    if ($user->role_id == Role::where('name',"=", 'admin')->value('id')) {
         return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
-    } else {
+    } elseif($user->role_id == Role::where('name',"=", 'proprietaire')->value('id')) {
+        return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
+    }else {
         
         return redirect('/home')->with('success', 'Inscription réussie !');
     }

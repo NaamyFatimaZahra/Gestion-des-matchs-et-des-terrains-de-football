@@ -61,7 +61,7 @@
                     <option value="en_attente">En Attente</option>
                     <option value="approuve">Approuvé</option>
                     <option value="rejete">Rejeté</option>
-                    <option value="suspended">suspendu</option>
+                    <option value="suspended">Suspendu</option>
                 </select>
 
                 <!-- Filtre par Ville -->
@@ -107,7 +107,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-gray-900 divide-y divide-gray-800">
-                    @forelse($terrains  as $terrain)
+                    @forelse($terrains as $terrain)
                     <tr class="hover:bg-gray-800 transition-colors duration-200">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                             {{ $terrain->id }}
@@ -138,44 +138,39 @@
                         </td>
                        
                         <td class="px-6 py-4 whitespace-nowrap">
-                           
-
-
-
                             <form action="{{ route('proprietaire.terrain.update-status', $terrain->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold rounded border-0
-                                        {{ $terrain->status === 'disponible' ? 'bg-[green] text-green-100' : 
-                                        ($terrain->status === 'occupé' || $terrain->status === 'maintenance' ? 'bg-[#ff0000dc] text-red-100' : 'bg-yellow-300 text-yellow-900') }}
-                                        px-2 py-1">
-                                        @if ( $terrain->status === 'en_attente')
-                                        <option value="en_attente" {{ $terrain->status === 'en_attente' ? 'selected' : '' }}>En attente</option>
-                                        @endif
-                                        <option value="disponible" {{ $terrain->status === 'disponible' ? 'selected' : '' }}>Disponible</option>
-                                        <option value="occupé" {{ $terrain->status === 'occupé' ? 'selected' : '' }}>Occupé</option>
-                                        <option value="maintenance" {{ $terrain->status === 'maintenance' ? 'selected' : '' }}>maintenance</option>
-                                    </select>
-                                </form>
+                                @csrf
+                                @method('PATCH')
+                                <select name="status" onchange="this.form.submit()" class="text-xs font-semibold rounded border-0 px-2 py-1
+                                    {{ $terrain->status === 'disponible' ? 'bg-emerald-500 text-white' : 
+                                    ($terrain->status === 'occupé' ? 'bg-rose-500 text-white' : 
+                                    ($terrain->status === 'maintenance' ? 'bg-amber-500 text-white' : 
+                                    'bg-blue-500 text-white')) }}">
+                                    @if ($terrain->status === 'en_attente')
+                                    <option value="en_attente" {{ $terrain->status === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                                    @endif
+                                    <option value="disponible" {{ $terrain->status === 'disponible' ? 'selected' : '' }}>Disponible</option>
+                                    <option value="occupé" {{ $terrain->status === 'occupé' ? 'selected' : '' }}>Occupé</option>
+                                    <option value="maintenance" {{ $terrain->status === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                                </select>
+                            </form>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 text-xs font-semibold rounded
-                                {{ $terrain->admin_approval  === 'approuve' ? 'bg-green-900 text-green-100' : 
-                                ($terrain->admin_approval === 'suspended' ? 'bg-[red] text-blue-100' : 
-                                ($terrain->admin_approval === 'rejete' ? 'bg-yellow-900 text-yellow-100' : 'bg-gray-700 text-gray-300')) }}">
-
+                            <span class="px-2 py-1 text-xs font-semibold rounded
+                                {{ $terrain->admin_approval === 'approuve' ? 'bg-emerald-700 text-white' : 
+                                ($terrain->admin_approval === 'suspended' ? 'bg-violet-600 text-white' : 
+                                ($terrain->admin_approval === 'rejete' ? 'bg-red-600 text-white' : 
+                                'bg-gray-600 text-white')) }}">
                                 {{ $terrain->admin_approval === 'rejete' ? 'Rejeté' : 
-                                ($terrain->admin_approval === 'suspended' ? 'suspended' : 
+                                ($terrain->admin_approval === 'suspended' ? 'Suspendu' : 
                                 ($terrain->admin_approval === 'approuve' ? 'Approuvé' : 'En attente')) }}
                             </span>
- 
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                             <div class="flex justify-end space-x-2">
                                 <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                               
                             </div>
                         </td>
                     </tr>
@@ -189,12 +184,7 @@
                 </tbody>
             </table>
         </div>
-
-       
     </div>
 </div>
-
-
-
 
 @endsection

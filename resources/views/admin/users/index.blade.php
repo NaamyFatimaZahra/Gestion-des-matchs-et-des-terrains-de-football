@@ -110,16 +110,16 @@
                         {{ $user->city }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    {{ $user->role->name }}
+                        {{ $user->role->name }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold rounded border-0
-                                {{ $user->status === 'active' ? 'bg-[green] text-green-100' : 
-                                ($user->status === 'pending' ? 'bg-yellow-900 text-yellow-100' : 'bg-red-900 text-red-100') }}
-                                px-2 py-1">
+                            <select name="status" onchange="this.form.submit()" class="text-xs font-semibold rounded border-0 px-2 py-1
+                                {{ $user->status === 'active' ? 'bg-emerald-600 text-white' : 
+                                ($user->status === 'pending' ? 'bg-amber-500 text-white' : 
+                                'bg-rose-600 text-white') }}">
                                 <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Actif</option>
                                 @if ($user->status === 'pending')
                                     <option value="pending" {{ $user->status === 'pending' ? 'selected' : '' }}>En attente</option>
@@ -133,8 +133,8 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end space-x-2">
-                           <a href="{{ route('admin.users.detailsUser', $user->id) }}">
-                                <button type="submit" class="text-gray-300 hover:text-white transition-colors duration-150">
+                            <a href="{{ route('admin.users.detailsUser', $user->id) }}">
+                                <button type="submit" class="text-blue-400 hover:text-blue-300 transition-colors duration-150">
                                     <i class="fas fa-eye text-lg"></i>
                                 </button>
                             </a>

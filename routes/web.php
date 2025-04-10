@@ -59,7 +59,7 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
         [
             'index' => 'proprietaire.terrains.index',
             'create' => 'proprietaire.terrain.create',
-            'store' => 'proprietaire.terrains.store',
+            'store' => 'proprietaire.terrain.store',
             'show' => 'proprietaire.terrain.show',
             'edit' => 'proprietaire.terrain.edit',
             'update' => 'proprietaire.terrain.update',
