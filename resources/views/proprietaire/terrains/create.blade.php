@@ -140,6 +140,37 @@
                     </div>
                 </div>
             </div>
+             
+          <!-- Services disponibles -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Services disponibles</h2>
+                <p class="text-gray-600 mb-4">Sélectionnez les services que vous proposez sur ce terrain</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach ($services as $service)
+                        <div class="relative">
+                            <input type="checkbox" id="service_{{ $service->id }}" name="services[]" value="{{ $service->id }}" class="peer absolute opacity-0 h-0 w-0">
+                            <label for="service_{{ $service->id }}" class="flex justify-between items-center w-full p-3 bg-white border border-gray-300 rounded-md cursor-pointer transition-all duration-150 hover:border-gray-400">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-{{ $service->icon ?? 'plus' }} text-gray-500 w-5 text-center"></i>
+                                    <span class="text-gray-800">{{ $service->name }}</span>
+                                    @if($service->price)
+                                        <span class="ml-2 text-sm text-gray-500">{{ $service->price }} MAD</span>
+                                    @endif
+                                </div>
+                                <div class="w-5 h-5 bg-white border border-gray-300 rounded-sm flex items-center justify-center peer-checked:bg-green-500 peer-checked:border-green-500">
+                                    <i class="fas fa-check text-white text-xs hidden peer-checked:block"></i>
+                                    <div class="peer-checked:block hidden">
+                                        <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>  
             
             <div class="mt-8 flex justify-end">
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">

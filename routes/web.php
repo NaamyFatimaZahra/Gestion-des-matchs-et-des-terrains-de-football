@@ -63,7 +63,7 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
             'show' => 'proprietaire.terrain.show',
             'edit' => 'proprietaire.terrain.edit',
             'update' => 'proprietaire.terrain.update',
-            'destroy' => 'proprie.taire.terrain.destroy',
+            'destroy' => 'proprietaire.terrain.destroy',
         ]
     );
     Route::patch('terrain/{terrain}/update-status',[proprietaireTerrain::class,'updateStatus'])->name('proprietaire.terrain.update-status');

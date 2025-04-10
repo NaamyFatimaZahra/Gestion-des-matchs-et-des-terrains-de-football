@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\proprietaire;
 
 use App\Http\Controllers\Controller;
+use App\Models\Service;
 use App\Models\Terrain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,8 @@ class TerrainController extends Controller
 
 
     public function create(){
-      return view('proprietaire.terrains.create');
+      $services=Service::all();
+      return view('proprietaire.terrains.create',['services'=>$services]);
 
     }
 
@@ -41,7 +43,7 @@ class TerrainController extends Controller
     }
 
     public function show(Terrain $terrain){
-        
+        return view('proprietaire.terrains.show',['terrain'=>$terrain]);
     }
 
     public function edit(Terrain $terrain){

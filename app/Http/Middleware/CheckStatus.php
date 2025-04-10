@@ -17,7 +17,7 @@ class CheckStatus
     public function handle(Request $request, Closure $next): Response
     {
        $user=Auth::user();
-        if($user->role->name==="Propriétaire" && $user->status==='pending'){
+        if($user->role->name==="proprietaire" && $user->status==='pending'){
                return response()->view('Errors.423');
         }
         return $next($request);

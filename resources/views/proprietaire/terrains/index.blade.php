@@ -166,13 +166,23 @@
                                 ($terrain->admin_approval === 'approuve' ? 'Approuvé' : 'En attente')) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                            <div class="flex justify-end space-x-2">
-                                <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </td>
+                       <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+    <div class="flex justify-end space-x-3">
+        <a href="{{ route('proprietaire.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white" title="Voir détails">
+            <i class="fas fa-eye"></i>
+        </a>
+        <a href="{{ route('proprietaire.terrain.edit', $terrain->id) }}" class="text-blue-400 hover:text-blue-300" title="Modifier">
+            <i class="fas fa-edit"></i>
+        </a>
+        <form action="{{ route('proprietaire.terrain.destroy', $terrain->id) }}" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce terrain? Cette action est irréversible.');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-400 hover:text-red-300" title="Supprimer">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+    </div>
+</td>
                     </tr>
                     @empty
                     <tr>
