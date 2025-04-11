@@ -20,7 +20,7 @@ return new class extends Migration
     $table->enum('status', ['disponible', 'occupé', 'maintenance', 'en_attente'])->default('en_attente');
     $table->enum('admin_approval',  ['en_attente', 'approuve', 'rejete','suspended'])->default('en_attente');
     $table->integer('reservation_count')->default(0); 
-    $table->text('description')->nullable();
+    $table->text('description');
     $table->enum('payment_method', ['en_ligne', 'sur_place', 'les_deux']);
         $table->enum('surface', [
         'gazon_naturel',        
@@ -38,7 +38,7 @@ return new class extends Migration
     $table->string('adress');
     $table->decimal('latitude', 10, 8)->nullable();
     $table->decimal('longitude', 10, 8)->nullable();
-    $table->string('contact')->nullable();
+    $table->string('contact');
     $table->timestamps();
 });
     }

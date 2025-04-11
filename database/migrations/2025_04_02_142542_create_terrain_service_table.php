@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('terrain_id')->references('id')->on('terrains')->onDelete('cascade');
             $table->foreignId('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->decimal('price',10,2);
             $table->timestamps();
         });
     }
+
+
+    
 
     /**
      * Reverse the migrations.

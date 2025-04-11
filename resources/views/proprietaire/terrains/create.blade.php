@@ -149,7 +149,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach ($services as $service)
                         <div class="relative">
-                            <input type="checkbox" id="service_{{ $service->id }}" name="services[]" value="{{ $service->id }}" class="peer absolute opacity-0 h-0 w-0">
+                            <input  type="checkbox" id="service_{{ $service->id }}" name="services[]" value="{{ $service->id }}" class="peer absolute opacity-0 h-0 w-0">
                             <label for="service_{{ $service->id }}" class="flex justify-between items-center w-full p-3 bg-white border border-gray-300 rounded-md cursor-pointer transition-all duration-150 hover:border-gray-400">
                                 <div class="flex items-center gap-3">
                                     <i class="fas fa-{{ $service->icon ?? 'plus' }} text-gray-500 w-5 text-center"></i>

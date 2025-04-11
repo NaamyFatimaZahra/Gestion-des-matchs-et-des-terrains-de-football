@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             UserSeeder::class,
             TerrainSeeder::class,
+            TerrainServiceSeeder::class,
            
         ]);
     }
