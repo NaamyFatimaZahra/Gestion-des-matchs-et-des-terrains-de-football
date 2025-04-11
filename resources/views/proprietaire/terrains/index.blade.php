@@ -35,6 +35,17 @@
     </script>
 @endif
 
+<!-- Message d'erreur général -->
+   @if(session('error'))
+    <div id="error-alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+        <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+            <span class="sr-only">Fermer</span>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+   @endif
+
     <!-- Filtres et recherche -->
     <div class="bg-gray-900 rounded-lg shadow-md p-4 mb-6 border border-gray-700">
         <div class="flex flex-wrap justify-between gap-4">

@@ -27,8 +27,8 @@ class Terrain extends Model
         'contact'
     ];
 
-    public function terrain(){
-          return $this->belongsToMany(Terrain::class,'terrain_service');
+    public function services(){
+          return $this->belongsToMany(Service::class,'terrain_service')->withPivot('price');
     }
     public function  proprietaire(){
         return $this->belongsTo(User::class);

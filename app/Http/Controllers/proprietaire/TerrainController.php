@@ -13,8 +13,6 @@ class TerrainController extends Controller
     public function index(){
           $user_id=Auth::user()->id;
           $terrains=Terrain::where('proprietaire_id','=',$user_id)->get();
-            // dd($terrains);
-
         return view('proprietaire.terrains.index',["terrains"=>$terrains]);
     }
  
@@ -22,7 +20,9 @@ class TerrainController extends Controller
     public function updateStatus(Request $request, Terrain $terrain){
 
         $request->validate(['status'=>'required | in:disponible,occupé,maintenance']);
-
+        if($terrain->admin_approval==='en_attente'){
+        return back()->with('error', "Il n'est pas possible de modifier le statut du terrain car l'administrateur n'a pas encore validé ce dernier.");
+        }
         $terrain->status=$request->status;
         $terrain->save();
          return back()->with('success', 'La modification a été effectuée avec succès.');
@@ -43,6 +43,7 @@ class TerrainController extends Controller
     }
 
     public function show(Terrain $terrain){
+        $terrain->with('services');
         return view('proprietaire.terrains.show',['terrain'=>$terrain]);
     }
 

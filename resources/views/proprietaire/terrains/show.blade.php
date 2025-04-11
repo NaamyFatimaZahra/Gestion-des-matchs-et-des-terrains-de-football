@@ -232,6 +232,81 @@
             </div>
         </div>
         
+
+
+
+
+
+<!-- Services du terrain -->
+<div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-700 mb-8">
+    <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+        <h3 class="text-xl font-semibold flex items-center text-white">
+            <svg class="w-5 h-5 mr-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Services disponibles
+        </h3>
+        <a href="   " class="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg flex items-center transition-colors duration-200">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <span>Gérer les services</span>
+        </a>
+    </div>
+    
+    <div class="p-6">
+        @if($terrain->services && $terrain->services->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($terrain->services as $service)
+            
+                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-all duration-200">
+                    <div class="flex items-center mb-3">
+                     
+                        <div>
+                            <div class="font-medium text-white">{{ $service->name}}</div>
+                            <div class="text-sm text-gray-400">
+                                @if($service->pivot->price > 0)
+                                    {{ number_format($service->pivot->price, 2) }} MAD
+                                @else
+                                    Gratuit
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        @else
+            <div class="flex flex-col items-center py-10 text-center">
+                <svg class="w-16 h-16 mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <p class="text-gray-400 mb-4">Aucun service n'est actuellement configuré pour ce terrain.</p>
+                <a href="" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center transition-colors duration-200 shadow-md">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Ajouter des services
+                </a>
+            </div>
+        @endif
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Réservations récentes -->
         <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-700 mb-8">
             <div class="p-6 border-b border-gray-700 flex justify-between items-center">
