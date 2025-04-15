@@ -39,7 +39,7 @@ class Terrain extends Model
         return $this->hasMany(Document::class);
     }
     public function comments(){
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->whereNull('deleted_at');;
     }
     // public function reservations(){
     //     return $this->hasMany(Reservation::class);

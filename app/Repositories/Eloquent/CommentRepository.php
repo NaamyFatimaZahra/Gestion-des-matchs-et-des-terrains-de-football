@@ -2,13 +2,27 @@
 
 namespace App\Repositories\Eloquent;
 
-class CommentRepository
+use App\Models\Comment;
+use App\Repositories\Interface\CommentRepositoryInterface;
+
+class CommentRepository implements CommentRepositoryInterface
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    public function getAllComments( )   
     {
-        //
+        return Comment::with(['user', 'terrain'])->get();
     }
+    public function deleteComment(Comment $comment): bool
+    {
+   if ($comment->delete()) {
+          return true;
+    }
+
+    return false;
+   
+    }
+
+    public function isDeleted(Comment $comment): bool
+{
+    return $comment->trashed();
+}
 }

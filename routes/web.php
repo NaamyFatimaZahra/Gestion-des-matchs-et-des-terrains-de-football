@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\DashboardController as adminDashboard;
+use App\Http\Controllers\proprietaire\CommentController;
 use App\Http\Controllers\proprietaire\DashboardController as proprietaireDashboard;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TerrainController as adminTerrain;
@@ -49,9 +50,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 });
 
 
-
+//proprietaire
 
 Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])->group(function(){
+
+    //proprietaire dashboard
     Route::get('/',[proprietaireDashboard::class,'index'])->name('proprietaire.dashboard'); 
     Route::get('/dashboard',[proprietaireDashboard::class,'index'])->name('proprietaire.dashboard');
     
@@ -68,9 +71,14 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
         ]
     );
     Route::patch('terrain/{terrain}/update-status',[proprietaireTerrain::class,'updateStatus'])->name('proprietaire.terrain.update-status');
-});
 
-
-Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])->group(function(){
+    //proprietaire reservations
     Route::get('/reservations',[ReservationController::class,'index'])->name('proprietaire.reservation.index'); 
+
+    //proprietaire commentaires
+    Route::get('/comments',[CommentController::class,'index'])->name('proprietaire.comments.index');
+    Route::delete('/comment/{comment}',[CommentController::class,'destroy'])->name('proprietaire.comment.destroy');
+  
 });
+
+

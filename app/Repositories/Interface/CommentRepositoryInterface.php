@@ -2,13 +2,12 @@
 
 namespace App\Repositories\Interface;
 
-class CommentRepositoryInterface
+use App\Models\Comment;
+
+Interface CommentRepositoryInterface
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function getAllComments( );
+    public function deleteComment(Comment $comment): bool;
+        public function isDeleted(Comment $comment): bool;
+
 }

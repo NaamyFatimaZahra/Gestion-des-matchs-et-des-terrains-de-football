@@ -84,9 +84,9 @@
                 <p class="capitalize hidden group-hover:block">reservations</p>
             </a>
         </div>
-        <!-- reservation Icon -->
-        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
-            <a href="" class="flex gap-3 justify-center items-center">
+        <!-- commets Icon -->
+        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.comments.index') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('proprietaire.comments.index') }}" class="flex gap-3 justify-center items-center">
                 <i class="fa-solid fa-comments"></i>
                 <p class="capitalize hidden group-hover:block">avis</p>
             </a>
