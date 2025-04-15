@@ -86,7 +86,7 @@ class TerrainRepository implements TerrainRepositoryInterface
   
     public function getWithRelations(Terrain $terrain): Terrain
     {
-        return $terrain->load('services', 'documents');
+        return $terrain->load('services', 'documents', 'comments');
     }
     
     /**

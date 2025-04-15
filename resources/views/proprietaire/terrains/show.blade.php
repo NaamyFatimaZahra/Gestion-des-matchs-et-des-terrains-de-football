@@ -494,40 +494,41 @@
             </div>
             
             <div class="p-6">
-                @forelse($reviews ?? [] as $review)
-                <div class="border-b border-gray-700 pb-5 mb-5 last:border-b-0 last:mb-0 last:pb-0">
-                    <div class="flex justify-between mb-3">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="font-medium text-white">{{ $review->user->name ?? 'Client Anonyme' }}</div>
-                                <div class="text-sm text-gray-400">{{ $review->created_at->format('d/m/Y') }}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            @for($i = 1; $i <= 5; $i++)
-                                <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-600' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="text-gray-300">
-                        {{ $review->comment }}
-                    </div>
-                </div>
-                @empty
-                <div class="flex flex-col items-center py-10">
-                    <svg class="w-16 h-16 mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+               {{-- Blade Template for Comments --}}
+@forelse($terrain->comments as $comment)
+    <div class="border-b border-gray-700 pb-5 mb-5 last:border-b-0 last:mb-0 last:pb-0">
+        <div class="flex justify-between mb-3">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    <p class="text-gray-400 text-center">Aucun commentaire ou évaluation pour ce terrain actuellement.</p>
                 </div>
-                @endforelse
+                <div>
+                    <div class="font-medium text-white">{{ $comment->user->name ?? 'Client Anonyme' }}</div>
+                    <div class="text-sm text-gray-400">{{ $comment->created_at->format('d/m/Y') }}</div>
+                </div>
+            </div>
+            <div class="flex items-center">
+                @for($i = 1; $i <= 5; $i++)
+                    <svg class="w-5 h-5 {{ $i <= $comment->rating ? 'text-yellow-400' : 'text-gray-600' }}" 
+                         fill="currentColor" 
+                         viewBox="0 0 20 20" 
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                @endfor
+            </div>
+        </div>
+        <div class="text-gray-300">
+            {{ $comment->content }}
+        </div>
+    </div>
+@empty
+    <div class="text-center text-gray-400 py-4">
+        Aucun commentaire disponible
+    </div>
+@endforelse
             </div>
         </div>
     </div>

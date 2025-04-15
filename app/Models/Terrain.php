@@ -38,4 +38,10 @@ class Terrain extends Model
      public function Documents(){
         return $this->hasMany(Document::class);
     }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+    // public function reservations(){
+    //     return $this->hasMany(Reservation::class);
+    // }
 }
