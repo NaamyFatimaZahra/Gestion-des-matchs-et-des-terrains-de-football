@@ -38,6 +38,7 @@ class TerrainRequest extends FormRequest
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
             'services' => 'required',
             'services.*' => 'required|exists:services,id',
+            'contact'=>'required|string|max:255',
         ];
     }
 

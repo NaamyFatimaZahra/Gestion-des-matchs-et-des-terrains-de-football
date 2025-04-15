@@ -12,8 +12,6 @@ class Terrain extends Model
         'proprietaire_id',
         'capacity',
         'price',
-        'verified',
-        'active',
         'status',
         'admin_approval',
         'reservation_count',

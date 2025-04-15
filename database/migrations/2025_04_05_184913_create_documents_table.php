@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('terrain_id')->references('id')->on('terrains')->onDelete('cascade');
-            $table->string('photo_path');
-            $table->boolean('is_main'); 
+            $table->string('photo_path'); 
             $table->timestamps();
         });
     }

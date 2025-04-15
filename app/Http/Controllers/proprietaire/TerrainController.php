@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\proprietaire;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TerrainRequest;
+use App\Models\Document;
 use App\Models\Service;
 use App\Models\Terrain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TerrainController extends Controller
 {
@@ -38,26 +41,52 @@ class TerrainController extends Controller
 
     }
 
-    public function store(Request $request){
-        $request->validate([
-            'name'=>'required | string',
-            'description'=>'required | string',
-            'capacity'=>'required | integer |min:10',
-            'price'=>'required | numeric | min:0',
-           'surface' => 'required|in:gazon_naturel,gazon_synthetique,gazon_hybride,turf_artificiel,stabilise,sable,beton,terre_battue,indoor_synthetique,altra_resist',
-           'payment_method'=>'required',
-           'city'=>'required| string',
-           'adress'=>'required | string',
-           'latitude'=>'required | numeric',
-           'images' => 'required|array',
-           'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
-           'longitude'=>'required|numeric',
-           'services'=>'required',
-           'services.*'=>'required | exists:services,id',
+    public function store(TerrainRequest $request){
+       
+     $validated = $request->validated();
+     $userId = Auth::id();
 
-        ]);
-    
-    
+     DB::beginTransaction();
+        
+        // Créer un nouveau terrain avec les données validées
+        $terrain = new Terrain();
+        $terrain->name = $validated['name'];
+        $terrain->description = $validated['description'];
+        $terrain->capacity = $validated['capacity'];
+        $terrain->price = $validated['price'];
+        $terrain->surface = $validated['surface'];
+        $terrain->payment_method = $validated['payment_method'];
+        $terrain->city = $validated['city'];
+        $terrain->adress = $validated['adress'];
+        $terrain->latitude = $validated['latitude'];
+        $terrain->longitude = $validated['longitude'];
+        $terrain->proprietaire_id = $userId;
+        $terrain->contact = $validated['contact'];
+        
+        // Enregistrer le terrain dans la base de données
+        $terrain->save();
+
+         foreach ($validated['services'] as $serviceId) {
+                // Associer le service au terrain (utiliser un prix par défaut de 0 pour la relation pivot)
+                $terrain->services()->attach($serviceId, ['price' => 0]);
+            }
+
+
+          foreach ($request->file('images') as $image) {
+                // Générer un nom unique pour l'image
+                $imageName = time() . '_' . uniqid() . '.' . $image->extension();
+                
+                // Stocker l'image dans le répertoire de stockage (storage/app/public/terrains)
+                $imagePath = $image->storeAs('terrains', $imageName, 'public');
+                
+                // Créer un nouveau document pour l'image
+                $document = new Document();
+                $document->terrain_id = $terrain->id;
+                $document->photo_path = $imagePath;
+                $document->save();
+            }
+         DB::commit();
+          return redirect()->route('proprietaire.terrains.index')->with('success', 'Le terrain a été ajoute avec succès.');
     }
 
     public function show(Terrain $terrain){
