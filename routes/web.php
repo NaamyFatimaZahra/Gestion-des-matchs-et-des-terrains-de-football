@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\DashboardController as adminDashboard;
 use App\Http\Controllers\proprietaire\DashboardController as proprietaireDashboard;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TerrainController as adminTerrain;
+use App\Http\Controllers\proprietaire\ReservationController;
 use App\Http\Controllers\proprietaire\TerrainController as proprietaireTerrain;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
@@ -67,4 +68,9 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
         ]
     );
     Route::patch('terrain/{terrain}/update-status',[proprietaireTerrain::class,'updateStatus'])->name('proprietaire.terrain.update-status');
+});
+
+
+Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])->group(function(){
+    Route::get('/reservations',[ReservationController::class,'index'])->name('proprietaire.reservation.index'); 
 });

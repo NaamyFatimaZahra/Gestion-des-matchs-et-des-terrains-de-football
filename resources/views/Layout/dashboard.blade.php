@@ -58,14 +58,16 @@
         </div>
         
         
+     @if (Auth::user()->role->name==='admin')
         <!-- Users Icon -->
         <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.users.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
-            <a href="{{ route('admin.users.index') ?? '#' }}" class="flex gap-3 justify-center items-center">
+            <a href="{{ route('admin.users.index')}}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-users"></i>         
                 <p class="capitalize hidden group-hover:block">users</p>
             </a>
         </div>
-      
+
+        
          <!-- Settings Icon -->
         <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.services.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('admin.services.index') ?? '#' }}" class="flex gap-3 justify-center items-center">
@@ -73,6 +75,24 @@
                 <p class="capitalize hidden group-hover:block">services</p>
             </a>
         </div>
+     @endif
+       @if (Auth::user()->role->name==='proprietaire')
+        <!-- reservation Icon -->
+        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.reservation.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('proprietaire.reservation.index') }}" class="flex gap-3 justify-center items-center">
+                <i class="fa-solid fa-ticket"></i>        
+                <p class="capitalize hidden group-hover:block">reservations</p>
+            </a>
+        </div>
+        <!-- reservation Icon -->
+        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="" class="flex gap-3 justify-center items-center">
+                <i class="fa-solid fa-comments"></i>
+                <p class="capitalize hidden group-hover:block">avis</p>
+            </a>
+        </div>
+     @endif
+      
         <!-- Divider -->
         <div class="w-[80%]  h-px bg-gray-700 my-2"></div>
         
