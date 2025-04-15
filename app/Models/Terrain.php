@@ -23,7 +23,8 @@ class Terrain extends Model
         'adress',
         'latitude',
         'longitude',
-        'contact'
+        'contact',
+        'deleted_at'
     ];
 
     public function services(){

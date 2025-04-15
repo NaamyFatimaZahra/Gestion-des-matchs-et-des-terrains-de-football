@@ -4,109 +4,177 @@ namespace App\Http\Controllers\proprietaire;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TerrainRequest;
-use App\Models\Document;
 use App\Models\Service;
 use App\Models\Terrain;
+use App\Repositories\Interface\TerrainRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class TerrainController extends Controller
 {
-    public function index(){
-          $user_id=Auth::user()->id;
-          $terrains=Terrain::withoutTrashed()->where('proprietaire_id','=',$user_id)->get();
-        return view('proprietaire.terrains.index',["terrains"=>$terrains]);
+    /**
+     * Le repository de terrains
+     *
+     * @var TerrainRepositoryInterface
+     */
+    protected $terrainRepository;
+
+    /**
+     * Crée une nouvelle instance du contrôleur
+     *
+     * @param TerrainRepositoryInterface $terrainRepository
+     */
+    public function __construct(TerrainRepositoryInterface $terrainRepository)
+    {
+        $this->terrainRepository = $terrainRepository;
     }
- 
 
-    public function updateStatus(Request $request, Terrain $terrain){
+    /**
+     * Affiche tous les terrains du propriétaire connecté
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        $user_id = Auth::id();
+        $terrains = $this->terrainRepository->getAllByProprietaire($user_id);
+        
+        return view('proprietaire.terrains.index', ["terrains" => $terrains]);
+    }
 
-        $request->validate(['status'=>'required | in:disponible,occupé,maintenance']);
-        if($terrain->admin_approval==='en_attente'){
-        return back()->with('error', "Il n'est pas possible de modifier le statut du terrain car l'administrateur n'a pas encore validé ce dernier.");
+    /**
+     * Met à jour le statut d'un terrain
+     *
+     * @param Request $request
+     * @param Terrain $terrain
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(Request $request, Terrain $terrain)
+    {
+        $request->validate(['status' => 'required | in:disponible,occupé,maintenance']);
+        
+        $success = $this->terrainRepository->updateStatus($request, $terrain);
+        
+        if (!$success) {
+            return back()->with('error', "Il n'est pas possible de modifier le statut du terrain car l'administrateur n'a pas encore validé ce dernier.");
         }
-        $terrain->status=$request->status;
-        $terrain->save();
-         return back()->with('success', 'La modification a été effectuée avec succès.');
-
-
-    }
-
-
-
-    public function create(){
-      $services=Service::all();
-      return view('proprietaire.terrains.create',['services'=>$services]);
-
-    }
-
-    public function store(TerrainRequest $request){
-       
-     $validated = $request->validated();
-     $userId = Auth::id();
-
-     DB::beginTransaction();
         
-        // Créer un nouveau terrain avec les données validées
-        $terrain = new Terrain();
-        $terrain->name = $validated['name'];
-        $terrain->description = $validated['description'];
-        $terrain->capacity = $validated['capacity'];
-        $terrain->price = $validated['price'];
-        $terrain->surface = $validated['surface'];
-        $terrain->payment_method = $validated['payment_method'];
-        $terrain->city = $validated['city'];
-        $terrain->adress = $validated['adress'];
-        $terrain->latitude = $validated['latitude'];
-        $terrain->longitude = $validated['longitude'];
-        $terrain->proprietaire_id = $userId;
-        $terrain->contact = $validated['contact'];
-        
-        // Enregistrer le terrain dans la base de données
-        $terrain->save();
-
-         foreach ($validated['services'] as $serviceId) {
-                // Associer le service au terrain (utiliser un prix par défaut de 0 pour la relation pivot)
-                $terrain->services()->attach($serviceId, ['price' => 0]);
-            }
-
-
-          foreach ($request->file('images') as $image) {
-                // Générer un nom unique pour l'image
-                $imageName = time() . '_' . uniqid() . '.' . $image->extension();
-                
-                // Stocker l'image dans le répertoire de stockage (storage/app/public/terrains)
-                $imagePath = $image->storeAs('terrains', $imageName, 'public');
-                
-                // Créer un nouveau document pour l'image
-                $document = new Document();
-                $document->terrain_id = $terrain->id;
-                $document->photo_path = $imagePath;
-                $document->save();
-            }
-         DB::commit();
-          return redirect()->route('proprietaire.terrains.index')->with('success', 'Le terrain a été ajoute avec succès.');
+        return back()->with('success', 'La modification a été effectuée avec succès.');
     }
 
-    public function show(Terrain $terrain){
+    /**
+     * Affiche le formulaire de création d'un terrain
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        $services = Service::all();
+        return view('proprietaire.terrains.create', ['services' => $services]);
+    }
+
+    /**
+     * Enregistre un nouveau terrain
+     *
+     * @param TerrainRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(TerrainRequest $request)
+    {
+        try {
+            $userId = Auth::id();
+            $this->terrainRepository->create($request, $userId);
+            
+            return redirect()->route('proprietaire.terrains.index')
+                ->with('success', 'Le terrain a été ajouté avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de l\'ajout du terrain: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Affiche les détails d'un terrain
+     *
+     * @param Terrain $terrain
+     * @return \Illuminate\View\View
+     */
+    public function show(Terrain $terrain)
+    {
         Gate::authorize('view', $terrain);
-        $terrain->with('services','Documents');
-        return view('proprietaire.terrains.show',['terrain'=>$terrain]);
-    }
-
-    public function edit(Terrain $terrain){
         
-    }
-
-    public function update(Request $request , Terrain $terrain){
+        $terrain = $this->terrainRepository->getWithRelations($terrain);
         
+        return view('proprietaire.terrains.show', ['terrain' => $terrain]);
     }
 
+    /**
+     * Affiche le formulaire de modification d'un terrain
+     *
+     * @param Terrain $terrain
+     * @return \Illuminate\View\View
+     */
+    public function edit(Terrain $terrain)
+    {
+        Gate::authorize('update', $terrain);
+        
+        $terrain = $this->terrainRepository->getWithRelations($terrain);
+        $services = Service::all();
+        
+        return view('proprietaire.terrains.edit', [
+            'terrain' => $terrain,
+            'services' => $services
+        ]);
+    }
 
-    public function destroy(Terrain $terrain){
-                  return redirect()->back()->with('success', 'Le terrain a été supprimer avec succès.');
+    /**
+     * Met à jour un terrain
+     *
+     * @param TerrainRequest $request
+     * @param Terrain $terrain
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(TerrainRequest $request, Terrain $terrain)
+    {
+        Gate::authorize('update', $terrain);
+        
+        try {
+            $this->terrainRepository->update($request, $terrain);
+            
+            return redirect()->route('proprietaire.terrains.show', $terrain->id)
+                ->with('success', 'Le terrain a été mis à jour avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la mise à jour du terrain: ' . $e->getMessage());
+        }
+    }
 
+    /**
+     * Supprime un terrain
+     *
+     * @param Terrain $terrain
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Terrain $terrain)
+    {
+      if($this->terrainRepository->isDeleted($terrain)){
+            return redirect()->back()
+                ->with('error', 'Le terrain a déjà été supprimé.');
+        }else{
+            if($this->terrainRepository->delete($terrain)){
+            return redirect()->route('proprietaire.terrains.index')
+                ->with('success', 'Le terrain a été supprimé avec succès.');
+        }else{
+            return redirect()->back()
+                ->with('error', 'Une erreur est survenue lors de la suppression du terrain.');  
+      }
+        }
+     
+            
+           
+       
     }
 }

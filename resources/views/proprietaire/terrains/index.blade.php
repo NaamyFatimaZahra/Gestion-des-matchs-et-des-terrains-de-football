@@ -185,7 +185,7 @@
         <a href="{{ route('proprietaire.terrain.edit', $terrain->id) }}" class="text-blue-400 hover:text-blue-300" title="Modifier">
             <i class="fas fa-edit"></i>
         </a>
-        <form action="{{ route('proprietaire.terrain.destroy', $terrain->id) }}" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce terrain? Cette action est irréversible.');">
+        <form action="{{ route('proprietaire.terrain.destroy', $terrain->id) }}" method="POST" class="inline" >
             @csrf
             @method('DELETE')
             <button type="submit" class="text-red-400 hover:text-red-300" title="Supprimer">

@@ -133,38 +133,7 @@
                         </select>
                     </div>
                     
-                    <!-- Mode de paiement -->
-                    <div class="space-y-2">
-                        <label for="payment_method" class="flex items-center text-sm font-medium text-gray-300">
-                            <i class="fas fa-credit-card text-red-500 mr-2"></i>
-                            Mode de paiement <span class="text-red-500 ml-1">*</span>
-                        </label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="relative">
-                                <input type="radio" name="payment_method" id="payment_online" value="en_ligne" class="hidden peer">
-                                <label for="payment_online" class="flex flex-col items-center justify-center p-3 bg-gray-900 border border-gray-700 rounded-lg cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-600/20 transition duration-300 h-full">
-                                    <i class="fas fa-globe text-xl mb-1"></i>
-                                    <span class="text-sm font-medium">En ligne</span>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="payment_method" id="payment_local" value="sur_place" class="hidden peer">
-                                <label for="payment_local" class="flex flex-col items-center justify-center p-3 bg-gray-900 border border-gray-700 rounded-lg cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-600/20 transition duration-300 h-full">
-                                    <i class="fas fa-store text-xl mb-1"></i>
-                                    <span class="text-sm font-medium">Sur place</span>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="payment_method" id="payment_both" value="les_deux" class="hidden peer">
-                                <label for="payment_both" class="flex flex-col items-center justify-center p-3 bg-gray-900 border border-gray-700 rounded-lg cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-600/20 transition duration-300 h-full">
-                                    <i class="fas fa-check-double text-xl mb-1"></i>
-                                    <span class="text-sm font-medium">Les deux</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Ville -->
+                   <!-- Ville -->
                     <div class="space-y-2">
                         <label for="city" class="flex items-center text-sm font-medium text-gray-300">
                             <i class="fas fa-city text-red-500 mr-2"></i>
@@ -185,6 +154,28 @@
                             class="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 w-full text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition duration-300"
                             placeholder="Ex: 123 Boulevard Mohammed V">
                     </div>
+
+
+                    <!-- Mode de paiement -->
+                    <div class="space-y-2 ">
+                        <label for="payment_method" class="flex items-center text-sm font-medium text-gray-300">
+                            <i class="fas fa-credit-card text-red-500 mr-2"></i>
+                            Mode de paiement <span class="text-red-500 ml-1">*</span>
+                        </label>
+                        <div class="grid grid-cols-3 gap-3 mt-8">
+                           
+                            <div class="relative">
+                                <input type="radio" name="payment_method" id="payment_local" value="sur_place" class="hidden peer">
+                                <label for="payment_local" class="flex flex-col items-center justify-center p-3 bg-gray-900 border border-gray-700 rounded-lg cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-600/20 transition duration-300 h-full">
+                                    <i class="fas fa-store text-xl mb-1"></i>
+                                    <span class="text-sm font-medium">Sur place</span>
+                                </label>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    
+                   
                 </div>
             </div>
             
