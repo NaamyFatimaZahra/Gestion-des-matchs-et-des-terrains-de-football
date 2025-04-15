@@ -5,29 +5,40 @@
 <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-200">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- Alerte de succès avec animation -->
-        @if(session('success'))
-            <div id="success-alert" class="bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg mb-6 transform transition-all duration-500" role="alert">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span class="block font-medium">{{ session('success') }}</span>
-                </div>
-            </div>
+       @if(session('success'))
+    <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
 
-            <script>
+    <script>
+        // Faire disparaître le message après 2 secondes
+        setTimeout(function() {
+            const alert = document.getElementById('success-alert');
+            if(alert) {
+                // Option 1: Suppression immédiate
+                // alert.remove();
+                
+                // Option 2: Disparition en fondu (plus élégant)
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
                 setTimeout(function() {
-                    const alert = document.getElementById('success-alert');
-                    if(alert) {
-                        alert.style.opacity = '0';
-                        alert.style.transform = 'translateY(-20px)';
-                        setTimeout(function() {
-                            alert.remove();
-                        }, 500);
-                    }
-                }, 3000);
-            </script>
-        @endif
+                    alert.remove();
+                }, 500);
+            }
+        }, 2000);
+    </script>
+@endif
+
+<!-- Message d'erreur général -->
+   @if(session('error'))
+    <div id="error-alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+        <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+            <span class="sr-only">Fermer</span>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+   @endif
 
         <!-- En-tête avec navigation et titre -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
@@ -59,33 +70,61 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
             <!-- Carte de l'image et infos principales -->
             <div class="lg:col-span-4 bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-700 transition-transform duration-300 hover:shadow-2xl">
-                <div class="relative">
-                    <img src="/api/placeholder/400/320" alt="Photo du terrain" class="w-full h-64 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
-                    
-                    <!-- Statut du terrain -->
-                    <div class="absolute top-4 right-4 flex flex-col space-y-2">
-                        <span class="bg-opacity-80 bg-gray-900 text-white text-xs px-3 py-1 rounded-full flex items-center">
-                            <span class="w-2 h-2 rounded-full mr-2 
-                                {{ $terrain->status === 'disponible' ? 'bg-green-400' : 
-                                ($terrain->status === 'occupé' ? 'bg-blue-400' : 
-                                ($terrain->status === 'maintenance' ? 'bg-yellow-400' : 'bg-gray-400')) }}"></span>
-                            {{ $terrain->status === 'disponible' ? 'Disponible' : 
-                            ($terrain->status === 'occupé' ? 'Occupé' : 
-                            ($terrain->status === 'maintenance' ? 'Maintenance' : 'En attente')) }}
-                        </span>
-                        
-                        <span class="bg-opacity-80 bg-gray-900 text-white text-xs px-3 py-1 rounded-full flex items-center">
-                            <span class="w-2 h-2 rounded-full mr-2 
-                                {{ $terrain->admin_approval === 'approuve' ? 'bg-green-400' : 
-                                ($terrain->admin_approval === 'rejete' ? 'bg-red-400' : 
-                                ($terrain->admin_approval === 'suspended' ? 'bg-orange-400' : 'bg-yellow-400')) }}"></span>
-                            {{ $terrain->admin_approval === 'approuve' ? 'Approuvé' : 
-                            ($terrain->admin_approval === 'rejete' ? 'Rejeté' : 
-                            ($terrain->admin_approval === 'suspended' ? 'Suspendu' : 'En attente d\'approbation')) }}
-                        </span>
-                    </div>
+                <!-- Remplacez la section existante de l'image du terrain -->
+<div class="relative">
+    <!-- Images du terrain avec slider -->
+    <div class="slider-container relative h-64 overflow-hidden">
+        <div class="slider-wrapper flex transition-transform duration-500 ease-in-out h-full">
+            @foreach ($terrain->Documents()->pluck('photo_path') as $index => $image)
+                <div class="slide flex-shrink-0 w-full h-full">
+                    <img src="{{ asset('storage/'.$image) }}" alt="Photo du terrain {{ $index + 1 }}" class="w-full h-64 object-cover">
                 </div>
+            @endforeach
+        </div>
+        
+        <!-- Contrôles slider -->
+        <button class="slider-control prev absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg z-10">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button class="slider-control next absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg z-10">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+        
+        <!-- Indicateurs de position -->
+        <div class="slider-dots absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-10">
+            @foreach ($terrain->Documents()->pluck('photo_path') as $index => $image)
+                <button class="slider-dot w-2 h-2 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-opacity" data-index="{{ $index }}"></button>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Statut du terrain (garder la même partie) -->
+    <div class="absolute top-4 right-4 flex flex-col space-y-2">
+        <span class="bg-opacity-80 bg-gray-900 text-white text-xs px-3 py-1 rounded-full flex items-center">
+            <span class="w-2 h-2 rounded-full mr-2 
+                {{ $terrain->status === 'disponible' ? 'bg-green-400' : 
+                ($terrain->status === 'occupé' ? 'bg-blue-400' : 
+                ($terrain->status === 'maintenance' ? 'bg-yellow-400' : 'bg-gray-400')) }}"></span>
+            {{ $terrain->status === 'disponible' ? 'Disponible' : 
+            ($terrain->status === 'occupé' ? 'Occupé' : 
+            ($terrain->status === 'maintenance' ? 'Maintenance' : 'En attente')) }}
+        </span>
+        
+        <span class="bg-opacity-80 bg-gray-900 text-white text-xs px-3 py-1 rounded-full flex items-center">
+            <span class="w-2 h-2 rounded-full mr-2 
+                {{ $terrain->admin_approval === 'approuve' ? 'bg-green-400' : 
+                ($terrain->admin_approval === 'rejete' ? 'bg-red-400' : 
+                ($terrain->admin_approval === 'suspended' ? 'bg-orange-400' : 'bg-yellow-400')) }}"></span>
+            {{ $terrain->admin_approval === 'approuve' ? 'Approuvé' : 
+            ($terrain->admin_approval === 'rejete' ? 'Rejeté' : 
+            ($terrain->admin_approval === 'suspended' ? 'Suspendu' : 'En attente d\'approbation')) }}
+        </span>
+    </div>
+</div>
                 
                 <div class="p-6">
                     <div class="flex items-center text-gray-300 text-sm mb-4">
@@ -246,12 +285,7 @@
             </svg>
             Services disponibles
         </h3>
-        <a href="   " class="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg flex items-center transition-colors duration-200">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            <span>Gérer les services</span>
-        </a>
+        
     </div>
     
     <div class="p-6">
@@ -499,30 +533,134 @@
     </div>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqVU_6aeLYTiHfc4MLSvHrWri6wZ6SdwI"></script>
+<script src="{{ asset('js/showMap.js') }}">
+
+    
+</script>
 <script>
     
-    function showMap(lat,lng){
-      let latitude=Number(lat);
-      let longitude=Number(lng);
-      console.log(typeof(longitude));
-      
-        
-        var mylatlng={
-           lat: latitude,
-            lng:longitude,
-        }
-        var map = new google.maps.Map(document.getElementById("map"),{
-            zoom:5,
-            center:mylatlng
-        });
-        new google.maps.Marker({
-            position:mylatlng,
-            map,
-        })
-    }
    document.addEventListener("DOMContentLoaded", function () {
                               showMap('{{ $terrain->latitude}}','{{ $terrain->longitude }}');
     });
    
 </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Éléments du slider
+    const sliderWrapper = document.querySelector('.slider-wrapper');
+    const slides = document.querySelectorAll('.slide');
+    const prevButton = document.querySelector('.slider-control.prev');
+    const nextButton = document.querySelector('.slider-control.next');
+    const dots = document.querySelectorAll('.slider-dot');
+    
+    // Nombre total d'images
+    const slideCount = slides.length;
+    
+    // Index actuel du slider
+    let currentSlide = 0;
+    
+    // Masquer les contrôles si une seule image
+    if (slideCount <= 1) {
+        if (prevButton) prevButton.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
+        document.querySelector('.slider-dots').style.display = 'none';
+        return;
+    }
+    
+    // Mettre à jour l'affichage du slider
+    function updateSlider() {
+        // Déplacer le wrapper
+        sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Mettre à jour les indicateurs
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('bg-opacity-100', 'w-3', 'h-3');
+            } else {
+                dot.classList.remove('bg-opacity-100', 'w-3', 'h-3');
+            }
+        });
+    }
+    
+    // Action du bouton précédent
+    if (prevButton) {
+        prevButton.addEventListener('click', function() {
+            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            updateSlider();
+        });
+    }
+    
+    // Action du bouton suivant
+    if (nextButton) {
+        nextButton.addEventListener('click', function() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateSlider();
+        });
+    }
+    
+    // Action des points indicateurs
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            currentSlide = index;
+            updateSlider();
+        });
+    });
+    
+    // Activer le premier indicateur au chargement
+    if (dots.length > 0) {
+        dots[0].classList.add('bg-opacity-100', 'w-3', 'h-3');
+    }
+    
+    // Défilement automatique (optionnel)
+    let autoSlide = setInterval(() => {
+        currentSlide = (currentSlide + 1) % slideCount;
+        updateSlider();
+    }, 5000); // Changer d'image toutes les 5 secondes
+    
+    // Arrêter le défilement auto au survol
+    const sliderContainer = document.querySelector('.slider-container');
+    sliderContainer.addEventListener('mouseenter', () => {
+        clearInterval(autoSlide);
+    });
+    
+    // Reprendre le défilement auto quand la souris quitte le slider
+    sliderContainer.addEventListener('mouseleave', () => {
+        autoSlide = setInterval(() => {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateSlider();
+        }, 5000);
+    });
+    
+    // Gestion du swipe sur mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    sliderContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+    
+    sliderContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+    
+    function handleSwipe() {
+        // Déterminer si le swipe est assez long pour être considéré
+        if (Math.abs(touchEndX - touchStartX) > 50) {
+            if (touchEndX < touchStartX) {
+                // Swipe vers la gauche - image suivante
+                currentSlide = (currentSlide + 1) % slideCount;
+            } else {
+                // Swipe vers la droite - image précédente
+                currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            }
+            updateSlider();
+        }
+    }
+});
+</script>
+
+
 @endsection

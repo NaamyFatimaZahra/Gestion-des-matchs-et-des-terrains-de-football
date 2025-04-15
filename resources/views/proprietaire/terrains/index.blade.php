@@ -93,7 +93,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                             ID
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-10 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                             Terrain
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -123,12 +123,12 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                             {{ $terrain->id }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class=" py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
                                     
                                 </div>
-                                <div class="ml-4">
+                                <div class="">
                                     <div class="text-sm font-medium text-white">
                                         {{ $terrain->name }}
                                     </div>

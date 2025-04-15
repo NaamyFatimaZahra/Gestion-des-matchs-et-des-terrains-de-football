@@ -40,6 +40,7 @@ return new class extends Migration
     $table->decimal('longitude', 10, 8)->nullable();
     $table->string('contact');
     $table->timestamps();
+    $table->softDeletes();
 });
     }
 

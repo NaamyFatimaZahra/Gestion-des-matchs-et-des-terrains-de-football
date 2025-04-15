@@ -10,12 +10,13 @@ use App\Models\Terrain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class TerrainController extends Controller
 {
     public function index(){
           $user_id=Auth::user()->id;
-          $terrains=Terrain::where('proprietaire_id','=',$user_id)->get();
+          $terrains=Terrain::withoutTrashed()->where('proprietaire_id','=',$user_id)->get();
         return view('proprietaire.terrains.index',["terrains"=>$terrains]);
     }
  
@@ -90,7 +91,8 @@ class TerrainController extends Controller
     }
 
     public function show(Terrain $terrain){
-        $terrain->with('services');
+        Gate::authorize('view', $terrain);
+        $terrain->with('services','Documents');
         return view('proprietaire.terrains.show',['terrain'=>$terrain]);
     }
 
@@ -104,6 +106,7 @@ class TerrainController extends Controller
 
 
     public function destroy(Terrain $terrain){
-        
+                  return redirect()->back()->with('success', 'Le terrain a été supprimer avec succès.');
+
     }
 }

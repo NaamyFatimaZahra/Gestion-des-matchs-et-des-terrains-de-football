@@ -51,8 +51,8 @@
                 <div class="flex border-b border-gray-700 mb-4">
                     <button type="button" class="px-4 py-2 text-red-500 border-b-2 border-red-500 font-medium" onclick="navigateToSection('info')">Informations</button>
                     <button type="button" class="px-4 py-2 text-gray-400 hover:text-gray-300" onclick="navigateToSection('localisation')">Localisation</button>
-                    <button type="button" class="px-4 py-2 text-gray-400 hover:text-gray-300" onclick="navigateToSection('service')">Services</button>
                     <button type="button" class="px-4 py-2 text-gray-400 hover:text-gray-300" onclick="navigateToSection('photo')">Photos</button>
+                    <button type="button" class="px-4 py-2 text-gray-400 hover:text-gray-300" onclick="navigateToSection('service')">Services</button>
                 </div>
             </div>
             
