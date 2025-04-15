@@ -50,7 +50,7 @@
         </div>
         
         <!-- Terrains Icon -->
-        <div class=" h-[3rem] flex p-3 px-5  items-center {{ request()->routeIs('*.terrains.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class=" h-[3rem] flex p-3 px-5  items-center {{ request()->routeIs('*.terrains.*') ||  request()->routeIs('*.terrain.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ Auth::user()->role->name==='admin' ? route('admin.terrains.index') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.terrains.index'):'ll') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-futbol "></i>
                 <p class="capitalize hidden group-hover:block">terrains</p>

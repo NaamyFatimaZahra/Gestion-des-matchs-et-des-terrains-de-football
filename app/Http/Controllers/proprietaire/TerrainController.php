@@ -39,7 +39,25 @@ class TerrainController extends Controller
     }
 
     public function store(Request $request){
-        
+        $request->validate([
+            'name'=>'required | string',
+            'description'=>'required | string',
+            'capacity'=>'required | integer |min:10',
+            'price'=>'required | numeric | min:0',
+           'surface' => 'required|in:gazon_naturel,gazon_synthetique,gazon_hybride,turf_artificiel,stabilise,sable,beton,terre_battue,indoor_synthetique,altra_resist',
+           'payment_method'=>'required',
+           'city'=>'required| string',
+           'adress'=>'required | string',
+           'latitude'=>'required | numeric',
+           'images' => 'required|array',
+           'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+           'longitude'=>'required|numeric',
+           'services'=>'required',
+           'services.*'=>'required | exists:services,id',
+
+        ]);
+    
+    
     }
 
     public function show(Terrain $terrain){
