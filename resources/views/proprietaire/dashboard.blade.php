@@ -10,9 +10,9 @@
             <!-- Utilisateurs -->
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-red-600 transition-all duration-300">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-300">Utilisateurs</h3>
+                    <h3 class="text-lg font-medium text-gray-300">Terrains</h3>
                     <div class="w-10 h-10 rounded-full bg-red-600/20 flex items-center justify-center">
-                        <i class="fas fa-users text-red-600"></i>
+                        <i class="fas fa-futbol text-red-600"></i>
                     </div>
                 </div>
                 <div class="flex items-end">

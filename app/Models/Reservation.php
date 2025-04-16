@@ -8,12 +8,10 @@ class Reservation extends Model
 {
     protected $fillable = [
         'terrain_id',
-        'user_id',
         'date_reservation',
         'heure_debut',
         'heure_fin',
         'status',        
-        'montant',
         'payment_status', 
         'deleted_at'
     ];
@@ -26,5 +24,9 @@ class Reservation extends Model
     public function terrain()
     {
         return $this->belongsTo(Terrain::class);
+    }
+    public function reservationUsers()
+    {
+        return $this->belongsToMany(User::class, 'reservation_users');
     }
 }

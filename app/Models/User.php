@@ -21,6 +21,9 @@ class User extends Authenticatable
         'email',
         'password',
         'city',
+        'bio',
+        'phone_number',
+        'status',
         'role_id',
         'niveau',
         'photo',
@@ -59,5 +62,10 @@ class User extends Authenticatable
 
     public function terrains(){
         return $this->hasMany(Terrain::class);
+    }
+
+    public function reservations()
+    {
+        return $this->belongsToMany(Reservation::class, 'reservation_users');
     }
 }

@@ -449,7 +449,10 @@
                                         <option value="disponible" {{ $terrain->status === 'disponible' ? 'selected' : '' }}>Disponible</option>
                                     <option value="occupé" {{ $terrain->status === 'occupé' ? 'selected' : '' }}>Occupé</option>
                                     <option value="maintenance" {{ $terrain->status === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
-                                    <option value="en_attente" {{ $terrain->status === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                                @if ($terrain->status === 'en_attente')
+                                    <option value="en_attente" selected>En attente</option>
+                                
+                                @endif
                                 </select>
                             </div>
                             <div>

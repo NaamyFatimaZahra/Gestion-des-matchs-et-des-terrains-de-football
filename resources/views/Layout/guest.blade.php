@@ -46,6 +46,9 @@
                    
                     </button>
                 </form>
+                <div>
+               <a href="{{ route('profile') }}">   <i class="fa-solid fa-circle-user"></i></a>
+                </div>
             </div>
              @else
               <div class="flex items-center space-x-4">

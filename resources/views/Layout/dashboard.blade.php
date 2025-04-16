@@ -121,7 +121,11 @@
                 <i class="fas fa-bell text-gray-400"></i>
                 <i class="fas fa-fire text-gray-400"></i>
                 <div class="flex space-x-2">
-                    <div class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center">BV</div>
+                    <div class="w-6 h-6 rounded-full  flex items-center justify-center">         
+                              <a href="{{ route('profile') }}">   
+                                <i class="fa-solid fa-circle-user"></i>
+                              </a>
+                    </div>
                 </div>
             </div>
         </div>

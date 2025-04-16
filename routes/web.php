@@ -8,7 +8,8 @@ use App\Http\Controllers\admin\TerrainController as adminTerrain;
 use App\Http\Controllers\proprietaire\ReservationController;
 use App\Http\Controllers\proprietaire\TerrainController as proprietaireTerrain;
 use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\HomeController;
 
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile')->middleware(['auth','status']);
 
 
 //admin
