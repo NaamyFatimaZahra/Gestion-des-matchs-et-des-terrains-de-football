@@ -36,20 +36,24 @@
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </label>
               </li>
+             
              @if (Auth::check())
-            <div class="text-gray-400 hover:text-white cursor-pointer flex p-3 px-5 items-center">
-                <h1 class="font-medium mr-4">{{ Auth::user()->name }}</h1>
-                <form method="POST" action="{{ route('logout') }}">
+                 <li>
+                <h1 class="font-medium mr-4">{{ Auth::user()->name }}</h1>  
+                </li>
+          <li>
+            <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex gap-2 items-center bg-[#580a21] hover:bg-[#580a21] text-white font-medium py-3 px-3 rounded transition duration-300 ease-in-out">
                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
                    
                     </button>
                 </form>
-                <div>
-               <a href="{{ route('profile') }}">   <i class="fa-solid fa-circle-user"></i></a>
-                </div>
-            </div>
+          </li>
+           <li>
+                 <a href="{{ route('profile') }}">   <i class="fa-solid fa-circle-user fa-lg"></i></a>
+           </li>
+            
              @else
               <div class="flex items-center space-x-4">
                 <a href="{{ route('showLogin') }}" class="btn-primary bg-white hover:bg-gray-100 text-[#580a21] font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
