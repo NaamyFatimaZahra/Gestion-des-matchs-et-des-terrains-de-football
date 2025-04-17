@@ -4,7 +4,7 @@ namespace App\Repositories\Interface;
 
 interface ReservationRepositoryInterface
 {
-
+   public function getAll();
     public function getReservationsByProprietaire();
 
     public function getReservationsByTerrain($terrainId);

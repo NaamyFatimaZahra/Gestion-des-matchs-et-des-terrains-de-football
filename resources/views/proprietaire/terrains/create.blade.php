@@ -261,9 +261,7 @@
             
             <!-- Boutons d'action -->
             <div class="mt-8 flex flex-wrap gap-4 justify-end">
-                <button type="reset" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium flex items-center transition duration-300">
-                    <i class="fas fa-undo mr-2"></i> Réinitialiser
-                </button>
+               
                 <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium flex items-center transition duration-300">
                     <i class="fas fa-save mr-2"></i> Enregistrer le terrain
                 </button>

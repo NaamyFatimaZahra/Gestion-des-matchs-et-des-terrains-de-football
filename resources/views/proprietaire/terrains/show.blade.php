@@ -375,7 +375,9 @@
                         </tr>
                     </thead>
                     <tbody class="bg-gray-800 divide-y divide-gray-700">
-                        @forelse($reservations as $reservation)
+                        
+                    
+                           @forelse($reservations as $reservation)
                         <tr class="hover:bg-gray-750 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <span class="font-medium text-white">#{{ $reservation->id }}</span>

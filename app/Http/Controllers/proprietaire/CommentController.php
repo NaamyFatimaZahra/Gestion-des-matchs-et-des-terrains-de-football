@@ -19,7 +19,7 @@ class CommentController extends Controller
 
     public function index()
     {
-        $comments = $this->commentRepository->getAllComments();
+        $comments = $this->commentRepository->getCommentsByProprietaire();
         return view('proprietaire.comments', ['comments'=>$comments]);
     }
 

@@ -30,8 +30,8 @@ class TerrainController extends Controller
    
     public function index()
     {
-        $user_id = Auth::id();
-        $terrains = $this->terrainRepository->getAllByProprietaire($user_id);
+      
+        $terrains = $this->terrainRepository->getAllByProprietaire();
         
         return view('proprietaire.terrains.index', ["terrains" => $terrains]);
     }
@@ -79,7 +79,7 @@ class TerrainController extends Controller
         
         $terrain = $this->terrainRepository->getWithRelations($terrain);
         $reservations = $this->reservationRepository->getReservationsByTerrain($terrain->id);
-        
+      
         return view('proprietaire.terrains.show', ['terrain' => $terrain, 'reservations' => $reservations]);
     }
 

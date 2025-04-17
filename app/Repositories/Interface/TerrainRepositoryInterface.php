@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 
 interface TerrainRepositoryInterface
 {
+    public function getAll(): Collection;
   
-    public function getAllByProprietaire(int $proprietaireId): Collection;
+    public function getAllByProprietaire(): Collection;
     
    
     public function updateStatus(Request $request, Terrain $terrain): bool;

@@ -92,6 +92,14 @@
             </a>
         </div>
      @endif
+
+        <!-- Profile Icon -->
+        <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('profile') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+            <a href="{{ route('profile') }}" class="flex gap-3 justify-center items-center">
+                <i class="fa-solid fa-user "></i>         
+                <p class="capitalize hidden group-hover:block">profile</p>
+            </a>
+        </div>
       
         <!-- Divider -->
         <div class="w-[80%]  h-px bg-gray-700 my-2"></div>
@@ -117,13 +125,11 @@
                 <i class="fas fa-search text-gray-400 ml-2"></i>
             </div>
             <div class="flex items-center space-x-4">
-                <i class="fas fa-cog text-gray-400"></i>
-                <i class="fas fa-bell text-gray-400"></i>
-                <i class="fas fa-fire text-gray-400"></i>
+               
                 <div class="flex space-x-2">
                     <div class="w-6 h-6 rounded-full  flex items-center justify-center">         
                               <a href="{{ route('profile') }}">   
-                                <i class="fa-solid fa-circle-user"></i>
+                                <i class="fa-solid fa-circle-user fa-lg"></i>
                               </a>
                     </div>
                 </div>

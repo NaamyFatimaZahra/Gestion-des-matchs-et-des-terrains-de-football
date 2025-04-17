@@ -25,8 +25,11 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile')->middleware(['auth','status']);
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 //admin
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {

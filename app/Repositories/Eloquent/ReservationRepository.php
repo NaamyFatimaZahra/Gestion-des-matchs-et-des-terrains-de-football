@@ -31,7 +31,11 @@ class ReservationRepository implements ReservationRepositoryInterface
     }
 
    
-  
+  public function getAll()
+    {
+        return $this->reservation->get();
+    
+    }
 
   
  public function getReservationsByProprietaire()
@@ -41,17 +45,15 @@ class ReservationRepository implements ReservationRepositoryInterface
         $query->where('proprietaire_id', $proprietaireId);
     })
     ->with('terrain')
-    ->with('reservationUsers')
-    ->orderByDesc('date_reservation')
-    ->paginate(10);
+    ->with('reservationUsers')->get();
+   
 }
 public function getReservationsByTerrain($terrainId)
 {
     return Reservation::where('terrain_id', $terrainId)
         ->with('terrain')
-        ->with('reservationUsers')
-        ->orderByDesc('date_reservation')
-        ->paginate(10);
+        ->with('reservationUsers')->get();
+       
 }
 
    

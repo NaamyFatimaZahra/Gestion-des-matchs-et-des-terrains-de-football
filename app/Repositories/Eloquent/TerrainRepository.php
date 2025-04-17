@@ -8,13 +8,19 @@ use App\Models\Terrain;
 use App\Repositories\Interface\TerrainRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TerrainRepository implements TerrainRepositoryInterface
 {
   
-    public function getAllByProprietaire(int $proprietaireId): Collection
+    public function getAll(): Collection
     {
+        return Terrain::withoutTrashed()->get();
+    }
+    public function getAllByProprietaire(): Collection
+    {
+          $proprietaireId = Auth::id();
         return Terrain::withoutTrashed()
             ->where('proprietaire_id', '=', $proprietaireId)
             ->get();
@@ -89,13 +95,7 @@ class TerrainRepository implements TerrainRepositoryInterface
         return $terrain->load('services', 'documents', 'comments');
     }
     
-    /**
-     * Met à jour les informations d'un terrain
-     * 
-     * @param Request $request
-     * @param Terrain $terrain
-     * @return bool
-     */
+   
     public function update(Request $request, Terrain $terrain): bool
     {
         // Implémentation de la méthode de mise à jour
