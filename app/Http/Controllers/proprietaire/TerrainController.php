@@ -171,10 +171,7 @@ class TerrainController extends Controller
             return redirect()->back()
                 ->with('error', 'Une erreur est survenue lors de la suppression du terrain.');  
       }
-        }
-     
-            
-           
+        }     
        
     }
 }

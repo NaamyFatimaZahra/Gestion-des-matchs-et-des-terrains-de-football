@@ -34,7 +34,7 @@
         </div>
         
         <!-- home -->
-        <div class=" h-[3rem] flex p-3 px-5 mt-[6rem] {{ request()->routeIs('home') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer ">
+        <div class=" h-[3rem] flex p-3 px-5 mt-[6rem] {{ request()->routeIs('home') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer ">
             <a href="{{ route('home') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-house "></i>
                <p class="capitalize hidden group-hover:block">home</p>
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Chart Icon (Dashboard) -->
-        <div class=" h-[3rem] flex p-3 px-5  {{ request()->routeIs('*.dashboard') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer  ">
+        <div class=" h-[3rem] flex p-3 px-5  {{ request()->routeIs('*.dashboard') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer  ">
             <a href="{{ Auth::user()->role->name==='admin' ? route('admin.dashboard') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.dashboard'):'ll') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-chart-line"></i>    
                 <p class="capitalize hidden group-hover:block">dashboard</p>
@@ -50,7 +50,7 @@
         </div>
         
         <!-- Terrains Icon -->
-        <div class=" h-[3rem] flex p-3 px-5  items-center {{ request()->routeIs('*.terrains.*') ||  request()->routeIs('*.terrain.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class=" h-[3rem] flex p-3 px-5  items-center {{ request()->routeIs('*.terrains.*') ||  request()->routeIs('*.terrain.*') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ Auth::user()->role->name==='admin' ? route('admin.terrains.index') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.terrains.index'):'ll') }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-futbol "></i>
                 <p class="capitalize hidden group-hover:block">terrains</p>
@@ -60,7 +60,7 @@
         
      @if (Auth::user()->role->name==='admin')
         <!-- Users Icon -->
-        <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.users.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.users.*') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('admin.users.index')}}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-users"></i>         
                 <p class="capitalize hidden group-hover:block">users</p>
@@ -69,7 +69,7 @@
 
         
          <!-- Settings Icon -->
-        <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.services.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class="h-[3rem] flex p-3 px-5  {{ request()->routeIs('admin.services.*') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('admin.services.index') ?? '#' }}" class="flex gap-3 justify-center items-center">
                 <i class="fas fa-gear"></i>   
                 <p class="capitalize hidden group-hover:block">services</p>
@@ -78,14 +78,14 @@
      @endif
        @if (Auth::user()->role->name==='proprietaire')
         <!-- reservation Icon -->
-        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.reservation.*') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.reservation.*') ? 'bg-red-600 rounded-md text-white group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('proprietaire.reservation.index') }}" class="flex gap-3 justify-center items-center">
                 <i class="fa-solid fa-ticket"></i>        
                 <p class="capitalize hidden group-hover:block">reservations</p>
             </a>
         </div>
         <!-- commets Icon -->
-        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.comments.index') ? 'bg-red-600 rounded-md text-white' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
+        <div class="h-[3rem] flex p-3 px-5  {{request()->routeIs('proprietaire.comments.index') ? 'bg-red-600 rounded-md text-white  group-hover:w-[90%]' : 'text-gray-400 hover:text-white' }} cursor-pointer p-3">
             <a href="{{ route('proprietaire.comments.index') }}" class="flex gap-3 justify-center items-center">
                 <i class="fa-solid fa-comments"></i>
                 <p class="capitalize hidden group-hover:block">avis</p>

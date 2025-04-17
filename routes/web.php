@@ -77,11 +77,15 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
 
     //proprietaire reservations
     Route::get('/reservations',[ReservationController::class,'index'])->name('proprietaire.reservation.index'); 
+    Route::patch('/reservations/{id}',[ReservationController::class,'updateStatus'])->name('proprietaire.reservation.update-status'); 
+
+    
 
     //proprietaire commentaires
     Route::get('/comments',[CommentController::class,'index'])->name('proprietaire.comments.index');
     Route::delete('/comment/{comment}',[CommentController::class,'destroy'])->name('proprietaire.comment.destroy');
   
+
 });
 
 

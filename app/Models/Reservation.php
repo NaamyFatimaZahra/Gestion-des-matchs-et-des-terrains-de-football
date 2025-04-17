@@ -23,7 +23,7 @@ class Reservation extends Model
 
     public function terrain()
     {
-        return $this->belongsTo(Terrain::class);
+        return $this->belongsTo(Terrain::class)->where('deleted_at', null);
     }
     public function reservationUsers()
     {
