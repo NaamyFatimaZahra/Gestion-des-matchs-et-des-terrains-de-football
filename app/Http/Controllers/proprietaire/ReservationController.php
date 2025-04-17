@@ -19,14 +19,16 @@ class ReservationController extends Controller
    
     public function index()
     {
+        $this->reservationRepository->changeStatusToTermine();
         $reservations = $this->reservationRepository->getReservationsByProprietaire();
         return view('proprietaire.reservations', ['reservations' => $reservations]);
     }
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:confirmee,terminee,annulee',
+            'status' => 'required|in:confirmee,annulee',
         ]);
+       
         $reservation = $this->reservationRepository->updateStatus($id, $request->input('status'));
         return redirect()->back()->with('success', 'Statut de la réservation mis à jour avec succès.');
     

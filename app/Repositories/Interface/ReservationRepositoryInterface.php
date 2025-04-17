@@ -7,6 +7,8 @@ interface ReservationRepositoryInterface
 
     public function getReservationsByProprietaire();
 
+    public function getReservationsByTerrain($terrainId);
+    public function changeStatusToTermine();
      public function getReservationById($id);
 
     public function createReservation(array $reservationData);

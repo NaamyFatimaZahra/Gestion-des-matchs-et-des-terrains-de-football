@@ -112,6 +112,11 @@
                                 {{ \Carbon\Carbon::parse($reservation->heure_debut)->diffInHours(\Carbon\Carbon::parse($reservation->heure_fin)) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                   @if ($reservation->status==='terminee')
+                              <span class="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                                  {{ $reservation->status }}
+                              </span>
+                              @else
                                 <form action="{{ route('proprietaire.reservation.update-status', $reservation->id) }}" method="POST">
                                     @csrf
                                     @method('patch')
@@ -126,11 +131,11 @@
                                         <option value="en_attente" {{ $reservation->status == 'en_attente' ? 'selected' : '' }} class=" text-white">En attente</option>
                                           @endif
 
-                                        <option value="terminee" {{ $reservation->status == 'terminee' ? 'selected' : '' }} class=" text-white">Terminée</option>
                                         <option value="annulee" {{ $reservation->status == 'annulee' ? 'selected' : '' }} class=" text-white">Annulée</option>
                                     </select>
 
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @empty

@@ -43,6 +43,14 @@ class ReservationRepository implements ReservationRepositoryInterface
     ->orderByDesc('date_reservation')
     ->paginate(10);
 }
+public function getReservationsByTerrain($terrainId)
+{
+    return Reservation::where('terrain_id', $terrainId)
+        ->with('terrain')
+        ->with('reservationUsers')
+        ->orderByDesc('date_reservation')
+        ->paginate(10);
+}
 
    
     public function getReservationById($id)       
@@ -56,7 +64,11 @@ class ReservationRepository implements ReservationRepositoryInterface
         return $this->reservation->create($reservationData);
     }
 
-  
+    public function changeStatusToTermine(){
+         $this->reservation->where('status', 'confirmee')
+            ->where('date_reservation', '>=', now())
+            ->update(['status' => 'terminee']);
+    }
     public function updateReservation($id, array $reservationData)
     {
         $reservation = $this->getReservationById($id);
