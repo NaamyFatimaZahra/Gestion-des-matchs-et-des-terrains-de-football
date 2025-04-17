@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\Guest;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => Authenticate::class, 
             'role' => CheckRole::class,
             'guest' => Guest::class,
+            'status'=> CheckStatus::class,
 
         ]);
 

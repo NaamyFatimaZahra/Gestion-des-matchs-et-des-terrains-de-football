@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\SendEmailConfirmation;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -27,8 +30,10 @@ class AuthController extends Controller
         $user = Auth::user();
         
         // Vérifier si l'utilisateur est admin
-        if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
+        if ($user->role_id == Role::where('name','=', 'admin')->value('id')) {
             return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
+        } else if ($user->role_id == Role::where('name','=', 'proprietaire')->value('id')) {
+            return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
         } else {
             return redirect('/home')->with('success', 'Connexion réussie !');
         }
@@ -53,18 +58,18 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'city' => $request->city, 
             'role_id' => $request->role,
-            'status'=>$request->role===3 ?'active':'pending',
+            'status'=>$request->role===2 ?'pending':'active',
             'profile_picture' => 'default.jpg' 
         ]);
 
        
         Auth::login($user);
-        
        
-    if ($user->role_id == Role::where('name', 'Admin')->value('id')) {
-      
+    if ($user->role_id == Role::where('name',"=", 'admin')->value('id')) {
         return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
-    } else {
+    } elseif($user->role_id == Role::where('name',"=", 'proprietaire')->value('id')) {
+        return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
+    }else {
         
         return redirect('/home')->with('success', 'Inscription réussie !');
     }
@@ -74,10 +79,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
         return redirect()->route('showLogin')->with('success', 'Déconnexion réussie !');
+    
     }
 }

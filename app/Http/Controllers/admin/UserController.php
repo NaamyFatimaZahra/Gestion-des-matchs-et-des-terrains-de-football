@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendEmailConfirmation;
 use App\Models\User;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -22,9 +26,12 @@ class UserController extends Controller
         {
            
             $request->validate([
-                'status' => 'required|in:active,pending,suspended',
+                'status' => 'required|in:active,suspended',
             ]);
-
+            if($user->status==='pending' && $request->status==='active'){
+                $usermail=$user->email;
+                Mail::to( $usermail)->send(new SendEmailConfirmation());
+            }
             $user->status = $request->status;
             $user->save();
 
@@ -32,8 +39,6 @@ class UserController extends Controller
         }
         public function details($id){
             $user=User::find($id);
-           
-
            return view('admin.users.detailsUser',['user'=>$user]);
     }
         

@@ -12,6 +12,6 @@ class Service extends Model
     ];
 
     public function terrain(){
-          return $this->belongsToMany(Terrain::class,'terrain_service');
+          return $this->belongsToMany(Terrain::class,'terrain_service')->withPivot('price');
     }
 }

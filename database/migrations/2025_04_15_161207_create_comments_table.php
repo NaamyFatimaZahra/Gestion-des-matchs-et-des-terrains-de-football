@@ -1,4 +1,3 @@
-<!-- 0001_01_000000_create_role_table.php -->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->enum('name',['admin','proprietaire','joueur']);
+            $table->foreignId('terrain_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->text('content');
+            $table->integer('rating');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('comments');
     }
 };

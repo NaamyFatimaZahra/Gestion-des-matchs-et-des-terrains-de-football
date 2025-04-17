@@ -4,9 +4,13 @@
 
 <div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-300">
     <!-- En-tête avec titre et boutons d'action -->
+   
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-white">Gestion des Terrains</h1>
-    </div>
+    <h1 class="text-2xl font-bold text-white">Gestion des Terrains</h1>
+    <a href="{{ route('proprietaire.terrain.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+        <i class="fas fa-plus mr-2"></i> Ajouter un terrain
+    </a>
+</div>
    @if(session('success'))
     <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>
@@ -30,6 +34,17 @@
         }, 2000);
     </script>
 @endif
+
+<!-- Message d'erreur général -->
+   @if(session('error'))
+    <div id="error-alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+        <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+            <span class="sr-only">Fermer</span>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+   @endif
 
     <!-- Filtres et recherche -->
     <div class="bg-gray-900 rounded-lg shadow-md p-4 mb-6 border border-gray-700">
@@ -78,7 +93,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                             ID
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-10 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                             Terrain
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -108,12 +123,12 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                             {{ $terrain->id }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class=" py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
                                     
                                 </div>
-                                <div class="ml-4">
+                                <div class="">
                                     <div class="text-sm font-medium text-white">
                                         {{ $terrain->name }}
                                     </div>
@@ -134,41 +149,51 @@
                         </td>
                        
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 text-xs font-semibold rounded
-                                {{ $terrain->status === 'disponible' ? 'bg-emerald-500 text-white' : 
-                                ($terrain->status === 'occupé' ? 'bg-rose-500 text-white' : 
-                                ($terrain->status === 'maintenance' ? 'bg-amber-500 text-white' : 
-                                'bg-blue-500 text-white')) }}">
-                                {{ $terrain->status === 'disponible' ? 'Disponible' : 
-                                ($terrain->status === 'occupé' ? 'Occupé' : 
-                                ($terrain->status === 'maintenance' ? 'Maintenance' : 'En attente')) }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <form action="{{ route('admin.terrains.update-approval', $terrain->id) }}" method="POST">
+                            <form action="{{ route('proprietaire.terrain.update-status', $terrain->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <select name="admin_approval" onchange="this.form.submit()" class="text-xs font-semibold rounded border-0 px-2 py-1
-                                    {{ $terrain->admin_approval === 'approuve' ? 'bg-emerald-700 text-white' : 
-                                    ($terrain->admin_approval === 'rejete' ? 'bg-red-600 text-white' : 
-                                    ($terrain->admin_approval === 'suspended' ? 'bg-violet-600 text-white' : 
-                                    'bg-gray-600 text-white')) }}">
-                                    @if ($terrain->admin_approval === 'en_attente')
-                                    <option value="en_attente" {{ $terrain->admin_approval === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                                <select name="status" onchange="this.form.submit()" class="text-xs font-semibold rounded border-0 px-2 py-1
+                                    {{ $terrain->status === 'disponible' ? 'bg-emerald-500 text-white' : 
+                                    ($terrain->status === 'occupé' ? 'bg-rose-500 text-white' : 
+                                    ($terrain->status === 'maintenance' ? 'bg-amber-500 text-white' : 
+                                    'bg-blue-500 text-white')) }}">
+                                    @if ($terrain->status === 'en_attente')
+                                    <option value="en_attente" {{ $terrain->status === 'en_attente' ? 'selected' : '' }}>En attente</option>
                                     @endif
-                                    <option value="approuve" {{ $terrain->admin_approval === 'approuve' ? 'selected' : '' }}>Approuvé</option>
-                                    <option value="rejete" {{ $terrain->admin_approval === 'rejete' ? 'selected' : '' }}>Rejeté</option>
-                                    <option value="suspended" {{ $terrain->admin_approval === 'suspended' ? 'selected' : '' }}>Suspendu</option>
+                                    <option value="disponible" {{ $terrain->status === 'disponible' ? 'selected' : '' }}>Disponible</option>
+                                    <option value="occupé" {{ $terrain->status === 'occupé' ? 'selected' : '' }}>Occupé</option>
+                                    <option value="maintenance" {{ $terrain->status === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
                                 </select>
                             </form>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                            <div class="flex justify-end space-x-2">
-                                <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded
+                                {{ $terrain->admin_approval === 'approuve' ? 'bg-emerald-700 text-white' : 
+                                ($terrain->admin_approval === 'suspended' ? 'bg-violet-600 text-white' : 
+                                ($terrain->admin_approval === 'rejete' ? 'bg-red-600 text-white' : 
+                                'bg-gray-600 text-white')) }}">
+                                {{ $terrain->admin_approval === 'rejete' ? 'Rejeté' : 
+                                ($terrain->admin_approval === 'suspended' ? 'Suspendu' : 
+                                ($terrain->admin_approval === 'approuve' ? 'Approuvé' : 'En attente')) }}
+                            </span>
                         </td>
+                       <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+    <div class="flex justify-end space-x-3">
+        <a href="{{ route('proprietaire.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white" title="Voir détails">
+            <i class="fas fa-eye"></i>
+        </a>
+        <a href="{{ route('proprietaire.terrain.edit', $terrain->id) }}" class="text-blue-400 hover:text-blue-300" title="Modifier">
+            <i class="fas fa-edit"></i>
+        </a>
+        <form action="{{ route('proprietaire.terrain.destroy', $terrain->id) }}" method="POST" class="inline" >
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-400 hover:text-red-300" title="Supprimer">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+    </div>
+</td>
                     </tr>
                     @empty
                     <tr>

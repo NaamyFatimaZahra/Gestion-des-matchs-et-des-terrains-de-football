@@ -385,10 +385,5 @@
         </div>
     </div>
     
-    <!-- Footer -->
-    <footer class="bg-gray-800 border-t border-gray-700 p-4 mt-8">
-        <div class="container mx-auto text-center text-gray-400 text-sm">
-            &copy; 2025 SportStats - Tous droits réservés
-        </div>
-    </footer>
+  
 @endsection

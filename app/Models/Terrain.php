@@ -3,17 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Terrain extends Model
 {
-   
+    use SoftDeletes;
     protected $fillable = [
         'name',
         'proprietaire_id',
         'capacity',
         'price',
-        'verified',
-        'active',
         'status',
         'admin_approval',
         'reservation_count',
@@ -24,11 +23,12 @@ class Terrain extends Model
         'adress',
         'latitude',
         'longitude',
-        'contact'
+        'contact',
+        'deleted_at'
     ];
 
-    public function terrain(){
-          return $this->belongsToMany(Terrain::class,'terrain_service');
+    public function services(){
+          return $this->belongsToMany(Service::class,'terrain_service')->withPivot('price');
     }
     public function  proprietaire(){
         return $this->belongsTo(User::class);
@@ -38,4 +38,10 @@ class Terrain extends Model
      public function Documents(){
         return $this->hasMany(Document::class);
     }
+    public function comments(){
+        return $this->hasMany(Comment::class)->whereNull('deleted_at');;
+    }
+    // public function reservations(){
+    //     return $this->hasMany(Reservation::class);
+    // }
 }
