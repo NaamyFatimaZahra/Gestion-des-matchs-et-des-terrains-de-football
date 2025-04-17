@@ -28,9 +28,16 @@ class ReservationController extends Controller
         $request->validate([
             'status' => 'required|in:confirmee,annulee',
         ]);
-       
+
+        if($request->input('status') == 'confirmee'){
+            $this->reservationRepository->sendConfirmationEmail($id);
+        } 
         $reservation = $this->reservationRepository->updateStatus($id, $request->input('status'));
-        return redirect()->back()->with('success', 'Statut de la réservation mis à jour avec succès.');
+        if($request->status==='confirmee'){
+         return redirect()->back()->with('success', 'Emails de confirmation envoyés avec succès');
+        }else{
+            return redirect()->back()->with('success', 'Statut de la réservation mis à jour avec succès.');
+        }
     
     }
 

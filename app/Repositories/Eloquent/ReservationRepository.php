@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Mail\ReservationConfirmationMail;
 use App\Models\Reservation;
 use App\Models\Terrain;
 use App\Repositories\Interface\ReservationRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {
@@ -66,7 +68,7 @@ public function getReservationsByTerrain($terrainId)
 
     public function changeStatusToTermine(){
          $this->reservation->where('status', 'confirmee')
-            ->where('date_reservation', '>=', now())
+            ->where('date_reservation', '<=', now())
             ->update(['status' => 'terminee']);
     }
     public function updateReservation($id, array $reservationData)
@@ -88,7 +90,24 @@ public function getReservationsByTerrain($terrainId)
         return $reservation->update(['status' => $status]);
     }
 
-  
+public function sendConfirmationEmail($id)
+{
+    
+    $reservation = Reservation::where('id', $id)->with(['reservationUsers', 'terrain'])->first();
+    
+    if (!$reservation) {
+       
+        return redirect()->back()->with('error', 'Réservation non trouvée');
+    }
+    
+    foreach ($reservation->reservationUsers as $reservationUser) {
+     
+            Mail::to($reservationUser->email)->send(new ReservationConfirmationMail($reservation));
+        
+    }
+    
+    
+}
     
     public function checkTerrainAvailability($terrainId, $date, $heureDebut, $heureFin, $excludeReservationId = null)
     {

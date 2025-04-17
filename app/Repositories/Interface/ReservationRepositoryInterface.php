@@ -21,6 +21,7 @@ interface ReservationRepositoryInterface
 
     public function updateStatus($id, $status);
    
+    public function sendConfirmationEmail($id);
     public function checkTerrainAvailability($terrainId, $date, $heureDebut, $heureFin, $excludeReservationId = null);
     public function getReservationStats($proprietaireId);
 
