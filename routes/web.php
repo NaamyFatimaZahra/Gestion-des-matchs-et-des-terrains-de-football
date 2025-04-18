@@ -8,10 +8,12 @@ use App\Http\Controllers\admin\TerrainController as adminTerrain;
 use App\Http\Controllers\proprietaire\ReservationController;
 use App\Http\Controllers\proprietaire\TerrainController as proprietaireTerrain;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\joueur\TerrainController as joueurTerrain;  
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TerrainController as TerrainController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\joueur\squadBuilderContoller;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,6 +26,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/about', [HomeController::class,'about'])->name('about');
+Route::get('/terrains',[TerrainController::class,'index'])->name('terrains');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -90,5 +95,14 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
   
 
 });
+
+
+Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])->group(function(){
+    Route::get('/squadBuilder',[squadBuilderContoller::class,'index'])->name('joueur.squadBuilder'); 
+
+});
+
+
+
 
 

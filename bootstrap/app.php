@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\checkPlayerStatus;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\Guest;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => CheckRole::class,
             'guest' => Guest::class,
             'status'=> CheckStatus::class,
+            'checkPlayerStatus'=> checkPlayerStatus::class,
 
         ]);
 

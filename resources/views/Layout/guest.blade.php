@@ -15,16 +15,26 @@
         <header id="header" class="md:bg-transparent absolute w-full md:z-10">
           <nav class="container mx-auto px-4 py-3">
             <ul class="uppercase hidden md:flex items-center justify-center gap-8 text-white">
-            @if (Auth::check())
+            @if (Auth::check() && Auth::user()->role->id!==3)
                 <li><a href="
               {{ Auth::user()->role->name==='admin' ? route('admin.dashboard') :  (Auth::user()->role->name==='proprietaire'?route('proprietaire.dashboard'):'kljjj')  }}
               
               " class="nav-link hover:text-gray-300 transition duration-300">dashboard</a></li>
             @endif
               <li><a href="/home" class="nav-link hover:text-gray-300 transition duration-300">home</a></li>
-              <li><a href="" class="nav-link hover:text-gray-300 transition duration-300">squad builder</a></li>
-              <li><a href="/squads" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
-              <li><a href="" class="nav-link hover:text-gray-300 transition duration-300">about</a></li>
+             
+            
+              
+               <li><a href="{{ route('terrains') }}" class="nav-link hover:text-gray-300 transition duration-300">Terrains</a></li>
+              @if (Auth::check() && Auth::user()->role->id===3)
+               <li><a href="{{ route('joueur.squadBuilder') }}" class="nav-link hover:text-gray-300 transition duration-300">squad builder</a></li>
+                <li><a href="/squads" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
+                 
+                
+             
+              
+              @endif
+              <li><a href="{{ route('about') }}" class="nav-link hover:text-gray-300 transition duration-300">about</a></li>
               <li class="flex items-center relative mx-4">
                 <input
                   type="text"
@@ -41,7 +51,12 @@
                  <li>
                 <h1 class="font-medium mr-4">{{ Auth::user()->name }}</h1>  
                 </li>
-          <li>
+         
+           <li>
+                 <a href="{{ route('profile') }}">   <i class="fa-solid fa-circle-user fa-lg"></i></a>
+           </li>
+            
+            <li>
             <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex gap-2 items-center bg-[#580a21] hover:bg-[#580a21] text-white font-medium py-3 px-3 rounded transition duration-300 ease-in-out">
@@ -50,10 +65,6 @@
                     </button>
                 </form>
           </li>
-           <li>
-                 <a href="{{ route('profile') }}">   <i class="fa-solid fa-circle-user fa-lg"></i></a>
-           </li>
-            
              @else
               <div class="flex items-center space-x-4">
                 <a href="{{ route('showLogin') }}" class="btn-primary bg-white hover:bg-gray-100 text-[#580a21] font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
@@ -96,7 +107,7 @@
         </header>
 
         <!-- Main content -->
-        <main>
+        <main class=""> 
           @yield('content')
         </main>
          <footer class="bg-gray-800 border-t border-gray-700 p-4 ">
