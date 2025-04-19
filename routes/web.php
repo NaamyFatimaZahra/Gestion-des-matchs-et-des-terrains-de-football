@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\DashboardController as adminDashboard;
-use App\Http\Controllers\proprietaire\CommentController;
+use App\Http\Controllers\proprietaire\CommentController as proprietaireComment;
+use App\Http\Controllers\joueur\CommentContoller as joueurComment;
 use App\Http\Controllers\proprietaire\DashboardController as proprietaireDashboard;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TerrainController as adminTerrain;
@@ -28,6 +29,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/about', [HomeController::class,'about'])->name('about');
 Route::get('/terrains',[TerrainController::class,'index'])->name('terrains');
+Route::get('/terrains/{id}',[TerrainController::class,'show'])->name('details_terrain');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -90,8 +92,8 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
     
 
     //proprietaire commentaires
-    Route::get('/comments',[CommentController::class,'index'])->name('proprietaire.comments.index');
-    Route::delete('/comment/{comment}',[CommentController::class,'destroy'])->name('proprietaire.comment.destroy');
+    Route::get('/comments',[proprietaireComment::class,'index'])->name('proprietaire.comments.index');
+    Route::delete('/comment/{comment}',[proprietaireComment::class,'destroy'])->name('proprietaire.comment.destroy');
   
 
 });
@@ -99,7 +101,8 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
 
 Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])->group(function(){
     Route::get('/squadBuilder',[squadBuilderContoller::class,'index'])->name('joueur.squadBuilder'); 
-
+    Route::delete('/comments/{id}',[joueurComment::class,'destroy'])->name('joueur.comment.destroy');
+    Route::post('/comments',[joueurComment::class,'store'])->name('joueur.comment.store');
 });
 
 

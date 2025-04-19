@@ -14,6 +14,21 @@ class CommentRepository implements CommentRepositoryInterface
     {
         return Comment::get();
     }
+    public function findById($id)
+    {
+        return Comment::find($id);
+    }
+
+    public function createComment(array $data)
+    {
+    return Comment::create([
+        'content' => $data['content'],
+        'rating' => $data['rating'],
+        'terrain_id' => $data['terrain_id'],
+        'user_id' => Auth::id(), 
+    ]);
+    
+   }
 
     
    public function getCommentsByProprietaire()

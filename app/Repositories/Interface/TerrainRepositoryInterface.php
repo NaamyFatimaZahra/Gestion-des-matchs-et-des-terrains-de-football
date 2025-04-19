@@ -10,7 +10,10 @@ use Illuminate\Http\Request;
 interface TerrainRepositoryInterface
 {
     public function getAll(): Collection;
-  
+    public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = []);
+
+    
+     public function findById($id);
     public function getAllByProprietaire(): Collection;
     
    

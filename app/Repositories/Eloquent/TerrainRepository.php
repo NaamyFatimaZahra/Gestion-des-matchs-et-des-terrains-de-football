@@ -16,7 +16,34 @@ class TerrainRepository implements TerrainRepositoryInterface
   
     public function getAll(): Collection
     {
-        return Terrain::withoutTrashed()->get();
+        return Terrain::withoutTrashed()->with('Documents')->where('status','!=','en_attente')->get();
+    }
+
+     public function findById($id)
+    {
+        return Terrain::with(['Documents', 'proprietaire','comments', 'services'])
+            ->where('admin_approval', 'approuve')
+            ->findOrFail($id);
+    }
+     public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = [])
+    {
+        $query = Terrain::where('admin_approval', true);
+        
+        // Apply status filter
+        if (!empty($status)) {
+            $query->whereIn('status', $status);
+        }
+        
+        // Apply price range filter
+        $query->whereBetween('price', [$minPrice, $maxPrice]);
+        
+        // Apply surface filter
+        if (!empty($surfaces)) {
+            $query->whereIn('surface', $surfaces);
+        }
+        
+        // Sort by creation date (latest first)
+        return $query->orderBy('created_at', 'desc')->paginate(6);
     }
     public function getAllByProprietaire(): Collection
     {

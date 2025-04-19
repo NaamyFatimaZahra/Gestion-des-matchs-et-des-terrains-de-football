@@ -8,5 +8,7 @@ class TerrainController extends Controller
         return view('joueur.terrains');
     }
 
+    
+
 
 }
