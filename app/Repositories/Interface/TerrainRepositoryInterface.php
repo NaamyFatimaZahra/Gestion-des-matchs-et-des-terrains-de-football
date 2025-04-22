@@ -9,7 +9,25 @@ use Illuminate\Http\Request;
 
 interface TerrainRepositoryInterface
 {
+
+    //admin methods
+  
     public function getAll(): Collection;
+    public function updateApproval(Terrain $terrain, string $approval): bool;
+
+
+    //proprietaire methods
+
+
+
+
+
+
+
+
+
+
+    public function getAllWithoutTrashed(): Collection;
     public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = []);
 
     

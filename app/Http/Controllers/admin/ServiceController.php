@@ -3,44 +3,48 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\Service;
+use App\Repositories\Interface\ServiceRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function index(){
-        $services=Service::all();
-       
-        return view("admin.services.index",['services'=>$services]);
-    }
-    
-   
+    protected $serviceRepository;
 
-    public function store(Request $request ){
+    public function __construct(ServiceRepositoryInterface $serviceRepository)
+    {
+        $this->serviceRepository = $serviceRepository;
+    }
+
+    public function index()
+    {
+        $services = $this->serviceRepository->getAll();
+        return view("admin.services.index", ['services' => $services]);
+    }
+
+    public function store(Request $request)
+    {
         $request->validate([
-            'service'=>'required|string',
+            'service' => 'required|string',
         ]);
-        // dd($request->service);
-        Service::create([
-            'name'=>$request->service
-        ]);
-         return back()->with('success','le service ajouter avec success');
+
+        $this->serviceRepository->create($request->all());
+        return back()->with('success', 'Le service a été ajouté avec succès');
     }
 
-
-    public function update(Request $request , Service $service){
+    public function update(Request $request, Service $service)
+    {
         $request->validate([
-             'service'=>'required|string',
+            'service' => 'required|string',
         ]);
-        $service->update([
-            'name'=>$request->service
-        ]);
-         return back()->with('success','le service modifier avec success');
+
+        $this->serviceRepository->update($service, $request->all());
+        return back()->with('success', 'Le service a été modifié avec succès');
     }
 
-    public function destroy(Service $service){
-         $service->delete();
-         return back()->with('success','le service a ete supprimer avec success');
+    public function destroy(Service $service)
+    {
+        $this->serviceRepository->delete($service);
+        return back()->with('success', 'Le service a été supprimé avec succès');
     }
 }

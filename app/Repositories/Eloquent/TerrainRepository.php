@@ -13,11 +13,33 @@ use Illuminate\Support\Facades\DB;
 
 class TerrainRepository implements TerrainRepositoryInterface
 {
-  
-    public function getAll(): Collection
-    {
-        return Terrain::withoutTrashed()->with('Documents')->where('status','!=','en_attente')->get();
-    }
+
+
+
+
+            //admin methods
+        public function getAll(): Collection
+            {
+                return Terrain::all();
+            }
+
+           
+        public function updateApproval(Terrain $terrain, string $approval): bool{
+            $terrain->admin_approval = $approval;
+            if ($approval == 'approuve') {
+                $terrain->status = 'disponible';
+            }
+            
+            return $terrain->save();
+        }
+
+
+
+        public function getAllWithoutTrashed(): Collection
+        {
+            return Terrain::withoutTrashed()->with('Documents')->where('status','!=','en_attente')->where('admin_approval','approuve')->get();
+        }
+    
 
      public function findById($id)
     {
@@ -25,6 +47,8 @@ class TerrainRepository implements TerrainRepositoryInterface
             ->where('admin_approval', 'approuve')
             ->findOrFail($id);
     }
+
+
      public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = [])
     {
         $query = Terrain::where('admin_approval', true);

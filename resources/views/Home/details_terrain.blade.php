@@ -271,10 +271,7 @@
             <div class="flex flex-col items-center py-10 text-center">
                 <i class="fas fa-bolt text-gray-400 text-6xl mb-4"></i>
                 <p class="text-gray-600 mb-4">Aucun service n'est actuellement configuré pour ce terrain.</p>
-                <a href="" class="bg-[#580a21] hover:bg-[#420718] text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center transition-colors duration-200 shadow-md">
-                    <i class="fas fa-plus mr-2"></i>
-                    Ajouter des services
-                </a>
+               
             </div>
         @endif
     </div>

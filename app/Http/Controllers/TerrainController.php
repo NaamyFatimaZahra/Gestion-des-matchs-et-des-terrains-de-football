@@ -17,7 +17,7 @@ class TerrainController extends Controller
 
     public function index(Request $request)
     {
-        $terrains= $this->terrainRepository->getAll();
+        $terrains= $this->terrainRepository->getAllWithoutTrashed();
         return view('Home.terrains', [
             'terrains' => $terrains,
         ]);

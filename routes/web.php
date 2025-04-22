@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/update-picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.update-picture');
+
 });
 
 //admin
@@ -53,7 +55,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 //admin terrains  
     Route::get('terrains',action: [adminTerrain::class,'index'])->name('admin.terrains.index');
     Route::patch('terrains/{terrain}/updateApproval', [adminTerrain::class, 'updateApproval'])->name('admin.terrains.update-approval'); //Route model binding =>Implicit
-    Route::get('/terrains/{terrain}',action: [adminTerrain::class,'show'])->name('admin.terrain.show');
+    Route::get('/terrains/{terrain}', [adminTerrain::class,'show'])->name('admin.terrain.show');
 
 //admin users
     Route::get('/users',action: [UserController::class,'index'])->name('admin.users.index');
@@ -101,6 +103,7 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
 
 Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])->group(function(){
     Route::get('/squadBuilder',[squadBuilderContoller::class,'index'])->name('joueur.squadBuilder'); 
+    Route::post('/squadBuilder',[squadBuilderContoller::class,'store'])->name('joueur.squadBuilder.store');
     Route::delete('/comments/{id}',[joueurComment::class,'destroy'])->name('joueur.comment.destroy');
     Route::post('/comments',[joueurComment::class,'store'])->name('joueur.comment.store');
 });

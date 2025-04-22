@@ -2,10 +2,10 @@
 @section('title', 'Gestion des Terrains')
 @section('content')
 
-<div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-300">
+<div class="container mx-auto px-4 py-8 mt-[4rem] text-gray-800 bg-rose-50">
     <!-- En-tête avec titre et boutons d'action -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-white">Gestion des Terrains</h1>
+        <h1 class="text-2xl font-bold text-gray-800">Gestion des Terrains</h1>
     </div>
    @if(session('success'))
     <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -31,81 +31,44 @@
     </script>
 @endif
 
-    <!-- Filtres et recherche -->
-    <div class="bg-gray-900 rounded-lg shadow-md p-4 mb-6 border border-gray-700">
-        <div class="flex flex-wrap justify-between gap-4">
-            <div class="flex items-center">
-                <div class="relative">
-                    <input type="text" placeholder="Rechercher un terrain..." 
-                           class="bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 w-64 text-white">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                </div>
-            </div>
-            <div class="flex gap-3">
-                <!-- Filtre par Statut -->
-                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
-                    <option value="">Tous les Statuts</option>
-                    <option value="disponible">Disponible</option>
-                    <option value="occupe">Occupé</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="en_attente">En Attente</option>
-                </select>
-
-                <!-- Filtre par Approbation -->
-                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
-                    <option value="">Toutes les Approbations</option>
-                    <option value="en_attente">En Attente</option>
-                    <option value="approuve">Approuvé</option>
-                    <option value="rejete">Rejeté</option>
-                    <option value="suspended">Suspendu</option>
-                </select>
-
-                <!-- Filtre par Ville -->
-                <select class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white">
-                    <option value="">Toutes les Villes</option>
-                   
-                </select>
-            </div>
-        </div>
-    </div>
-
+   
     <!-- Tableau des terrains -->
-    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden border border-gray-700">
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-700">
-                <thead class="bg-gray-800">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-[#580a21]">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             ID
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Terrain
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Propriétaire
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Ville
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Prix
                         </th>
                       
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Statut
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                             Approbation
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-gray-900 divide-y divide-gray-800">
+                <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($terrains as $terrain)
-                    <tr class="hover:bg-gray-800 transition-colors duration-200">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    <tr class="hover:bg-rose-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $terrain->id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -114,22 +77,22 @@
                                     
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-white">
+                                    <div class="text-sm font-medium text-gray-800">
                                         {{ $terrain->name }}
                                     </div>
-                                    <div class="text-sm text-gray-400 truncate max-w-xs">
+                                    <div class="text-sm text-gray-600 truncate max-w-xs">
                                         {{ \Illuminate\Support\Str::limit($terrain->description, 50) ?? 'Aucune description' }}
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $terrain->proprietaire->name ?? 'N/A' }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $terrain->city }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ number_format($terrain->price, 2) }} MAD
                         </td>
                        
@@ -152,7 +115,7 @@
                                     {{ $terrain->admin_approval === 'approuve' ? 'bg-emerald-700 text-white' : 
                                     ($terrain->admin_approval === 'rejete' ? 'bg-red-600 text-white' : 
                                     ($terrain->admin_approval === 'suspended' ? 'bg-violet-600 text-white' : 
-                                    'bg-gray-600 text-white')) }}">
+                                    'bg-[#580a21] text-white')) }}">
                                     @if ($terrain->admin_approval === 'en_attente')
                                     <option value="en_attente" {{ $terrain->admin_approval === 'en_attente' ? 'selected' : '' }}>En attente</option>
                                     @endif
@@ -164,7 +127,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                             <div class="flex justify-end space-x-2">
-                                <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-gray-300 hover:text-white">
+                                <a href="{{ route('admin.terrain.show', $terrain->id) }}" class="text-[#580a21] hover:text-[#420718]">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </div>
@@ -172,7 +135,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-400">
+                        <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
                             Aucun terrain trouvé.
                         </td>
                     </tr>
