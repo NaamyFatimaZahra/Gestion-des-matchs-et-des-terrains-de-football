@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Reservation::class, 'reservation_users');
     }
+    public function squads()
+    {
+        return $this->belongsToMany(Squad::class,'usersquads');
+    }
+
 }

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('squads', function (Blueprint $table) {
             $table->id();
+            $table->string('name_squad');
+            $table->string('city');
+            $table->enum('formation', ['121', '331', '433']);
             $table->timestamps();
+            
+         
         });
     }
 

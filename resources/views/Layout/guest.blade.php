@@ -51,8 +51,8 @@
           <li><a href="{{ route('terrains') }}" class="nav-link hover:text-gray-300 transition duration-300">Terrains</a></li>
           
           @if (Auth::check() && Auth::user()->role->id===3)
-            <li><a href="{{ route('joueur.squadBuilder') }}" class="nav-link hover:text-gray-300 transition duration-300">squad builder</a></li>
-            <li><a href="/squads" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
+            <li><a href="{{ route('joueur.squadBuilder.create') }}" class="nav-link hover:text-gray-300 transition duration-300">squad builder</a></li>
+            <li><a href="{{ route('joueur.squads') }}" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
           @endif
           
           <li><a href="{{ route('about') }}" class="nav-link hover:text-gray-300 transition duration-300">about</a></li>
@@ -132,7 +132,7 @@
               <li><a href="{{ route('terrains') }}" class="block py-2 hover:text-gray-300 transition duration-300">Terrains</a></li>
               
               @if (Auth::check() && Auth::user()->role->id===3)
-                <li><a href="{{ route('joueur.squadBuilder') }}" class="block py-2 hover:text-gray-300 transition duration-300">squad builder</a></li>
+                <li><a href="{{ route('joueur.squadBuilder.create') }}" class="block py-2 hover:text-gray-300 transition duration-300">squad builder</a></li>
                 <li><a href="/squads" class="block py-2 hover:text-gray-300 transition duration-300">squads</a></li>
               @endif
               

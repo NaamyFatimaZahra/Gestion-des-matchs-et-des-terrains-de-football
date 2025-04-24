@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\Eloquent\CommentRepository;
 use App\Repositories\Eloquent\ServiceRepository;
+use App\Repositories\Eloquent\SquadRepository;
 use App\Repositories\Interface\CommentRepositoryInterface;
 use App\Repositories\Interface\ReservationRepositoryInterface;
 use App\Repositories\Interface\ServiceRepositoryInterface;
+use App\Repositories\Interface\SquadRepositoryInterface;
 use App\Repositories\Interface\TerrainRepositoryInterface;
 use App\Repositories\Eloquent\TerrainRepository;
 use App\Repositories\Eloquent\ReservationRepository;
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ReservationRepositoryInterface::class,ReservationRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(SquadRepositoryInterface::class, SquadRepository::class);
 
     }
 

@@ -24,9 +24,11 @@ class SquadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_sqaud' => 'required|string|max:255',
+            'name_squad' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'formation' => ['required', Rule::in(['121', '331', '433'])],
+            'position' => 'required|string',
+            
         ];
     }
 
@@ -38,9 +40,9 @@ class SquadRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name_sqaud.required' => 'Le nom du terrain est obligatoire.',
-            'name_sqaud.string' => 'Le nom doit être une chaîne de caractères.',
-            'name_sqaud.max' => 'Le nom ne doit pas dépasser 255 caractères.',
+            'name_squad.required' => 'Le nom du terrain est obligatoire.',
+            'name_squad.string' => 'Le nom doit être une chaîne de caractères.',
+            'name_squad.max' => 'Le nom ne doit pas dépasser 255 caractères.',
             
             'city.required' => 'La ville est obligatoire.',
             'city.string' => 'La ville doit être une chaîne de caractères.',
@@ -48,6 +50,8 @@ class SquadRequest extends FormRequest
             
             'formation.required' => 'Veuillez sélectionner une formation.',
             'formation.in' => 'La formation sélectionnée est invalide.',
+            'position.required' => 'La position est obligatoire.',
+            'position.string' => 'La position doit être une chaîne de caractères.',
         ];
     }
 }

@@ -14,7 +14,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\TerrainController as TerrainController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\joueur\squadBuilderContoller;
+use App\Http\Controllers\joueur\SquadContoller;
 use Illuminate\Support\Facades\Route;
 
 
@@ -102,8 +102,12 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
 
 
 Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])->group(function(){
-    Route::get('/squadBuilder',[squadBuilderContoller::class,'index'])->name('joueur.squadBuilder'); 
-    Route::post('/squadBuilder',[squadBuilderContoller::class,'store'])->name('joueur.squadBuilder.store');
+    Route::get('/squads',[SquadContoller::class,'index'])->name('joueur.squads');
+    Route::get('/squadBuilder',[SquadContoller::class,'create'])->name('joueur.squadBuilder.create'); 
+    Route::post('/squadBuilder',[SquadContoller::class,'store'])->name('joueur.squadBuilder.store');
+    Route::get('/squad/joueur/{city}/{squadId}', [SquadContoller::class, 'getSquadPlayers'])->name('joueur.squad.players');
+    Route::post('/squad/joueur', [SquadContoller::class, 'storePlayer'])->name('joueur.squad.add');
+    Route::get('/squad/{id}',[SquadContoller::class,'show'])->name('joueur.squad.show');
     Route::delete('/comments/{id}',[joueurComment::class,'destroy'])->name('joueur.comment.destroy');
     Route::post('/comments',[joueurComment::class,'store'])->name('joueur.comment.store');
 });

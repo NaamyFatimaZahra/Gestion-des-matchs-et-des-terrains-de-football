@@ -16,7 +16,7 @@ class Squad extends Model
      */
     protected $fillable = [
         'user_id',
-        'name_sqaud',
+        'name_squad',
         'city',
         'formation'
     ];
@@ -24,18 +24,19 @@ class Squad extends Model
     /**
      * Relation avec l'utilisateur propriétaire
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Relation avec les joueurs du squad (si vous avez cette relation)
-     */
     public function players()
     {
-        return $this->belongsToMany(Player::class)
-                    ->withPivot('position') // Si vous stockez la position du joueur dans le squad
-                    ->withTimestamps();
+        return $this->belongsToMany(User::class,'usersquads')
+            ->withPivot('position', 'admin', 'acceptationUser', 'equipe')
+            ->withTimestamps();
     }
+    public function isAdmin($userId)
+{
+    return $this->players()
+        ->wherePivot('admin', true)
+        ->where('user_id', $userId)
+        ->exists();
+}
+
+   
 }

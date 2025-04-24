@@ -20,5 +20,6 @@ interface UserRepositoryInterface
     public function getPlayers(): Collection;
 
     public function getOwners(): Collection;
+    public function getPlayersByCity(string $city): Collection;
 
 }

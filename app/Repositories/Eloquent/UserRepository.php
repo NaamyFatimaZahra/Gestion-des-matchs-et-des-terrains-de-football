@@ -68,5 +68,11 @@ class UserRepository implements UserRepositoryInterface
             $query->where('name', 'proprietaire');
         })->get();
     }
+    public function getPlayersByCity($city): Collection
+    {
+        return User::whereHas('role', function($query) {
+            $query->where('name', 'joueur');
+        })->where('city', $city)->where('status','active')->get();
+    }
 
 }
