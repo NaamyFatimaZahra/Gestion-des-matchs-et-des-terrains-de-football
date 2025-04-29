@@ -1,186 +1,160 @@
 @extends('Layout.guest')
 @section('title', 'Liste des Terrains')
 @section('content')
-<section class="w-full">
-    <div class="flex flex-col md:flex-row min-h-[100vh] bg-rose-50 pt-16">
-        <!-- Sidebar - Mobile Toggle -->
-        <div class="md:hidden p-4 bg-white border-b border-gray-200">
-            <button id="toggleFiltersMobile" class="w-full flex items-center justify-between p-2 bg-[#580a21] hover:bg-[#420718] text-white rounded-lg transition duration-300">
-                <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Filtres
-                </span>
-                <svg id="filterArrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-        </div>
+<section class="w-[100%] min-h-[130vh] relative ">
+    <!-- Image de fond -->
+    <div class="relative md:w-[100%] w-[100%] h-full">
+        <img 
+            src="../assets/img/stud-red.svg" 
+            class="fixed w-[100%] h-[100vh] object-cover z-[-3] md:brightness-[50%]" 
+            alt="" 
+        />
+    </div>
 
-        <!-- Sidebar - Filters -->
-        <div id="sidebarFilters" class="w-full md:w-64 lg:w-72 bg-white shadow-md p-4 md:p-6 border-r border-gray-200 hidden md:block">
-            <div class="mb-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">Filtres</h2>
-                <div class="h-0.5 w-16 bg-[#580a21] my-3 opacity-75"></div>
+    <div class="min-h-[100vh] text-[white] relative z-10 pt-16 pb-[5rem]">
+        <header class="bg-[#580a21] py-20 text-center">
+            <div class="text-xs uppercase tracking-wide mb-2">
+                <a href="#" class="hover:text-red-500">Home</a> / 
+                <span class="text-gray-400">Terrains</span>
             </div>
+            <h1 class="text-4xl font-bold uppercase">Liste des Terrains</h1>
+        </header>
 
-            <form action="" method="GET" class="space-y-5">
-                <!-- Statut -->
-                <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Statut</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" name="status[]" value="disponible" 
-                                {{ in_array('disponible', request('status', [])) ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Disponible</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="status[]" value="occupé" 
-                                {{ in_array('occupé', request('status', [])) ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Occupé</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="status[]" value="maintenance" 
-                                {{ in_array('maintenance', request('status', [])) ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Maintenance</span>
-                        </label>
-                    </div>
-                </div>
+      <!-- Composant Filtre Stylé avec Barre de Recherche -->
+<div class="w-full max-w-4xl mx-auto mt-[-2rem] mb-8 px-4">
+    <!-- Bloc Filtre Principal -->
+    <div class="bg-[#3b2c2c] rounded-2xl shadow-lg overflow-hidden text-white">
+        <div class="flex flex-col md:flex-row items-stretch divide-y md:divide-y-0 md:divide-x divide-[#4a3a3a]">
 
-                <!-- Prix -->
-                <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Prix</h3>
-                    <div class="space-y-2">
-                        <label class="block text-xs text-gray-500">Min: <span id="minPriceValue">{{ request('min_price', 0) }}</span> Dh</label>
-                        <input type="range" name="min_price" min="0" max="1000" value="{{ request('min_price', 0) }}" 
-                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#580a21]" id="minPrice">
-                        
-                        <label class="block text-xs text-gray-500">Max: <span id="maxPriceValue">{{ request('max_price', 1000) }}</span> Dh</label>
-                        <input type="range" name="max_price" min="0" max="1000" value="{{ request('max_price', 1000) }}" 
-                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#580a21]" id="maxPrice">
-                    </div>
-                </div>
 
                 <!-- Surface -->
-                 <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Surface</h3>
-                    <div class="space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-[
-#580a21] scrollbar-track-gray-100">
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="gazon_naturel" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Gazon naturel</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="gazon_synthetique" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Gazon synthétique</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="gazon_hybride" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Gazon hybride</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="turf_artificiel" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Turf artificiel</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="stabilise" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Stabilisé</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="sable" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Sable</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="beton" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Béton</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="terre_battue" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Terre battue</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="indoor_synthetique" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Indoor synthétique</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="surface[]" value="altra_resist" class="rounded text-[
-#580a21] focus:ring-[
-#580a21]">
-                            <span class="ml-2 text-sm text-gray-600">Altra resist</span>
-                        </label>
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div>
+                            <label for="surface" class="block text-sm text-gray-300 font-medium">Surface</label>
+                            <select name="surface" id="surface" class="w-full bg-transparent border-none text-white text-base focus:outline-none">
+                                <option value="">Toutes les surfaces</option>
+                                <option value="gazon_naturel" {{ request('surface') == 'gazon_naturel' ? 'selected' : '' }}>Gazon naturel</option>
+                                <option value="gazon_synthetique" {{ request('surface') == 'gazon_synthetique' ? 'selected' : '' }}>Gazon synthétique</option>
+                                <option value="gazon_hybride" {{ request('surface') == 'gazon_hybride' ? 'selected' : '' }}>Gazon hybride</option>
+                                <option value="turf_artificiel" {{ request('surface') == 'turf_artificiel' ? 'selected' : '' }}>Turf artificiel</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col space-y-3">
-                    <button type="submit" class="w-full bg-[#580a21] hover:bg-[#420718] text-white py-2 px-4 rounded-lg transition duration-300 font-medium text-sm flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                        </svg>
-                        Appliquer les filtres
-                    </button>
-
-                    <a href="" class="w-full border border-gray-300 text-gray-600 py-2 px-4 rounded-lg transition duration-300 font-medium text-sm flex items-center justify-center hover:bg-gray-50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        Réinitialiser
-                    </a>
+                <!-- Prix Range -->
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="w-full">
+                            <label for="price" class="block text-sm text-gray-300 font-medium">Prix Max</label>
+                            <select name="max_price" id="max_price" class="w-full bg-transparent border-none text-white text-base focus:outline-none">
+                                <option value="">Tous les prix</option>
+                                <option value="200" {{ request('max_price') == '200' ? 'selected' : '' }}>Jusqu'à 200 Dh</option>
+                                <option value="400" {{ request('max_price') == '400' ? 'selected' : '' }}>Jusqu'à 400 Dh</option>
+                                <option value="600" {{ request('max_price') == '600' ? 'selected' : '' }}>Jusqu'à 600 Dh</option>
+                                <option value="800" {{ request('max_price') == '800' ? 'selected' : '' }}>Jusqu'à 800 Dh</option>
+                                <option value="1000" {{ request('max_price') == '1000' ? 'selected' : '' }}>Jusqu'à 1000 Dh</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </form>
+                  <form action="" method="GET" class="flex" >  
+                <!-- Barre de Recherche -->
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <div class="w-full">
+                            <label for="search" class="block text-sm text-gray-300 font-medium">Recherche</label>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                id="search" 
+                                placeholder="Nom du terrain..." 
+                                value="{{ request('search') }}" 
+                                class="w-full bg-transparent border-none text-white text-base focus:outline-none placeholder-gray-500"
+                            >
+                        </div>
+                    </div>
+                </div>
+                <!-- Bouton Submit -->
+                <div class="p-4 flex items-center justify-center">
+                    <button type="submit" class="bg-[#580a21] hover:bg-[#420718] text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        Rechercher
+                    </button>
+                </div>
+        </form>
         </div>
+       
+        
+    </div>
+</div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 md:p-6 lg:p-8">
+        <div class="flex-1 p-4 md:p-6 lg:p-8 min-h-[60vh]">
             <div class="max-w-7xl mx-auto">
-                <div class="mb-6">
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Liste des Terrains</h1>
-                    <div class="h-0.5 w-20 bg-[#580a21] my-3 opacity-75"></div>
-                </div>
+               
+                
+                <!-- Success Message -->
+                @if (session('success'))
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-md relative" role="alert">
+                        <div class="flex items-center">
+                            <div class="py-1">
+                                <svg class="h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-green-700 hover:text-green-900" onclick="this.parentElement.style.display='none'">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
 
-                <!-- Tabs pour les statuts - scrollable sur mobile -->
-                <div class="mb-6 border-b border-gray-200 overflow-x-auto pb-1">
-                    <ul class="flex whitespace-nowrap -mb-px text-sm font-medium text-center min-w-max">
-                        <li class="mr-2">
-                            <a href="" class="inline-block p-4 border-b-2 {{ empty(request('status')) ? 'border-[#580a21] text-[#580a21]' : 'border-transparent hover:text-gray-600 hover:border-gray-300' }} rounded-t-lg">Tous</a>
-                        </li>
-                        <li class="mr-2">
-                            <a href="" class="inline-block p-4 border-b-2 {{ in_array('disponible', request('status', [])) ? 'border-[#580a21] text-[#580a21]' : 'border-transparent hover:text-gray-600 hover:border-gray-300' }} rounded-t-lg">Disponible</a>
-                        </li>
-                        <li class="mr-2">
-                            <a href="" class="inline-block p-4 border-b-2 {{ in_array('occupé', request('status', [])) ? 'border-[#580a21] text-[#580a21]' : 'border-transparent hover:text-gray-600 hover:border-gray-300' }} rounded-t-lg">Occupé</a>
-                        </li>
-                        <li class="mr-2">
-                            <a href=" #" class="inline-block p-4 border-b-2 {{ in_array('maintenance', request('status', [])) ? 'border-[#580a21] text-[#580a21]' : 'border-transparent hover:text-gray-600 hover:border-gray-300' }} rounded-t-lg">Maintenance</a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Error Message -->
+                @if (session('error'))
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-md relative" role="alert">
+                        <div class="flex items-center">
+                            <div class="py-1">
+                                <svg class="h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ session('error') }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-red-700 hover:text-red-900" onclick="this.parentElement.style.display='none'">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
 
                 <!-- Terrains Grid - Responsive -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     @forelse ($terrains as $terrain)
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden 
+                        <div class="bg-[#685f5fe8] rounded-xl shadow-md overflow-hidden 
                             border-t-4 
                             @if($terrain->status == 'disponible')
                                 border-green-500
@@ -191,11 +165,11 @@
                             @else
                                 border-gray-500
                             @endif
-                                hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+                            hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
 
                             <div class="relative">
-                                    <img src="{{ asset('storage/'.$terrain->Documents->first()->photo_path) }}" class="w-full h-40 sm:h-48 object-cover{{ $terrain->status == 'maintenance' ? ' opacity-75' : '' }}" alt="{{ $terrain->name }}">
-                              
+                                <img src="{{ asset('storage/'.$terrain->Documents->first()->photo_path) }}" class="w-full h-40 sm:h-48 object-cover{{ $terrain->status == 'maintenance' ? ' opacity-75' : '' }}" alt="{{ $terrain->name }}">
+                          
                                 <div class="absolute top-0 right-0 
                                     @if($terrain->status == 'disponible')
                                         bg-green-500
@@ -211,83 +185,37 @@
                                 </div>
                             </div>
                             <div class="p-4 sm:p-5">
-                                <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-2">{{ $terrain->name }}</h3>
+                                <h3 class="text-base sm:text-lg font-bold text-white mb-2">{{ $terrain->name }}</h3>
                                 <div class="flex items-center text-xs sm:text-sm mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 text-gray-300 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span class="text-gray-600">{{ $terrain->city }}, {{ $terrain->adress }}</span>
+                                    <span class="text-[#d8d9dd]">{{ $terrain->city }}, {{ $terrain->adress }}</span>
                                 </div>
                                 <div class="flex flex-wrap gap-1 sm:gap-2 mb-3">
-                                    <span class="bg-rose-50 text-[#580a21] text-xs px-2 py-1 rounded-full">{{ $terrain->surface }}</span>
-                                    <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">{{ $terrain->capacity }} vs {{ $terrain->capacity }}</span>
+                                    <span class="bg-[#580a21]/20 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->surface }}</span>
+                                    <span class="bg-gray-600/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->capacity }} vs {{ $terrain->capacity }}</span>
                                 </div>
-                                <div class="flex justify-between items-center pt-3 border-t border-gray-100">
-                                    <span class="text-[#580a21] font-bold text-sm sm:text-base">{{ $terrain->price }} Dh/h</span>
+                                <div class="flex justify-between items-center pt-3 border-t border-gray-600/30">
+                                    <span class="text-white font-bold text-sm sm:text-base">{{ $terrain->price }} Dh/h</span>
                                     
-                                  
-                                        <a href="{{ route('details_terrain',$terrain->id) }}" class="bg-[#580a21] hover:bg-[#420718] text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
-                                          Voir
-                                        </a>
-                                  
+                                    <a href="{{ route('details_terrain',$terrain->id) }}" class="bg-[#580a21] hover:bg-[#420718] text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
+                                        Voir détails
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 p-8 bg-white rounded-xl shadow text-center">
-                            <p class="text-gray-500 text-lg">Aucun terrain ne correspond à vos critères.</p>
+                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 p-8 bg-[#685f5fe8] rounded-xl shadow text-center">
+                            <p class="text-[#d8d9dd] text-lg">Aucun terrain ne correspond à vos critères.</p>
                             <a href="" class="inline-block mt-4 text-[#580a21] hover:underline">Voir tous les terrains</a>
                         </div>
                     @endforelse
                 </div>
-
-               
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    // Script pour le toggle des filtres sur mobile
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.getElementById('toggleFiltersMobile');
-        const filterArrow = document.getElementById('filterArrow');
-        const sidebarFilters = document.getElementById('sidebarFilters');
-
-        if (toggleButton && filterArrow && sidebarFilters) {
-            toggleButton.addEventListener('click', function() {
-                sidebarFilters.classList.toggle('hidden');
-                filterArrow.classList.toggle('rotate-180');
-            });
-        }
-
-        // Script pour mettre à jour les valeurs des filtres de prix
-        const minPrice = document.getElementById('minPrice');
-        const maxPrice = document.getElementById('maxPrice');
-        const minPriceValue = document.getElementById('minPriceValue');
-        const maxPriceValue = document.getElementById('maxPriceValue');
-
-        if (minPrice && maxPrice && minPriceValue && maxPriceValue) {
-            minPrice.addEventListener('input', function() {
-                minPriceValue.textContent = this.value;
-                // S'assurer que min ne dépasse pas max
-                if (parseInt(this.value) > parseInt(maxPrice.value)) {
-                    maxPrice.value = this.value;
-                    maxPriceValue.textContent = this.value;
-                }
-            });
-
-            maxPrice.addEventListener('input', function() {
-                maxPriceValue.textContent = this.value;
-                // S'assurer que max n'est pas inférieur à min
-                if (parseInt(this.value) < parseInt(minPrice.value)) {
-                    minPrice.value = this.value;
-                    minPriceValue.textContent = this.value;
-                }
-            });
-        }
-    });
-</script>
 </section>
+
 @endsection

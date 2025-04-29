@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
@@ -53,9 +54,11 @@
           @if (Auth::check() && Auth::user()->role->id===3)
             <li><a href="{{ route('joueur.squadBuilder.create') }}" class="nav-link hover:text-gray-300 transition duration-300">squad builder</a></li>
             <li><a href="{{ route('joueur.squads') }}" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
+            <li><a href="{{ route('joueur.requests') }}" class="nav-link hover:text-gray-300 transition duration-300">requests</a></li>
+            <li><a href="{{ route('joueur.invitations') }}" class="nav-link hover:text-gray-300 transition duration-300">Invitations</a></li>
           @endif
           
-          <li><a href="{{ route('about') }}" class="nav-link hover:text-gray-300 transition duration-300">about</a></li>
+          <li><a href="{{ route('about') }}" class="nav-link hover:text-gray-300 transition duration-300">mes squads</a></li>
           <li class="flex items-center relative mx-4">
             <input
               type="text"
@@ -136,7 +139,7 @@
                 <li><a href="/squads" class="block py-2 hover:text-gray-300 transition duration-300">squads</a></li>
               @endif
               
-              <li><a href="{{ route('about') }}" class="block py-2 hover:text-gray-300 transition duration-300">about</a></li>
+              <li><a href="{{ route('about') }}" class="block py-2 hover:text-gray-300 transition duration-300">mes Squads</a></li>
               
               <li class="py-2">
                 <div class="relative">
@@ -191,11 +194,48 @@
       @yield('content')
     </main>
     
-    <footer class="bg-rose-50 border-t border-gray-200 p-4 shadow-inner w-full">
-      <div class="container mx-auto text-center text-gray-600 text-sm">
-        &copy; 2025 SportStats - Tous droits réservés
-      </div>
-    </footer>
+   <!-- Footer -->
+<footer class="bg-black w-full h-[10rem] flex flex-col justify-center items-center px-6">
+  <div class="container mx-auto flex flex-row items-center justify-between">
+    <!-- Copyright à gauche -->
+    <div class="text-gray-400 text-sm">
+      ©2025
+    </div>
+    
+    <!-- Logo au centre -->
+    <div class="absolute left-1/2 transform -translate-x-1/2">
+      
+       <img 
+            src="../assets/img/soccer-red-removebg-preview.png" 
+            class=" w-14" 
+            alt="logo" 
+        />
+    </div>
+    
+    <!-- Médias sociaux à droite -->
+    <div class="flex items-center space-x-4">
+      <a href="#" class="text-white hover:text-gray-300">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="#" class="text-white hover:text-gray-300">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="#" class="text-white hover:text-gray-300">
+        <i class="fab fa-behance"></i>
+      </a>
+      <a href="#" class="text-white hover:text-gray-300">
+        <i class="fab fa-soundcloud"></i>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Liens supplémentaires -->
+  <div class="container mx-auto flex justify-center mt-4 space-x-4 text-gray-400 text-sm">
+    <a href="#" class="hover:text-white">FR</a>
+    <span>|</span>
+    <a href="#" class="hover:text-white">EN</a>
+  </div>
+</footer>
     
     <script>
       // Script for handling regular header background

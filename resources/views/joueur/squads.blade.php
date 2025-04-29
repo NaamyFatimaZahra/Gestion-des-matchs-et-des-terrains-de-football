@@ -10,99 +10,145 @@
             alt="" 
         />
     </div>
-
-    <div class="flex  min-h-[100vh] relative z-10 pt-16">
-        <!-- Sidebar - Mobile Toggle -->
-        <div class="md:hidden p-4 bg-[#685f5fe8] border-b border-gray-200">
-            <button id="toggleFiltersMobile" class="w-full flex items-center justify-between p-2 bg-[#580a21] hover:bg-[#420718] text-white rounded-lg transition duration-300">
-                <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Filtres
-                </span>
-                <svg id="filterArrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Sidebar - Filters -->
-        <div id="sidebarFilters" class="w-full md:w-64 lg:w-72 bg-[#685f5fe8] shadow-md p-4 md:p-6 border-r border-gray-200 hidden md:block">
-            <div class="mb-6">
-                <h2 class="text-xl font-bold text-white mb-2">Filtres</h2>
-                <div class="h-0.5 w-16 bg-[#580a21] my-3 opacity-75"></div>
+  
+    <div class="min-h-[100vh] text-[white] relative z-10 pt-16">
+        <header class="bg-[#580a21] py-20 text-center">
+            <div class="text-xs uppercase tracking-wide mb-2">
+                <a href="#" class="hover:text-red-500">Home</a> / 
+                <span class="text-gray-400">Squads</span>
             </div>
-            <div class="flex-1">
-            <input 
-                type="text" 
-                name="search" 
-                placeholder="Rechercher par nom..." 
-                class="pl-3 bg-white/20 text-white w-full h-[2.7rem] rounded-md capitalize outline-none placeholder-white"
-                value="{{ request('search') }}"
-            />
-        </div>
+            <h1 class="text-4xl font-bold uppercase">Match Schedule</h1>
+        </header>
+   
+ <!-- Composant Filtre Stylé (sans jaune) -->
+<div class="w-full max-w-4xl mx-auto mt-[-2rem] mb-8 px-4">
 
-            <form action="" method="GET" class="space-y-5 pt-7">
-                <!-- City Filter -->
-                <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-white mb-2">Ville</h3>
-                    <select name="city" class="pl-3 bg-white/20 text-white w-full h-[2.7rem] rounded-md capitalize outline-none placeholder-white">
-                        <option value="">Toutes les villes</option>
-                        <!-- Add dynamic city options if needed -->
-                    </select>
-                </div>
-
-                <!-- Formation Filter -->
-                <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-white mb-2">Formation</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="formation" value="121" 
-                                {{ request('formation') == '121' ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21] bg-white">
-                            <span class="ml-2 text-sm text-white">1-2-1</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="formation" value="331" 
-                                {{ request('formation') == '331' ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21] bg-white">
-                            <span class="ml-2 text-sm text-white">3-3-1</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="formation" value="433" 
-                                {{ request('formation') == '433' ? 'checked' : '' }}
-                                class="rounded text-[#580a21] focus:ring-[#580a21] bg-white">
-                            <span class="ml-2 text-sm text-white">4-3-3</span>
-                        </label>
+    <!-- Bloc Filtre Principal -->
+    <div class="bg-[#3b2c2c] rounded-2xl shadow-lg overflow-hidden text-white">
+        <form action="" method="GET">
+            <div class="flex flex-col md:flex-row items-stretch divide-y md:divide-y-0 md:divide-x divide-[#4a3a3a]">
+                
+                <!-- Ville -->
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <label for="city" class="block text-sm text-gray-300 font-medium">Ville</label>
+                            <select name="city" id="city" class="w-full bg-transparent border-none text-white text-base focus:outline-none">
+                                <option value="">Toutes les villes</option>
+                                <!-- Options dynamiques -->
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col space-y-3">
-                    <button type="submit" class="w-full bg-[#580a21] hover:bg-[#420718] text-white py-2 px-4 rounded-lg transition duration-300 font-medium text-sm flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                        </svg>
-                        Appliquer les filtres
-                    </button>
-
-                    <a href="" class="w-full border border-gray-300 text-white py-2 px-4 rounded-lg transition duration-300 font-medium text-sm flex items-center justify-center hover:bg-[#580a21]/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        Réinitialiser
-                    </a>
+                <!-- Formation -->
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <label for="formation" class="block text-sm text-gray-300 font-medium">Formation</label>
+                            <select name="formation" id="formation" class="w-full bg-transparent border-none text-white text-base focus:outline-none">
+                                <option value="">Toutes les formations</option>
+                                <option value="121" {{ request('formation') == '121' ? 'selected' : '' }}>1-2-1</option>
+                                <option value="331" {{ request('formation') == '331' ? 'selected' : '' }}>3-3-1</option>
+                                <option value="433" {{ request('formation') == '433' ? 'selected' : '' }}>4-3-3</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </div>
+
+                <!-- Recherche -->
+                <div class="flex-1 p-4">
+                    <div class="flex items-center">
+                        <div class="text-[#aab0b5] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <label for="search" class="block text-sm text-gray-300 font-medium">Recherche</label>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                id="search"
+                                placeholder="Nom du squad..." 
+                                class="w-full bg-transparent border-none text-white text-base focus:outline-none placeholder-gray-400"
+                                value="{{ request('search') }}"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton Submit -->
+                <div class="p-4 flex items-center justify-center">
+                    <button type="submit" class="bg-[#580a21] hover:bg-[#420718] text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        Rechercher
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 md:p-6 lg:p-8">
+        <div class="flex-1 p-4 md:p-6 lg:p-8 min-h-[60vh]">
             <div class="max-w-7xl mx-auto">
-                <div class="mb-6">
-                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Liste des Squads</h1>
-                    <div class="h-0.5 w-20 bg-[#580a21] my-3 opacity-75"></div>
-                </div>
+              
+                
+                <!-- Success Message -->
+                @if (session('success'))
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-md relative" role="alert">
+                        <div class="flex items-center">
+                            <div class="py-1">
+                                <svg class="h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="absolute top-[50%] translate-y-[-50%] right-0 mr-2 text-green-700 hover:text-green-900" onclick="this.parentElement.style.display='none'">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
+                <!-- Error Message -->
+                @if (session('error'))
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-md relative" role="alert">
+                        <div class="flex items-center">
+                            <div class="py-1">
+                                <svg class="h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ session('error') }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="absolute top-[50%] translate-y-[-50%] right-0 mr-2 text-red-700 hover:text-red-900" onclick="this.parentElement.style.display='none'">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
 
                 <!-- Squads Grid - Responsive -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -133,11 +179,32 @@
                                         Joueurs: {{ $squad->players->count() }}
                                     </span>
                                 </div>
+                                <div class="flex">
+                                    @forelse($squad->players as $player)
+                                        <img
+                                            src="{{isset($player->profile_picture)? asset('storage/'. $player->profile_picture): asset('storage/profile-pictures/blank-profile.webp') }}"
+                                            alt="Player image"
+                                            class="w-8 h-8 ml-[-7px] object-contain rounded-full border-solid border-[3px] border-[#580a21] "
+                                        />
+                                    @empty
+                                        
+                                    @endforelse
+                                </div>
                                 <div class="flex justify-between items-center pt-3 border-t border-gray-600/30">
                                    
                                     <a href="{{ route('joueur.squad.show',$squad->id) }}" class="bg-[#580a21] hover:bg-[#420718] text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
                                         Voir détails
                                     </a>
+                                    @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+                                        <form action="{{ route('squads.destroy', $squad->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce squad?')" 
+                                                class="bg-[#580a21] hover:bg-bg-[#580a21] text-white py-1 px-2 rounded-lg transition duration-300">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -153,18 +220,5 @@
     </div>
 </section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.getElementById('toggleFiltersMobile');
-        const filterArrow = document.getElementById('filterArrow');
-        const sidebarFilters = document.getElementById('sidebarFilters');
 
-        if (toggleButton && filterArrow && sidebarFilters) {
-            toggleButton.addEventListener('click', function() {
-                sidebarFilters.classList.toggle('hidden');
-                filterArrow.classList.toggle('rotate-180');
-            });
-        }
-    });
-</script>
 @endsection

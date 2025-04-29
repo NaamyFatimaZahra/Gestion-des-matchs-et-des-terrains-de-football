@@ -12,8 +12,9 @@
             alt=""
           />
 
+         
        <!-- Header Squad Info - NOUVELLE SECTION -->
-<div class="w-full md:w-[80%] z-10 mb-8 mt-[8rem] m-auto">
+    <div class="w-full md:w-[80%] z-10  mt-[8rem] m-auto">
     <div class="bg-gradient-to-r from-[#580a21]/90 to-[#400618]/95 p-6 rounded-lg shadow-xl backdrop-blur-sm text-white">
         <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
@@ -29,208 +30,1280 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col items-center md:items-end">
-                <div class="bg-[#580a21]/80 px-4 py-2 rounded-full mb-2">
-                    <span class="font-semibold">{{ $squad->matches_played ?? 0 }} matches joués</span>
-                </div>
-                <div class="flex space-x-2">
-                    <span class="bg-[#4a0a1b]/90 px-3 py-1 rounded-full text-sm">{{ $squad->wins ?? 0 }} V</span>
-                    <span class="bg-[#580a21]/70 px-3 py-1 rounded-full text-sm">{{ $squad->draws ?? 0 }} N</span>
-                    <span class="bg-[#6b0c28]/90 px-3 py-1 rounded-full text-sm">{{ $squad->losses ?? 0 }} D</span>
-                </div>
-            </div>
+           
+              
+                 
+                  <div class="flex items-center bg-[#4a0a1b]/90 px-4 py-2 rounded-lg">
+                        <div class="w-3 h-3 bg-[#555353] rounded-full mr-2"></div>
+                        <span class="text-sm font-medium">{{ 22- $squad->players()->count() }} empty</span>
+                    </div>
+                    <div class="flex items-center bg-[#4a0a1b]/90 px-4 py-2 rounded-lg">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-sm font-medium">{{ $squad->players()->where('acceptationUser', 'accepté')->count() }} acceptés</span>
+                    </div>
+                    <div class="flex items-center bg-[#580a21]/70 px-4 py-2 rounded-lg">
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                        <span class="text-sm font-medium">{{ $squad->players()->where('acceptationUser', 'en attente')->count() }} en attente</span>
+                    </div>
+              
+                  @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+          <div class="flex space-x-4">
+        <form action="{{ route('squads.destroy', $squad->id) }}" method="POST" >
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bg-[#70182e] text-white px-5 py-3 rounded-lg hover:bg-[#580a21] transition-all duration-300 flex items-center justify-center">
+                Supprimer
+            </button>
+        </form>
+        
+        <a href="" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Réserver un terrain
+        </a>
+    </div>
+@endif
+               
+           
         </div>
     </div>
 </div>
-          
 
-<!-- Formation 1-2-1 equipe 1 -->
-
-<div
-  id="list_main_players_121"
-  class="grid grid-cols-5 min-h-[100vh] py-16 md:py-32 relative grid-rows-4 md:bg-transparent bg-[#5f4a4a92] gap-x-[4%] w-[100%] bg-cover bg-no-repeat"
->
-  <!-- Gardien de but (GK) - Now at top -->
-  <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-3 col-span-1 row-start-1 row-span-1 justify-self-center self-start">
-    <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
-    <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1)">
-      <i class="fa-solid fa-plus text-[1.6rem]"></i>
-    </div>
-    <div
-      class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-    >
-      <p>GK</p>
-    </div>
-  </div>
-
-  <!-- Défenseur central (CB) -->
-  <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-3 col-span-1 row-start-2 row-span-2 justify-self-center self-center">
-    <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
-    <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1)">
-      <i class="fa-solid fa-plus text-[1.6rem]"></i>
-    </div>
-    <div
-      class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-    >
-      <p>CB</p>
-    </div>
-  </div>
-
-  <!-- Milieu droit (RM) - Now on the left side -->
-  <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-2 col-span-1 row-start-2 row-span-2 justify-self-center self-end">
-    <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
-    <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1)">
-      <i class="fa-solid fa-plus text-[1.6rem]"></i>
-    </div>
-    <div
-      class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-    >
-      <p>RM</p>
-    </div>
-  </div>
-
-  <!-- Milieu gauche (LM) - Now on the right side -->
-  <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-4 col-span-1 row-start-2 row-span-2 justify-self-center self-end">
-    <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
-    <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1)">
-      <i class="fa-solid fa-plus text-[1.6rem]"></i>
-    </div>
-    <div
-      class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-    >
-      <p>LM</p>
-    </div>
-  </div>
-
-  <!-- Attaquant (ST) - Moved to bottom -->
-  <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-3 col-span-1 row-start-4 row-span-1 justify-self-center self-center">
-    <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
-    <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1)">
-      <i class="fa-solid fa-plus text-[1.6rem]"></i>
-    </div>
-    <div
-      class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-    >
-      <p>ST</p>
-    </div>
-  </div>
-</div>
- 
- <!-- Formation 3-3-1 -->
-    <div
-    id="list_main_players_331"
-    class="hidden grid grid-cols-7 min-h-[100vh] py-16 md:py-32 relative grid-rows-5 md:bg-transparent bg-[#5f4a4a92] gap-x-[4%] md:w-[80%] w-[100%] bg-cover bg-no-repeat"
-    >
+<!-- Formation 3-3-1 -->
+<div id="list_main_players_331" class="grid grid-cols-7 min-h-[100vh] py-16 md:py-20 relative grid-rows-4 md:bg-transparent bg-[#5f4a4a92] gap-[4rem] md:w-[100%] w-[100%] bg-cover bg-no-repeat">
     <!-- Gardien de but (GK) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-4 col-span-1 row-start-5 row-span-1 justify-self-center self-start">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('GK_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    @php
+    $gkPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'GK' &&
+               $player->pivot->equipe === "1";
+    });
+    @endphp
+    @if (!empty($gkPlayer))
+     <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-1 row-span-1 justify-self-center self-start group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($gkPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$gkPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$gkPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+        <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+            <!-- Badge de statut -->
+      @if($gkPlayer->pivot->acceptationUser ==='accepté')
+      <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7
+    bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+        <i class="fa-solid fa-check text-white text-xs"></i>
+      </div>
+      @else
+      <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7
+    bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+        <i class="fa-solid fa-clock text-white text-xs"></i>
+      </div>
+      @endif
+        <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%] " onclick="">
+                      <div class="flex items-center justify-center  text-black pt-6">
+                        <img
+                            src="{{ $gkPlayer->profile_picture ? asset('storage/' . $gkPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}"
+                            alt="Player image"
+                            class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]"
+                        />
+                      </div>
+                      
+                      <div class="flex justify-center items-center ">
+                        <p class="text-center text-black text-[12px] font-semibold">{{ $gkPlayer->name }}</p>
+                      </div>
+                      <div class="flex justify-center items-center pb-6">
+                        <p class="text-center text-black text-[13px]">{{ $gkPlayer->city }}</p>
+                      </div>
+                    
         </div>
         <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
+          class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
         >
-        <p>GK</p>
+          <p class="">{{ $gkPlayer->pivot->position }}</p>
         </div>
     </div>
+    @else
+     <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-1 row-span-1 justify-self-center self-start">
+          <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
+          @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1,'GK', null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="GK" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+         
+          <div
+              class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
+          >
+              <p>GK</p>
+          </div>
+      </div>
+    @endif
 
-    <!-- Défenseur central (CB) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-4 col-span-1 row-start-4 row-span-1 justify-self-center self-end">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('CB_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    <!-- Défenseur central droit (CBR) -->
+    @php
+    $cbrPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CB' &&
+               $player->pivot->equipe === "1"&&
+               $player->pivot->side==='R';
+    });
+    @endphp
+    @if (!empty($cbrPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-2 row-span-2 justify-self-center self-center group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($cbrPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cbrPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$cbrPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cbrPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
         </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cbrPlayer->profile_picture ? asset('storage/' . $cbrPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cbrPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cbrPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cbrPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-2 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+       @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1,'CB','R')">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="CB" class="hidden">
+                <input type="text" name="side" value="R" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
         <p>CB</p>
-        </div>
+      </div>
     </div>
+    @endif
 
-    <!-- Défenseur droit (RB) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-6 col-span-1 row-start-4 row-span-2 justify-self- self-start">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('RB_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    <!-- Défenseur central milieu (CM) -->
+    @php
+    $cmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CM' &&
+               $player->pivot->equipe === "1";
+    });
+    @endphp
+    @if (!empty($cmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-2 row-span-1 justify-self-center self-end group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($cmPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cmPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$cmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
         </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
-        <p>RB</p>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
         </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cmPlayer->profile_picture ? asset('storage/' . $cmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cmPlayer->pivot->position }}</p>
+      </div>
     </div>
-
-    <!-- Défenseur gauche (LB) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-2 col-span-1 row-start-4 row-span-1 justify-self-center self-end">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('LB_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
-        </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
-        <p>LB</p>
-        </div>
-    </div>
-
-    <!-- Milieu central (CM) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-4 col-span-1 row-start-3 row-span-1 justify-self-center self-center">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('CM_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
-        </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-2 row-span-1 justify-self-center self-end">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+      @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer('1','CM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="CM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
         <p>CM</p>
-        </div>
+      </div>
     </div>
+    @endif
 
-    <!-- Milieu droit (RM) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-6 col-span-1 row-start-2 row-span-1 justify-self-center self-end">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('RM_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    <!-- Défenseur central gauche (CBL) -->
+    @php
+    $cblPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CB' &&
+               $player->pivot->equipe === "1" &&
+                $player->pivot->side==='L';
+    });
+    @endphp
+    @if (!empty($cblPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-2 row-span-2 justify-self-center self-center group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($cblPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cblPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$cblPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cblPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
         </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
-        <p>RM</p>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
         </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cblPlayer->profile_picture ? asset('storage/' . $cblPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cblPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cblPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cblPlayer->pivot->position }}</p>
+      </div>
     </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-2 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+       @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer('1','CB','L')">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="CB" class="hidden">
+                <input type="text" name="side" value="L" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>CB</p>
+      </div>
+    </div>
+    @endif
 
     <!-- Milieu gauche (LM) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-2 col-span-1 row-start-2 row-span-1 justify-self-center self-center">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('LM_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    @php
+    $lmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'LM' &&
+               $player->pivot->equipe === "1";
+    });
+    @endphp
+    @if (!empty($lmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-3 row-span-2 justify-self-center self-center group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($lmPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$lmPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$lmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($lmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
         </div>
-        <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
-        >
-        <p>LM</p>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
         </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $lmPlayer->profile_picture ? asset('storage/' . $lmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $lmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $lmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $lmPlayer->pivot->position }}</p>
+      </div>
     </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-3 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+       @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(1,'LM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="LM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>LM</p>
+      </div>
+    </div>
+    @endif
+
+    <!-- Milieu droit (RM) -->
+    @php
+    $rmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'RM' &&
+               $player->pivot->equipe === "1";
+    });
+    @endphp
+    @if (!empty($rmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-3 row-span-2 justify-self-center self-center group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($rmPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$rmPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$rmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($rmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $rmPlayer->profile_picture ? asset('storage/' . $rmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $rmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $rmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $rmPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-3 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+       @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer('1','RM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="RM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>RM</p>
+      </div>
+    </div>
+    @endif
 
     <!-- Attaquant (ST) -->
-    <div class="relative w-[5rem] md:w-[7rem] h-fit col-start-4 col-span-1 row-start-1 row-span-2 justify-self-center self-center">
-        <img src="../assets/img/card.png" class="" alt="" />
-        <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="checkCardEmpty('ST_331')">
-        <i class="fa-solid fa-plus text-[1.6rem]"></i>
+    @php
+    $stPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'ST' &&
+               $player->pivot->equipe === "1";
+    });
+    @endphp
+    @if (!empty($stPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-3 row-span-1 justify-self-center self-center group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+        @if ($stPlayer->pivot->admin!==1)
+          @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$stPlayer->pivot->user_id)
+            <form action="{{ route('joueur.squad.delete', [$stPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          @else
+            <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+              <i class="fa-solid fa-lock"></i>
+            </a>
+          @endif
+        @else
+          <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+            <i class="fa-solid fa-lock"></i>
+          </a>
+        @endif
+      </div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($stPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $stPlayer->profile_picture ? asset('storage/' . $stPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $stPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $stPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $stPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-3 row-span-1 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+        @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer('1','ST',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="1" class="hidden">
+                <input type="text" name="position" value="ST" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>ST</p>
+      </div>
+    </div>
+    @endif
+</div>
+
+
+
+<div id="list_main_players_331"
+  class="grid grid-cols-7 min-h-[100vh] py-16 md:py-20 relative grid-rows-4 md:bg-transparent bg-[#5f4a4a92] gap-[4rem] md:w-[100%] w-[100%] bg-cover bg-no-repeat"
+>
+    <!-- Gardien de but (GK) - Rotated 180 degrees -->
+    @php
+    $gkPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'GK' &&
+               $player->pivot->equipe === "2";
+    });
+    @endphp
+    @if (!empty($gkPlayer))
+     <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-4 row-span-1 justify-self-center self-end group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($gkPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$gkPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$gkPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+        <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+            <!-- Badge de statut -->
+      @if($gkPlayer->pivot->acceptationUser ==='accepté')
+      <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7
+    bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+        <i class="fa-solid fa-check text-white text-xs"></i>
+      </div>
+      @else
+      <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7
+    bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+        <i class="fa-solid fa-clock text-white text-xs"></i>
+      </div>
+      @endif
+        <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%] " onclick="">
+                      <div class="flex items-center justify-center  text-black pt-6">
+                        <img
+                            src="{{ $gkPlayer->profile_picture ? asset('storage/' . $gkPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}"
+                            alt="Player image"
+                            class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]"
+                        />
+                      </div>
+                      
+                      <div class="flex justify-center items-center ">
+                        <p class="text-center text-black text-[12px] font-semibold">{{ $gkPlayer->name }}</p>
+                      </div>
+                      <div class="flex justify-center items-center pb-6">
+                        <p class="text-center text-black text-[13px]">{{ $gkPlayer->city }}</p>
+                      </div>
+                    
         </div>
         <div
-        class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
+          class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
         >
-        <p>ST</p>
+          <p class="">{{ $gkPlayer->pivot->position }}</p>
         </div>
     </div>
-    </div>
+    @else
+     <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-4 row-span-1 justify-self-center self-end">
+          <img src="{{ asset('assets/img/card.png') }}" class="" alt="" />
+           @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'GK', null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="GK" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+          <div
+              class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]"
+          >
+              <p>GK</p>
+          </div>
+      </div>
+    @endif
 
+    <!-- Défenseur central droit (CBR) - Rotated 180 degrees -->
+    @php
+    $cbrPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CB' &&
+               $player->pivot->equipe === "2" &&
+               $player->pivot->side==='R'; // Original side, not reversed
+    });
+    @endphp
+    @if (!empty($cbrPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-2 row-span-2 justify-self-center self-center group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($cbrPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cbrPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$cbrPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cbrPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cbrPlayer->profile_picture ? asset('storage/' . $cbrPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cbrPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cbrPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cbrPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-2 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+       @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'CB','R')">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="CB" class="hidden">
+                <input type="text" name="side" value="R" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>CB</p>
+      </div>
+    </div>
+    @endif
+
+    <!-- Défenseur central milieu (CM) - Rotated 180 degrees -->
+    @php
+    $cmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CM' &&
+               $player->pivot->equipe === "2";
+    });
+    @endphp
+    @if (!empty($cmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-3 row-span-1 justify-self-center self-start group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($cmPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cmPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$cmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cmPlayer->profile_picture ? asset('storage/' . $cmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cmPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-3 row-span-1 justify-self-center self-start">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+     @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'CM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="CM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>CM</p>
+      </div>
+    </div>
+    @endif
+
+    <!-- Défenseur central gauche (CBL) - Rotated 180 degrees -->
+    @php
+    $cblPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'CB' &&
+               $player->pivot->equipe === "2" &&
+               $player->pivot->side==='L'; // Original side, not reversed
+    });
+    @endphp
+    @if (!empty($cblPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-2 row-span-2 justify-self-center self-center group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($cblPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$cblPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$cblPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($cblPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $cblPlayer->profile_picture ? asset('storage/' . $cblPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $cblPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $cblPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $cblPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-2 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+        @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'CB','L')">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="CB" class="hidden">
+                <input type="text" name="side" value="L" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>CB</p>
+      </div>
+    </div>
+    @endif
+
+    <!-- Milieu gauche (RM) - Rotated 180 degrees -->
+    @php
+    $rmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'RM' &&
+               $player->pivot->equipe === "2";
+    });
+    @endphp
+    @if (!empty($rmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-1 row-span-2 justify-self-center self-center group">
+      <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($rmPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$rmPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$rmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($rmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $rmPlayer->profile_picture ? asset('storage/' . $rmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $rmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $rmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $rmPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-5 col-span-2 row-start-1 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+         @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'RM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="RM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>RM</p>
+      </div>
+    </div>
+    @endif
+
+    
+
+    <!-- Milieu droit (LM) - Rotated 180 degrees -->
+    @php
+    $lmPlayer = $players->first(function($player) {
+        return isset($player->pivot->position, $player->pivot->equipe) &&
+               $player->pivot->position === 'LM' &&
+               $player->pivot->equipe === "2";
+    });
+    @endphp
+    @if (!empty($lmPlayer))
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-1 row-span-2 justify-self-center self-center group">
+     <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+  @if ($lmPlayer->pivot->admin!==1)
+    @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$lmPlayer->pivot->user_id)
+      <form action="{{ route('joueur.squad.delete', [$lmPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+    @else
+      <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-lock"></i>
+      </a>
+    @endif
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+</div>
+      <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+      @if($lmPlayer->pivot->acceptationUser ==='accepté')
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-check text-white text-xs"></i>
+        </div>
+      @else
+        <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+          <i class="fa-solid fa-clock text-white text-xs"></i>
+        </div>
+      @endif
+      <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+        <div class="flex items-center justify-center text-black pt-6">
+          <img src="{{ $lmPlayer->profile_picture ? asset('storage/' . $lmPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+        </div>
+        <div class="flex justify-center items-center">
+          <p class="text-center text-black text-[12px] font-semibold">{{ $lmPlayer->name }}</p>
+        </div>
+        <div class="flex justify-center items-center pb-6">
+          <p class="text-center text-black text-[13px]">{{ $lmPlayer->city }}</p>
+        </div>
+      </div>
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>{{ $lmPlayer->pivot->position }}</p>
+      </div>
+    </div>
+    @else
+    <div class="relative w-[5rem] md:w-[9rem] h-fit col-start-2 col-span-2 row-start-1 row-span-2 justify-self-center self-center">
+      <img src="{{ asset('assets/img/card.png') }}" alt="" />
+      @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'LM',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="LM" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+      <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+        <p>LM</p>
+      </div>
+    </div>
+    @endif
+
+    <!-- Attaquant (ST) - Rotated 180 degrees -->
+@php
+$stPlayer = $players->first(function($player) {
+    return isset($player->pivot->position, $player->pivot->equipe) &&
+           $player->pivot->position === 'ST' &&
+           $player->pivot->equipe === "2";
+});
+@endphp
+@if (!empty($stPlayer))
+<div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-2 row-span-1 justify-self-center self-center group">
+  <div class="absolute top-1 h-[100%] w-[100%] left-[77%] z-20 hidden group-hover:flex flex-col">
+@if ($stPlayer->pivot->admin!==1)
+  @if ($squad->adminPlayer()->id === Auth::user()->id || Auth::user()->id===$stPlayer->pivot->user_id)
+    <form action="{{ route('joueur.squad.delete', [$stPlayer->pivot->user_id, $squad->id]) }}" method="POST" class="inline">
+      @csrf
+      @method('DELETE')
+      <button type="submit" class="text-white bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </form>
+  @else
+    <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+  @endif
+@else
+  <a onclick="" class="text-[white] bg-[#70182ee6] rounded-full flex justify-center items-center w-8 h-8">
+    <i class="fa-solid fa-lock"></i>
+  </a>
+@endif
+</div>
+  <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%]" alt="" />
+  @if($stPlayer->pivot->acceptationUser ==='accepté')
+    <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-green-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+      <i class="fa-solid fa-check text-white text-xs"></i>
+    </div>
+  @else
+    <div class="absolute top-2 right-1 group-hover:hidden w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex justify-center items-center z-10">
+      <i class="fa-solid fa-clock text-white text-xs"></i>
+    </div>
+  @endif
+  <div class="text-white absolute top-0 flex justify-center flex-col items-center cursor-pointer w-[100%] h-[100%]" onclick="">
+    <div class="flex items-center justify-center text-black pt-6">
+      <img src="{{ $stPlayer->profile_picture ? asset('storage/' . $stPlayer->profile_picture) : asset('storage/profile-pictures/blank-profile.webp') }}" alt="Player image" class="w-[80%] h-[70%] object-contain rounded-md group-hover:brightness-[35%]" />
+    </div>
+    <div class="flex justify-center items-center">
+      <p class="text-center text-black text-[12px] font-semibold">{{ $stPlayer->name }}</p>
+    </div>
+    <div class="flex justify-center items-center pb-6">
+      <p class="text-center text-black text-[13px]">{{ $stPlayer->city }}</p>
+    </div>
+  </div>
+  <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+    <p>{{ $stPlayer->pivot->position }}</p>
+  </div>
+</div>
+@else
+<div class="relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-2 row-span-1 justify-self-center self-center">
+  <img src="{{ asset('assets/img/card.png') }}" alt="" />
+   @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" onclick="openContainerGroupePlayer(2,'ST',null)">
+              <i class="fa-solid fa-plus text-[1.6rem]"></i>
+          </div>
+          @else
+           <div class="text-white absolute top-0 flex justify-center items-center cursor-pointer w-[100%] h-[100%]" >
+              <form action="{{ route('joueur.squad.add') }}" method="POST">
+                @csrf
+                <button type="submit">
+                  <i class="fa-solid fa-paper-plane"  ></i>
+                </button>
+                <input type="text" name="squad_id" value="{{ $squad->id }}" class="hidden">
+                <input type="text" name="player_id" value="{{ Auth::id() }}" class="hidden">
+                <input type="text" name="equipe" value="2" class="hidden">
+                <input type="text" name="position" value="ST" class="hidden">
+                <input type="text" name="side" value="null" class="hidden">
+                <input type="text" name="invitationType" value="member" class="hidden">
+              </form>
+           </div>
+          @endif
+  <div class="absolute shadow-xl bg-[#555] text-white rounded-[50%] w-[3rem] text-center px-2 py-2 left-[50%] translate-x-[-50%]">
+    <p>ST</p>
+  </div>
+</div>
+@endif
+
+</div>
 
   <!-- POP UP-->
       <div
         id="container_groupe_player"
-        class="bg-[#e8e8ff4c] w-full h-[100vh] hidden  fixed top-0"
+        class="bg-[#e8e8ff4c] w-full h-[100vh] hidden  fixed top-0 z-30"
       >
         <div
           class="relative w-[80%] md:w-[30%] m-auto md:h-[50%] h-[40%] bg-[#000000b5] rounded-xl overflow-hidden"
@@ -250,6 +1323,7 @@
             id="content_pop_up"
             class="flex flex-col flex-wrap h-[80%] px-7 justify-center items-center gap-8 text-white overflow-scroll no-scrollbar"
           >
+       
           
         </div>
         </div>
@@ -258,22 +1332,21 @@
 
       <script>
         const containerGroupePlayer = document.getElementById('container_groupe_player');
+       const contentPopUp = document.getElementById('content_pop_up'); 
+
+       let squadId = {{ $squad->id }};
        
 
-
-function openContainerGroupePlayer(equipe) {
-  const city = document.getElementById('city').innerText;
-
-  const contentPopUp = document.getElementById('content_pop_up');
+   function openContainerGroupePlayer(equipe,position,side) {
+  
     
-   
-   
-
-    
+    const contentPopUp = document.getElementById('content_pop_up');
     const containerGroupePlayer = document.getElementById('container_groupe_player');
     containerGroupePlayer.classList.add('flex');
     containerGroupePlayer.classList.remove('hidden');
-      fetch("{{ route('joueur.squad.players') }}", {
+    contentPopUp.innerHTML ="loading...";
+   
+      fetch("{{ route('joueur.squad.players',[$squad->city,$squad->id]) }}", {
         method: "GET",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -283,12 +1356,107 @@ function openContainerGroupePlayer(equipe) {
         if (!response.ok) throw new Error('Erreur réseau');
         return response.json();
     })
-    .then(data => console.log(data))
+    .then(data =>{
+      
+       showAllPlayers(data.players,equipe,position,data.playersExist,`${side}`);
+       
+       
+    })
     .catch(error => console.error("Erreur :", error));
-}
+    }
 
-
-
+   function showAllPlayers(players,equipe,position,playersExist,side) {
+      
+   contentPopUp.innerHTML = "";
+   
+   if (players.length === 0) {
+        contentPopUp.innerHTML = "<p class='text-white'>Aucun joueur trouvé.</p>";
+        return;
+   } else {
+         players.forEach(player => {
+          let exist=false;
+          if(playersExist){
+            
+            playersExist.forEach(playerExist => {
+              if(player.id === playerExist.id){
+                exist=true;
+              }
+            });
+          }
+            const profilePicture = player.profile_picture ? `http://127.0.0.1:8000/storage/${player.profile_picture}` : 'http://127.0.0.1:8000/storage/profile-pictures/blank-profile.webp';
+          
+            contentPopUp.innerHTML += `
+            <div class="relative group w-fit h-fit bg-no-repeat overflow-hidden">
+               <div class="absolute top-0 h-[100%] w-[100%] right-0 z-10 hidden group-hover:flex justify-center items-center">
+               ${exist ?
+                `<button
+                  onclick=""
+                  class="bg-[#70182ee6] capitalize rounded-md px-6 py-2 hover:bg-[#580a21]">Exist</button>` :
+                 ` <button
+                  onclick="addToSquad(${player.id},${equipe},'${position}','${side}')"
+                  class="bg-[#70182ee6] capitalize rounded-md px-6 py-2 hover:bg-[#580a21]">Inviter</button>`}
+                
+               </div>
+               <img src="{{ asset('assets/img/rare-gold-24.png') }}" class="group-hover:brightness-[35%] h-[100%]" alt="" />
+               <div class="text-white group-hover:brightness-[20%] w-[67%] md:h-[15rem] absolute top-[50%] left-[43%] md:left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                  <div class="flex items-center justify-center text-black pt-6">
+                     <img
+                        src="${profilePicture}"
+                        alt="Player image"
+                        class="w-[80%] h-[70%] object-contain rounded-md"
+                     />
+                  </div>
+                  
+                  <div class="flex justify-center items-center mt-4">
+                     <p class="text-center text-black text-[18px] font-semibold">${player.name}</p>
+                  </div>
+                  <div class="flex justify-center items-center ">
+                     <p class="text-center text-black text-[15px]">${player.city}</p>
+                  </div>
+                  <div class="flex justify-center items-center  ">
+                     <p class="text-center text-black text-[15px] bg-[#70182ee6] text-[#fff] px-4 py-2 rounded-full ">${position}</p>
+                  </div>
+               </div>
+            </div>
+            `;
+         });
+       }  
+     }
+   
+   function addToSquad(playerId,equipe,position,side) { 
+  
+           // Préparation des données à envoyer
+    const formData = new URLSearchParams();
+    formData.append('player_id', playerId);
+    formData.append('equipe', equipe);
+    formData.append('position', position);
+    formData.append('squad_id', squadId); 
+    formData.append('side', side);
+    formData.append('invitationType', 'admin');
+     formData.append('_token', '{{ csrf_token() }}'); 
+    fetch("{{ route('joueur.squad.add') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData 
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Erreur réseau');
+        return response.json();
+    })
+    .then(data => {
+     if(data){
+ closeContainerGroupePlayer();
+      window.location.reload();
+     }
+       
+    })
+    .catch(error => {
+        console.error("Erreur :", error);
+        contentPopUp.innerHTML = "<p class='text-center text-red-500'>Une erreur s'est produite lors de l'ajout du joueur</p>";
+    });
+      }
 
         function closeContainerGroupePlayer(){
           containerGroupePlayer.classList.remove('flex');
@@ -297,65 +1465,7 @@ function openContainerGroupePlayer(equipe) {
       </script>
 
 
-<!-- <div class="relative group w-fit h-fit bg-no-repeat overfow-hidden">
-   <div class="absolute top-0   h-[100%] w-[100%] right-0 z-10 hidden group-hover:flex justify-center items-center">
-         <button
-         onclick="addNewPlayer(${id},${place},'${position}')"
-         class="bg-[#70182ee6] capitalize rounded-md px-6 py-2">add</button>
-         </div>
-          <img src="../assets/img/bg-card.png" class="group-hover:brightness-[35%]" alt="" />
-          <div
-            class="text-white group-hover:brightness-[20%] w-[67%] md:h-[15rem] absolute top-[50%] left-[43%] md:left-[50%] translate-x-[-50%] translate-y-[-50%]"
-          >
-            <div
-              class="flex items-center text-[black] justify-center pt-6 pl-[1.3rem]"
-            >
-              <div class="">
-                <p class="">${position}</p>
-                 <p>${rating}</p>
-              </div>
-              <img
-                src="${img}"
-                alt=""
-              />
-            </div>
-            
-            <div class="flex justify-center items-center">
-              <p class="text-center text-black text-[10px]">${name}</p>
-              <img class="w-4 h-4" src="${flag}" alt="" />
-            </div>
-            <div
-              class="flex flex-wrap justify-center pt-[14px] w-[6rem] m-auto gap-x-3 text-[0.6rem]"
-            >
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">pac:</p>
-                <p>${pace}</p>
-              </div>
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">sho:</p>
-                <p>${shooting}</p>
-              </div>
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">pas:</p>
-                <p>${passing}</p>
-              </div>
 
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">dri:</p>
-                <p>${dribbling}</p>
-              </div>
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">def:</p>
-                <p>${defending}</p>
-              </div>
-              <div class="text-[#513608a0] flex gap-1 font-semibold">
-                <p class="uppercase">phy:</p>
-                <p>${physical}</p>
-              </div>
-               <img class="w-6 " src="${logo}" alt="" />
-            </div>
-          </div>
-</div> -->
        
 
 

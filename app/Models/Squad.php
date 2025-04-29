@@ -27,7 +27,7 @@ class Squad extends Model
     public function players()
     {
         return $this->belongsToMany(User::class,'usersquads')
-            ->withPivot('position', 'admin', 'acceptationUser', 'equipe')
+            ->withPivot('position', 'admin', 'acceptationUser', 'equipe', 'side','InvitationType')
             ->withTimestamps();
     }
     public function isAdmin($userId)
@@ -36,6 +36,10 @@ class Squad extends Model
         ->wherePivot('admin', true)
         ->where('user_id', $userId)
         ->exists();
+}
+public function adminPlayer()
+{
+    return $this->players()->wherePivot('admin', 1)->first();
 }
 
    

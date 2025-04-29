@@ -65,71 +65,35 @@
 
         <!-- Detailed Stats -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-             <!-- Terrains par Taux de Réservation -->
-            <div class="col-span-1 lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200 shadow-md">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">Terrains par Taux de Réservation</h3>
-                    <div class="w-10 h-10 rounded-full bg-[#580a21]/20 flex items-center justify-center">
-                        <i class="fas fa-calendar-check text-[#580a21]"></i>
-                    </div>
-                </div>
-                
-                <!-- Graphique à barres horizontales -->
-               <div class="mt-4 space-y-4">
-    <div>
-        <div class="flex justify-between text-sm mb-1">
-            <span class="text-gray-800">Plus de 10 réservations</span>
-            <span class="font-medium text-[#580a21]">{{ $moreThanTenReservations }} terrains</span>
-        </div>
-        <div class="h-2 bg-rose-50 rounded-full overflow-hidden">
-            <div class="h-full bg-[#580a21] rounded-full" style="width: {{ $percentageMoreThanTen }}%"></div>
+            <!-- Terrains par Taux de Réservation -->
+<div class="col-span-1 lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200 shadow-md">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-medium text-gray-800">Terrains par Taux de Réservation</h3>
+        <div class="w-10 h-10 rounded-full bg-[#580a21]/20 flex items-center justify-center">
+            <i class="fas fa-calendar-check text-[#580a21]"></i>
         </div>
     </div>
-    
-    <div>
-        <div class="flex justify-between text-sm mb-1">
-            <span class="text-gray-800">5 à 10 réservations</span>
-            <span class="font-medium text-[#580a21]/80">{{ $fiveToTenReservations }} terrains</span>
-        </div>
-        <div class="h-2 bg-rose-50 rounded-full overflow-hidden">
-            <div class="h-full bg-[#580a21]/80 rounded-full" style="width: {{ $percentageFiveToTen }}%"></div>
-        </div>
-    </div>
-    
-    <div>
-        <div class="flex justify-between text-sm mb-1">
-            <span class="text-gray-800">1 à 4 réservations</span>
-            <span class="font-medium text-[#580a21]/60">{{ $oneToFourReservations }} terrains</span>
-        </div>
-        <div class="h-2 bg-rose-50 rounded-full overflow-hidden">
-            <div class="h-full bg-[#580a21]/60 rounded-full" style="width: {{ $percentageOneToFour }}%"></div>
-        </div>
-    </div>
-    
-    <div>
-        <div class="flex justify-between text-sm mb-1">
-            <span class="text-gray-800">Aucune réservation</span>
-            <span class="font-medium text-gray-500">{{ $noReservations }} terrains</span>
-        </div>
-        <div class="h-2 bg-rose-50 rounded-full overflow-hidden">
-            <div class="h-full bg-gray-500 rounded-full" style="width: {{ $percentageNoReservations }}%"></div>
+
+<!-- Graphique circulaire -->
+<div class="mt-6 flex h-[70%] justify-center">
+    <canvas id="reservationChart" class="w-full max-w-xs h-[348px]"></canvas>
+</div>
+
+
+    <div class="mt-6 p-4 bg-rose-50 rounded-lg">
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-green-600/20 flex items-center justify-center mr-3">
+                <i class="fas fa-arrow-trend-up text-green-600"></i>
+            </div>
+            <div>
+                <h4 class="font-medium text-gray-800">15 terrains dépassent 5 réservations</h4>
+            </div>
         </div>
     </div>
 </div>
-                
-                <div class="mt-6 p-4 bg-rose-50 rounded-lg">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-full bg-green-600/20 flex items-center justify-center mr-3">
-                            <i class="fas fa-arrow-trend-up text-green-600"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-800">{{  $fiveToTenReservations }} terrains dépassent 5 réservations</h4>
-                        </div>
-                    </div>
-                </div>
-                
-             
-            </div>
+
+
+
                        <!-- Liste des derniers terrains ajoutés -->
           <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-md">
     <div class="flex justify-between items-center mb-6">
@@ -178,12 +142,62 @@
            
         </div>
     </div>
-    <script>
 
-    function reloadPage() {
+   
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+     function reloadPage() {
           location.reload();
      };
+    const data = {
+        noReservations: {{ json_encode($noReservations ?? 0) }},
+        oneToFourReservations: {{ json_encode($oneToFourReservations ?? 0) }},
+        fiveToTenReservations: {{ json_encode($fiveToTenReservations ?? 0) }},
+        moreThanTenReservations: {{ json_encode($moreThanTenReservations ?? 0) }},
+    };
 
-    </script>
+    const ctx = document.getElementById('reservationChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Plus de 10 réservations',
+                '5 à 10 réservations',
+                '1 à 4 réservations',
+                'Aucune réservation'
+            ],
+            datasets: [{
+                label: 'Terrains',
+                data: [
+                    data.moreThanTenReservations,
+                    data.fiveToTenReservations,
+                    data.oneToFourReservations,
+                    data.noReservations
+                ],
+                backgroundColor: [
+                    '#580a21',
+                    '#580a21cc',
+                    '#580a2199',
+                    '#6b7280'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#374151',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
   
 @endsection

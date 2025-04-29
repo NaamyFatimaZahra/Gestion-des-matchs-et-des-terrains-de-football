@@ -331,7 +331,7 @@
                         </div>
                         <div>
                             <div class="font-medium text-gray-800">{{ 
-                            Auth::user()->name === $comment->user->name ? 'VOUS' : $comment->user->name 
+                            Auth::check() && Auth::user()->name === $comment->user->name ? 'VOUS' : $comment->user->name 
                             }}</div>
                             <div class="text-sm text-gray-600">{{ $comment->created_at->format('d/m/Y') }}</div>
                         </div>

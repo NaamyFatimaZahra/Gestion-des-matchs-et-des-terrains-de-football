@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\TerrainController as TerrainController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\joueur\InvitationController;
+use App\Http\Controllers\joueur\RequestController;
 use App\Http\Controllers\joueur\SquadContoller;
 use Illuminate\Support\Facades\Route;
 
@@ -105,11 +107,16 @@ Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])-
     Route::get('/squads',[SquadContoller::class,'index'])->name('joueur.squads');
     Route::get('/squadBuilder',[SquadContoller::class,'create'])->name('joueur.squadBuilder.create'); 
     Route::post('/squadBuilder',[SquadContoller::class,'store'])->name('joueur.squadBuilder.store');
-    Route::get('/squad/joueur/{city}/{squadId}', [SquadContoller::class, 'getSquadPlayers'])->name('joueur.squad.players');
     Route::post('/squad/joueur', [SquadContoller::class, 'storePlayer'])->name('joueur.squad.add');
+    Route::delete('/squad/{squadId}', [SquadContoller::class, 'destroySquad'])->name('squads.destroy');
+    Route::delete('/squad/joueur/{playerId}/{squadId}', [SquadContoller::class, 'deletePlayer'])->name('joueur.squad.delete');
+    Route::get('/squad/joueur/{city}/{squadId}', [SquadContoller::class, 'getSquadPlayers'])->name('joueur.squad.players');
     Route::get('/squad/{id}',[SquadContoller::class,'show'])->name('joueur.squad.show');
     Route::delete('/comments/{id}',[joueurComment::class,'destroy'])->name('joueur.comment.destroy');
     Route::post('/comments',[joueurComment::class,'store'])->name('joueur.comment.store');
+    Route::get('/requests',[RequestController::class,'index'])->name('joueur.requests');
+    Route::get('/invitations',[InvitationController::class,'index'])->name('joueur.invitations');
+    Route::patch('/requests',[RequestController::class,'updateAcceptationUser'])->name('joueur.requests.update');
 });
 
 

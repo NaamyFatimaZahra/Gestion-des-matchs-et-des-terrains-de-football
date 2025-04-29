@@ -49,6 +49,7 @@
     <div class="mb-6">
         <label class="block text-sm font-medium text-[#d8d9dd]">Formation : <span class="text-red-500">*</span></label>
         <input type="text" id="formation" name="formation" class="hidden" />
+       
         <div class="flex justify-center gap-4 mt-2 flex-wrap">
             <p
             id="formation_121"
@@ -107,26 +108,48 @@
     <script src="{{ asset('js/morrocaineCities.js') }}"></script>
      <script>
         let inputFormation =  document.getElementById("formation");
+        const positionSelect = document.getElementById("position");
+       
+       
         const formationPositions = {
     '121': ['GK', 'CB', 'RM', 'LM', 'ST'],
-    '331': ['GK', 'CB', 'RB', 'LB', 'CM', 'RM', 'LM', 'ST'],
+    '331': ['GK', 'CBR', 'CBL', 'LM', 'RM', 'ST'],
     '433': ['GK', 'CBR', 'CBL', 'LB', 'RB', 'CDMR', 'CM','CDML' ,'RW', 'ST', 'LW']
 };
-    function selectFormation(formation){
-       
-     
-        const positionSelect = document.getElementById("position");
-        inputFormation.value = formation;
-          document.getElementById("selectError").style.display = "none"; 
+
+  
     
+    
+
+    function selectFormation(formation){
+    inputFormation.value = formation;
+    
+    document.getElementById("selectError").style.display = "none"; 
+     
     // Clear existing options
     positionSelect.innerHTML = '<option value="">Sélectionnez votre position</option>';
-    
     // Add new options based on formation
     formationPositions[formation].forEach(position => {
         const option = document.createElement('option');
-        option.value = position;
-        option.textContent = position;
+        if(position==='CBR'){
+           
+        option.textContent = 'CB (Right)';
+        
+        }else if(position==='CBL'){
+            
+        option.textContent = 'CB (Left)';
+      
+        }else if(position==='CDMR'){
+        option.textContent = 'CDM (Right)';
+        
+        }else if(position==='CDML'){
+        option.textContent = 'CDM (Left)';
+         
+        }else{
+            option.textContent = position;
+        }
+             option.value = position;
+        
         positionSelect.appendChild(option);
     });
 

@@ -16,11 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('squad_id')->constrained()->onDelete('cascade');
             $table->string('position')->nullable();
+            $table->enum('side',['R','L'])->nullable();
             $table->boolean('admin')->default(false);
             $table->enum('acceptationUser', ['accepté', 'en attente', 'refusé'])->default('en attente');
+            $table->enum('InvitationType',['admin','member'])->default('admin');
             $table->enum('equipe', ['1', '2'])->default('1');
             $table->timestamps();
-            $table->softDeletes();
+            
         });
     }
 

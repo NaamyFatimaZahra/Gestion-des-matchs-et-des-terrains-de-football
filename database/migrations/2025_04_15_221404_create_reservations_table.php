@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('date_reservation');
             $table->time('heure_debut');
             $table->time('heure_fin');
+            $table->enum('reservationType',['group','local']);
+            $table->unsignedInteger('squad_id')->nullable();
+            $table->foreignId('squad_id')->references('id')->on('squads')->onDelete('cascade');
             $table->enum('status', ['confirmee', 'en_attente', 'annulee', 'terminee'])->default('en_attente');
             $table->enum('payment_status', ['payee', 'non_payee'])->default('non_payee');
             $table->text('notes')->nullable();

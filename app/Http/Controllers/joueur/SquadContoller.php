@@ -32,7 +32,6 @@ class SquadContoller extends Controller
     }
     public function show($id)
     {
-       
         $squad=$this->squadRepository->getSquadById($id);
         $players = $this->squadRepository->getPlayersBySquadId($id);
         
@@ -56,6 +55,15 @@ class SquadContoller extends Controller
     {
         return view('joueur.squadBuilder');
     }
+    public function storePlayer(Request $request){
+        // $this->squadRepository->checkPlayerIfExistInSquad($request['squad_id'],$request['player_id']);
+         if($this->squadRepository->addPlayerToSquad($request['squad_id'],$request['player_id'],$request['equipe'],$request['position'],$request['side'],$request['invitationType'])){
+            if($request['invitationType']==='member'){
+                return redirect()->back();
+            }
+            return response()->json([true]);
+         }
+    }
     public function store(SquadRequest $request)
     {
         
@@ -66,10 +74,10 @@ class SquadContoller extends Controller
             'formation' => $request->input('formation'),
             'position' => $request->input('position'),
         ]);
-      
+     
      
        if($squad) {
-          return  $this->show($squad->id);
+          return redirect()->route('joueur.squad.show',$squad->id);
         } else {    
             return redirect()->back()->with('error', 'Failed to create squad.');
         }
@@ -86,12 +94,23 @@ class SquadContoller extends Controller
             ]
         );
     }
-    public function storePlayer(Request $request){
-       
-         if($this->squadRepository->addPlayerToSquad($request['squad_id'],$request['player_id'],$request['equipe'],$request['position'])){
-            return response()->json([true]);
-         }
+     public function deletePlayer($playerId, $squadId)
+    {
+        $this->squadRepository->deletePlayer($playerId, $squadId);
+        
+        return redirect()->back()->with('success', 'Joueur supprimé avec succès');
     }
+
+public function destroySquad($squadId)
+{
+    if ($this->squadRepository->deleteSquad($squadId)) {
+        return redirect()->route('joueur.squads')->with('success', 'Le squad a été supprimé avec succès.');
+    } else {
+        return redirect()->route('joueur.squads')->with('error', 'Erreur lors de la suppression du squad.');
+    }
+}
+
+
    
 
     
