@@ -5,6 +5,7 @@ namespace App\Repositories\Interface;
 interface SquadRepositoryInterface
 {
     public function getAllSquads();
+    public function getSquadByJoueur();
     public function getSquadById($id);
     public function getPlayersBySquadId($id);
     public function createSquad(array $data);

@@ -8,6 +8,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
     <title> @yield('title') </title>
     @vite('resources/css/app.css')
     <style>
@@ -37,6 +43,35 @@
       .hamburger.active .hamburger-line:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
       }
+      
+      /* Custom scrollbar styling */
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+      }
+      
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+      }
+      
+      .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+      
+      /* For Firefox */
+      .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+      }
+      
+      /* Smooth scrolling for all browsers */
+      html {
+        scroll-behavior: smooth;
+      }
     </style>
   </head>
   <body class="relative w-full bg-gray-100">
@@ -58,17 +93,45 @@
             <li><a href="{{ route('joueur.invitations') }}" class="nav-link hover:text-gray-300 transition duration-300">Invitations</a></li>
           @endif
           
-          <li><a href="{{ route('about') }}" class="nav-link hover:text-gray-300 transition duration-300">mes squads</a></li>
-          <li class="flex items-center relative mx-4">
+          <li><a href="{{ route('joueur.squads.user') }}" class="nav-link hover:text-gray-300 transition duration-300">mes squads</a></li>
+          <li class="flex items-center relative h-fit w-fit mx-4">
             <input
               type="text"
+              onkeyup="searchCities(this.value)"
               id="searchInput"
               class="pl-3 bg-white/20 text-white h-[2.5rem] w-[17rem] rounded-md capitalize outline-none placeholder-white"
-              placeholder="search for city"
+              placeholder="search for terrains by city"
             />
             <label class="absolute right-4 text-white" for="searchInput">
               <i class="fa-solid fa-magnifying-glass"></i>
             </label>
+            <!-- POP UP -->
+            <div
+              id="container_terrains"
+              class="hidden w-[140%] h-[40vh] absolute top-[120%] left-[50%] translate-x-[-50%]  z-30"
+            >
+              <div
+                class="relative w-[90%] max-w-4xl m-auto md:h-[100%]  bg-[#000000b5] rounded-xl overflow-hidden"
+              >
+                <img
+                  src="{{ asset('assets/img/pop_up.jpg') }}"
+                  alt=""
+                  class="absolute w-full h-full object-cover  z-[-5]"
+                />
+                <button
+                  onclick="closeSearchCities()"
+                  class="pt-[1rem] pr-[1rem] text-[1.4rem] h-[20%] w-[97%] text-end text-white"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div
+                  id="content_search"
+            class="flex  gap-4 w-full h-[100%] justify-center items-center px-6  overflow-x-auto scrollbar-thin scrollbar-track-transparent scroll-smooth"
+                >
+                  <!-- Content will be populated here by JavaScript -->
+                </div>
+              </div>
+            </div>
           </li>
           
           @if (Auth::check())
@@ -139,14 +202,14 @@
                 <li><a href="/squads" class="block py-2 hover:text-gray-300 transition duration-300">squads</a></li>
               @endif
               
-              <li><a href="{{ route('about') }}" class="block py-2 hover:text-gray-300 transition duration-300">mes Squads</a></li>
+              <li><a href="{{ route('joueur.squads.user') }}" class="block py-2 hover:text-gray-300 transition duration-300">mes Squads</a></li>
               
               <li class="py-2">
                 <div class="relative">
                   <input
                     type="text"
                     class="pl-3 bg-white/20 text-white h-12 w-full rounded-md capitalize outline-none placeholder-white"
-                    placeholder="search for city"
+                    placeholder=""
                   />
                   <label class="absolute right-4 top-3 text-white">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -190,7 +253,7 @@
     </header>
 
     <!-- Main content with padding for fixed header -->
-    <main class=" min-h-screen"> 
+    <main class="min-h-screen"> 
       @yield('content')
     </main>
     
@@ -206,7 +269,7 @@
     <div class="absolute left-1/2 transform -translate-x-1/2">
       
        <img 
-            src="../assets/img/soccer-red-removebg-preview.png" 
+            src="http://127.0.0.1:8000/assets/img/soccer-red-removebg-preview.png" 
             class=" w-14" 
             alt="logo" 
         />
@@ -293,6 +356,98 @@
           document.body.style.overflow = 'auto';
         }
       });
+
+function searchCities(value) {
+  let containerTerrains = document.getElementById('container_terrains');
+  let contentSearch = document.getElementById('content_search');
+  
+  if (value.length > 0) {
+    containerTerrains.classList.remove('hidden');
+    
+    // Afficher un indicateur de chargement
+    contentSearch.innerHTML = `
+      <div class="text-center w-full col-span-1 sm:col-span-2 lg:col-span-3">
+        <i class="fa-solid fa-spinner fa-spin fa-2x mb-3"></i>
+        <p>Recherche en cours...</p>
+      </div>
+    `;
+    
+    fetch(`/search/terrains/${value}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Erreur réseau');
+      return response.json();
+    })
+    .then(data => {
+      contentSearch.innerHTML = '';
+      console.log(data[0]);
+      if (data[0].length>0) {
+        data[0].forEach(terrain => {
+          contentSearch.innerHTML+=`
+            <div class="bg-white/10 min-w-[50%] mb-[5rem] rounded-lg p-4 hover:bg-white/20 transition duration-300 transform ">
+              <a href="/terrains/${terrain.id}" class="block h-full">
+                <h3 class="font-bold text-lg">${terrain.name}</h3>
+                <p class="mt-1"><i class="fa-solid fa-location-dot mr-2"></i>${terrain.city}</p>
+                ${terrain.size ? `<p class="mt-1"><i class="fa-solid fa-ruler mr-2"></i>${terrain.size}</p>` : ''}
+                ${terrain.price_hour ? `<p class="text-green-400 font-semibold mt-2">${terrain.price_hour} DH/heure</p>` : ''}
+                <button class="mt-3 bg-[#580a21] hover:bg-[#6c0c29] text-white py-1 px-4 rounded text-sm transition-all duration-300">
+                  Voir détails
+                </button>
+              </a>
+            </div>`;
+        });
+      } else {
+        // Aucun résultat trouvé
+        contentSearch.innerHTML = `
+          <div class="text-center mb-[5rem] w-full col-span-1 sm:col-span-2 lg:col-span-3">
+            <i class="fa-solid fa-search fa-2x mb-3"></i>
+            <p class="text-lg">Aucun terrain trouvé pour "${value}"</p>
+            <p class="text-sm text-gray-400 mt-2">Essayez une autre ville ou consultez tous les terrains</p>
+            <a href="/terrains" class="inline-block mt-4 bg-[#580a21] hover:bg-[#6c0c29] text-white py-2 px-4 rounded transition-all duration-300">
+              Voir tous les terrains
+            </a>
+          </div>
+        `;
+      }
+    })
+    .catch(error => {
+      console.error("Erreur:", error);
+      contentSearch.innerHTML = `
+        <div class="text-center w-full col-span-1 sm:col-span-2 lg:col-span-3">
+          <i class="fa-solid fa-circle-exclamation fa-2x mb-3"></i>
+          <p class="text-lg text-red-400">Erreur lors du chargement des terrains</p>
+          <p class="mt-2">Veuillez réessayer plus tard</p>
+        </div>
+      `;
+    });
+  } else {
+    containerTerrains.classList.add('hidden');
+  }
+}
+
+function closeSearchCities() {
+  const containerTerrains = document.getElementById('container_terrains');
+  containerTerrains.classList.add('hidden');
+  
+  // Vider l'input de recherche
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = '';
+  }
+}
     </script>
   </body>
 </html>
+
+
+
+
+
+
+
+ 

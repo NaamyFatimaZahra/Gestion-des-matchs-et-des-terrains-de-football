@@ -8,10 +8,12 @@ class Reservation extends Model
 {
     protected $fillable = [
         'terrain_id',
+         'squad_id',
         'date_reservation',
         'heure_debut',
         'heure_fin',
-        'status',        
+        'status',     
+        'reservationType',
         'payment_status', 
         'deleted_at'
     ];

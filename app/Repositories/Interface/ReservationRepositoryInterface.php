@@ -11,7 +11,7 @@ interface ReservationRepositoryInterface
     public function changeStatusToTermine();
      public function getReservationById($id);
 
-    public function createReservation(array $reservationData);
+    
 
    
     public function updateReservation($id, array $reservationData);
@@ -24,5 +24,10 @@ interface ReservationRepositoryInterface
     public function sendConfirmationEmail($id);
     public function checkTerrainAvailability($terrainId, $date, $heureDebut, $heureFin, $excludeReservationId = null);
     public function getReservationStats($proprietaireId);
+    public function getReservationsByDate($date,$terrainId,$squadId);
+    public function checkOverlappingReservations($date, $terrainId, $heureDebut, $heureFin);
+   public function createReservation(array $data);
+   public function getReservationsBySquadId($id);
+
 
 }

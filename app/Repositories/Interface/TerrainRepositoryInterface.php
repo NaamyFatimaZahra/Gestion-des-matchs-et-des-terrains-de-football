@@ -14,23 +14,10 @@ interface TerrainRepositoryInterface
   
     public function getAll(): Collection;
     public function updateApproval(Terrain $terrain, string $approval): bool;
+    public function getTerrainsByCity($city): Collection;
+    public function getAllWithoutTrashed() ;
 
-
-    //proprietaire methods
-
-
-
-
-
-
-
-
-
-
-    public function getAllWithoutTrashed(): Collection;
-    public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = []);
-
-    
+    public function getFilteredTerrains($type, $value);
      public function findById($id);
     public function getAllByProprietaire(): Collection;
     

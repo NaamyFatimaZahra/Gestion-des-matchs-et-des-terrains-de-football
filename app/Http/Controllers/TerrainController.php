@@ -35,4 +35,11 @@ class TerrainController extends Controller
             'terrain' => $terrain,
         ]);
     }
+
+     public function filter($type, $value)
+    {
+        $transformedTerrains=$this->terrainRepository->getFilteredTerrains($type,$value);
+
+        return response()->json($transformedTerrains);
+    }
 }

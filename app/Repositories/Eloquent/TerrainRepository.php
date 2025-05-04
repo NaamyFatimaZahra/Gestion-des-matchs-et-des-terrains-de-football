@@ -14,14 +14,16 @@ use Illuminate\Support\Facades\DB;
 class TerrainRepository implements TerrainRepositoryInterface
 {
 
-
-
-
-            //admin methods
+       
         public function getAll(): Collection
             {
                 return Terrain::all();
             }
+        public function getTerrainsByCity($city): Collection
+            {
+                return Terrain::where('admin_approval','approuve')
+                ->where('city', 'LIKE', "{$city}%")->get();
+           }
 
            
         public function updateApproval(Terrain $terrain, string $approval): bool{
@@ -31,14 +33,16 @@ class TerrainRepository implements TerrainRepositoryInterface
             }
             
             return $terrain->save();
-        }
+           }
 
 
 
-        public function getAllWithoutTrashed(): Collection
+        public function getAllWithoutTrashed()
         {
-            return Terrain::withoutTrashed()->with('Documents')->where('status','!=','en_attente')->where('admin_approval','approuve')->get();
-        }
+            return Terrain::withoutTrashed()->with('Documents')
+            ->where('status','!=','en_attente')
+            ->where('admin_approval','approuve')->paginate(9);
+          }
     
 
      public function findById($id)
@@ -49,26 +53,7 @@ class TerrainRepository implements TerrainRepositoryInterface
     }
 
 
-     public function getFilteredTerrains($status = [], $minPrice = 0, $maxPrice = 1000, $surfaces = [])
-    {
-        $query = Terrain::where('admin_approval', true);
-        
-        // Apply status filter
-        if (!empty($status)) {
-            $query->whereIn('status', $status);
-        }
-        
-        // Apply price range filter
-        $query->whereBetween('price', [$minPrice, $maxPrice]);
-        
-        // Apply surface filter
-        if (!empty($surfaces)) {
-            $query->whereIn('surface', $surfaces);
-        }
-        
-        // Sort by creation date (latest first)
-        return $query->orderBy('created_at', 'desc')->paginate(6);
-    }
+    
     public function getAllByProprietaire(): Collection
     {
           $proprietaireId = Auth::id();
@@ -185,12 +170,7 @@ class TerrainRepository implements TerrainRepositoryInterface
         }
     }
     
-    /**
-     * Supprime un terrain
-     * 
-     * @param Terrain $terrain
-     * @return bool
-     */
+   
     public function delete(Terrain $terrain): bool
 {
     // On tente de soft delete le modèle
@@ -206,4 +186,28 @@ public function isDeleted(Terrain $terrain): bool
     return $terrain->trashed();
 }
 
+
+ public function getFilteredTerrains($typeFilter, $value)
+    {
+       
+        $terrains = Terrain::query()->with('documents')
+            ->where('admin_approval', 'approuve')
+             ->where('status', '!=', 'en_attente');
+            
+        if ($typeFilter == 'surface' && !empty($value)) {
+            $terrains->where('surface', $value);
+        } else if ($typeFilter == 'max_price' && !empty($value)) {
+            $terrains->where('price', '<=', (int)$value);
+        } else if ($typeFilter == 'search' && !empty($value)) {
+            $terrains->where('name', 'LIKE', "{$value}%");
+        } else {
+            
+        }
+        
+        $filteredTerrains = $terrains->get();
+      
+        
+        return $filteredTerrains;
+    
+    }
 }

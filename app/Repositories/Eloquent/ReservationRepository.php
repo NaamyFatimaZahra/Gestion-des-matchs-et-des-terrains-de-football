@@ -62,11 +62,6 @@ public function getReservationsByTerrain($terrainId)
         return $this->reservation->findOrFail($id);
     }
 
-  
-    public function createReservation(array $reservationData)
-    {
-        return $this->reservation->create($reservationData);
-    }
 
     public function changeStatusToTermine(){
          $this->reservation->where('status', 'confirmee')
@@ -193,4 +188,58 @@ public function sendConfirmationEmail($id)
 
         return $stats;
     }
+    public function getReservationsByDate($date,$terrainId,$squadId){
+          return Reservation::where('date_reservation',$date)
+          ->where('terrain_id',$terrainId)->with('terrain')->get();
+    }
+
+
+public function checkOverlappingReservations($date, $terrainId, $heureDebut, $heureFin)
+{
+    return Reservation::where('terrain_id', $terrainId)
+        ->where('date_reservation', $date)
+        ->where(function($query) use ($heureDebut, $heureFin) {
+            // Cas 1: La nouvelle réservation commence pendant une réservation existante
+            $query->where(function($q) use ($heureDebut, $heureFin) {
+                $q->where('heure_debut', '<=', $heureDebut)
+                  ->where('heure_fin', '>', $heureDebut);
+            })
+            // Cas 2: La nouvelle réservation se termine pendant une réservation existante
+            ->orWhere(function($q) use ($heureDebut, $heureFin) {
+                $q->where('heure_debut', '<', $heureFin)
+                  ->where('heure_fin', '>=', $heureFin);
+            })
+            // Cas 3: La nouvelle réservation englobe complètement une réservation existante
+            ->orWhere(function($q) use ($heureDebut, $heureFin) {
+                $q->where('heure_debut', '>=', $heureDebut)
+                  ->where('heure_fin', '<=', $heureFin);
+            });
+        })
+        ->where('status', '!=', 'cancelled')
+        ->whereNull('deleted_at')
+        ->get();
+}
+
+
+public function createReservation(array $data)
+{
+    // Déterminer le type de réservation
+    $reservationType = isset($data['squad_id']) ? 'group' : 'local';
+    
+    // Créer la réservation avec Eloquent create()
+    $reservation = Reservation::create([
+        'terrain_id' => $data['terrain_id'],
+        'squad_id' => $data['squad_id'] ,
+        'date_reservation' => $data['date_reservation'],
+        'heure_debut' => $data['heure_debut'],
+        'heure_fin' => $data['heure_fin'],
+        'reservationType' => $reservationType,
+       
+    ]);
+    
+    return $reservation;
+}
+public function getReservationsBySquadId($id){
+    return Reservation::where('squad_id',$id)->with('terrain')->get();
+}
 }

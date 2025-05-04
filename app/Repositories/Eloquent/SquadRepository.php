@@ -12,6 +12,27 @@ class SquadRepository implements SquadRepositoryInterface
     public function getAllSquads(){
         return Squad::all();
     }
+    public function getSquadByJoueur(){
+        
+         $userId = Auth::id(); 
+
+    
+    $squadIds = DB::table('usersquads')
+        ->where('user_id', $userId)
+        ->where('acceptationUser','accepté')
+        ->pluck('squad_id'); 
+
+    $squads = [];
+
+    foreach ($squadIds as $squadId) {
+          $squad=Squad::find($squadId);
+       
+             $squads[] =  $squad;
+        
+    }
+    
+    return  $squads; 
+    }
     public function getSquadById($id)
     {
         return Squad::find($id);
@@ -178,12 +199,13 @@ class SquadRepository implements SquadRepositoryInterface
  }
 
  public function checkPlayerIfExistInSquad($squad_id,$player_id){
-
+  
     $squad=Squad::find($squad_id);
-    $player=$squad->players->where('user_id',$player_id);
-    dd($player);
+    $player=$squad->players()->where('user_id',$player_id)->get();
     
-
-
+    if(isset($player[0])){
+        return true;
+    }
+    return false;
  }
 }

@@ -10,6 +10,7 @@ use App\Repositories\Interface\SquadRepositoryInterface;
 use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
+use Illuminate\Support\Facades\DB;
 
 class SquadContoller extends Controller
 {
@@ -22,11 +23,18 @@ class SquadContoller extends Controller
         $this->squadRepository = $squadRepository;
     }
      public function index()
-    {
+    {   
        
             $squads = $this->squadRepository->getAllSquads();
           
         return view('joueur.squads',[
+            'squads' => $squads,
+        ]);
+    }
+    public function squad_user(){
+          $squads = $this->squadRepository->getSquadByJoueur();
+         
+        return view('joueur.user_squad',[
             'squads' => $squads,
         ]);
     }
@@ -56,7 +64,9 @@ class SquadContoller extends Controller
         return view('joueur.squadBuilder');
     }
     public function storePlayer(Request $request){
-        // $this->squadRepository->checkPlayerIfExistInSquad($request['squad_id'],$request['player_id']);
+        if($this->squadRepository->checkPlayerIfExistInSquad($request['squad_id'],$request['player_id'])){
+            return redirect()->back()->with('success','tu est deja membre de ce groupe ');
+        }
          if($this->squadRepository->addPlayerToSquad($request['squad_id'],$request['player_id'],$request['equipe'],$request['position'],$request['side'],$request['invitationType'])){
             if($request['invitationType']==='member'){
                 return redirect()->back();
@@ -101,17 +111,65 @@ class SquadContoller extends Controller
         return redirect()->back()->with('success', 'Joueur supprimé avec succès');
     }
 
-public function destroySquad($squadId)
-{
-    if ($this->squadRepository->deleteSquad($squadId)) {
-        return redirect()->route('joueur.squads')->with('success', 'Le squad a été supprimé avec succès.');
-    } else {
-        return redirect()->route('joueur.squads')->with('error', 'Erreur lors de la suppression du squad.');
+    public function destroySquad($squadId)
+    {
+        if ($this->squadRepository->deleteSquad($squadId)) {
+            return redirect()->route('joueur.squads')->with('success', 'Le squad a été supprimé avec succès.');
+        } else {
+            return redirect()->route('joueur.squads')->with('error', 'Erreur lors de la suppression du squad.');
+        }
     }
+
+   public function filtersquads($typeFilter, $value)
+{
+    $squads = Squad::query();
+     if ($typeFilter == 'formation' && !empty($value)) {
+        $squads->where('formation', $value);
+    } else if ($typeFilter == 'city' && !empty($value)) {
+        $squads->where('city', $value);
+    } else if ($typeFilter == 'search' && !empty($value)) {
+        $squads->where('name_squad', 'LIKE', $value . '%');
+    }else{
+        
+    }
+    
+    $filteredSquads = $squads->with('players')->get();
+    
+    return response()->json($filteredSquads);
 }
 
+public function filterSquadByPlayer($typeFilter, $value)
+{
+    $userId = Auth::id();
 
-   
+    $squadIds = DB::table('usersquads')
+        ->where('user_id', $userId)
+        ->where('acceptationUser', 'accepté')
+        ->pluck('squad_id');
+
+    // Start query with squads the user is part of
+    $query = Squad::whereIn('id', $squadIds);
+
+    // Apply the filter if provided
+    if (!empty($value)) {
+        switch ($typeFilter) {
+            case 'formation':
+                $query->where('formation', $value);
+                break;
+            case 'city':
+                $query->where('city', $value);
+                break;
+            case 'search':
+                $query->where('name_squad', 'LIKE', $value . '%');
+                break;
+        }
+    }
+
+    $filterSquads = $query->with('players')->get();
+
+    return response()->json($filterSquads);
+}
+
 
     
 }

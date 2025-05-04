@@ -5,7 +5,7 @@
     <!-- Image de fond -->
     <div class="relative md:w-[100%] w-[100%] h-full">
         <img 
-            src="../assets/img/stud-red.svg" 
+             src="http://127.0.0.1:8000/assets/img/stud-red.svg" 
             class="fixed w-[100%] h-[100vh] object-cover z-[-3] md:brightness-[50%]" 
             alt="" 
         />
@@ -17,7 +17,7 @@
                 <a href="#" class="hover:text-red-500">Home</a> / 
                 <span class="text-gray-400">Squads</span>
             </div>
-            <h1 class="text-4xl font-bold uppercase">Match Schedule</h1>
+            <h1 class="text-4xl font-bold uppercase">mes Matchs</h1>
         </header>
    
  <!-- Composant Filtre Stylé (sans jaune) -->
@@ -263,7 +263,7 @@ function cityFilter(){
 }
 
 function fetchData(typeFilter,formationValue){
-      fetch(`/joueur/squad/filter/${typeFilter}/${formationValue}`, {
+      fetch(`/joueur/player/filter/${typeFilter}/${formationValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -275,6 +275,7 @@ function fetchData(typeFilter,formationValue){
       return response.json();
     })
     .then(data => {
+        
       updateSquadsContainer(data);
         
     })
@@ -356,7 +357,7 @@ function updateSquadsContainer(squads) {
                     <div class="flex flex-wrap gap-1 sm:gap-2 mb-3">
                         <span class="bg-[#580a21]/20 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">${squad.formation}</span>
                         <span class="bg-gray-600/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">
-                            Joueurs: ${squad.players.length}
+                            Joueurs: 
                         </span>
                     </div>
                     <div class="flex">

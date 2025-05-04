@@ -6,7 +6,8 @@ use App\Http\Controllers\joueur\CommentContoller as joueurComment;
 use App\Http\Controllers\proprietaire\DashboardController as proprietaireDashboard;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TerrainController as adminTerrain;
-use App\Http\Controllers\proprietaire\ReservationController;
+use App\Http\Controllers\proprietaire\ReservationController as proprietaireReservation;
+use App\Http\Controllers\joueur\ReservationController as joueurReservation;
 use App\Http\Controllers\proprietaire\TerrainController as proprietaireTerrain;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\joueur\TerrainController as joueurTerrain;  
@@ -30,15 +31,17 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/about', [HomeController::class,'about'])->name('about');
+Route::get('/search/terrains/{city}', [HomeController::class,'getCitiesSearched'])->name('search.terrains.city');
 Route::get('/terrains',[TerrainController::class,'index'])->name('terrains');
 Route::get('/terrains/{id}',[TerrainController::class,'show'])->name('details_terrain');
-
+Route::get('/terrains/filter/{type}/{value}', [TerrainController::class, 'filter'])->name('terrains.filter');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/update-picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.update-picture');
+    
 
 });
 
@@ -90,8 +93,8 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
     Route::patch('terrain/{terrain}/update-status',[proprietaireTerrain::class,'updateStatus'])->name('proprietaire.terrain.update-status');
 
     //proprietaire reservations
-    Route::get('/reservations',[ReservationController::class,'index'])->name('proprietaire.reservation.index'); 
-    Route::patch('/reservations/{id}',[ReservationController::class,'updateStatus'])->name('proprietaire.reservation.update-status'); 
+    Route::get('/reservations',[proprietaireReservation::class,'index'])->name('proprietaire.reservation.index'); 
+    Route::patch('/reservations/{id}',[proprietaireReservation::class,'updateStatus'])->name('proprietaire.reservation.update-status'); 
 
     
 
@@ -105,6 +108,9 @@ Route::prefix('proprietaire')->middleware(['auth','role:proprietaire','status'])
 
 Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])->group(function(){
     Route::get('/squads',[SquadContoller::class,'index'])->name('joueur.squads');
+    Route::get('/squads/team',[SquadContoller::class,'squad_user'])->name('joueur.squads.user');
+    Route::get('/squad/filter/{typeFilter}/{formationValue}',[SquadContoller::class,'filtersquads']);
+    Route::get('/player/filter/{typeFilter}/{formationValue}',[SquadContoller::class,'filterSquadByPlayer']);
     Route::get('/squadBuilder',[SquadContoller::class,'create'])->name('joueur.squadBuilder.create'); 
     Route::post('/squadBuilder',[SquadContoller::class,'store'])->name('joueur.squadBuilder.store');
     Route::post('/squad/joueur', [SquadContoller::class, 'storePlayer'])->name('joueur.squad.add');
@@ -117,7 +123,12 @@ Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])-
     Route::get('/requests',[RequestController::class,'index'])->name('joueur.requests');
     Route::get('/invitations',[InvitationController::class,'index'])->name('joueur.invitations');
     Route::patch('/requests',[RequestController::class,'updateAcceptationUser'])->name('joueur.requests.update');
+    Route::get('/reservations/{date}/{terrainId}/{squadId}',[joueurReservation::class,'getReservationsByDate']);
+    Route::post('/reservations/add',[joueurReservation::class,'addReservations']);
+    Route::get('/squad/reservations/{squadId}',[joueurReservation::class,'getReservationsBySquad']);
+
 });
+
 
 
 
