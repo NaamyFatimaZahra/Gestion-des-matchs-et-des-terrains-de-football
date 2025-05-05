@@ -37,55 +37,53 @@ class UserRepository implements UserRepositoryInterface
    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    public function updateProfilePicture(User $user, string $picturePath): bool
-{
-    $user->profile_picture = $picturePath;
-    return $user->save();
-}
-   public function updateUserProfile(int $userId, array $data): bool
-{
-        $user = User::findOrFail($userId);
+//   Profile
+ public function updateUserProfile(int $userId, array $data)
+    {
+        $user = User::find($userId);
         
-        // Mettre à jour les attributs
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->city = $data['city'] ?? $user->city;
-        $user->phone_number = $data['phone_number'] ?? $user->phone_number;
-        $user->bio = $data['bio'] ?? $user->bio;
-        
-       
-        if ($user->save()) {
-            return true;
-        } else {
+        if (!$user) {
             return false;
         }
+        
+        
+        return $user->update($data);
+    }
     
-}
+    public function updateProfilePicture(int $userId, string $path)
+    {
+        $user = User::find($userId);
+        
+        if (!$user) {
+            return false;
+        }
+        $user->profile_picture=$path;
+        
+        
+        return $user->save();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function getAllNonAdminUsers(): Collection
     {
         return User::with('role')

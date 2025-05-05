@@ -13,10 +13,17 @@ interface UserRepositoryInterface
     public function findRoleIdByName($name);
 
     
+// profile
+ public function updateUserProfile(int $userId, array $data);
+    public function updateProfilePicture(int $userId, string $path);
 
 
-   public function updateProfilePicture(User $user, string $picturePath): bool;
-   public function updateUserProfile(int $userId, array $data): bool;
+
+
+
+
+
+    
     public function getAllNonAdminUsers(): Collection;
     
    
