@@ -27,8 +27,5 @@ class Reservation extends Model
     {
         return $this->belongsTo(Terrain::class)->where('deleted_at', null);
     }
-    public function reservationUsers()
-    {
-        return $this->belongsToMany(User::class, 'reservation_users');
-    }
+   
 }

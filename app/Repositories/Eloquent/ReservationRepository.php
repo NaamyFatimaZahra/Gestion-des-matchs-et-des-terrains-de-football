@@ -51,9 +51,8 @@ class ReservationRepository implements ReservationRepositoryInterface
 public function getReservationsByTerrain($terrainId)
 {
     return Reservation::where('terrain_id', $terrainId)
-        ->with('terrain')
-        ->with('reservationUsers')->get();
-       
+        ->with('terrain')->get();
+      
 }
 
    

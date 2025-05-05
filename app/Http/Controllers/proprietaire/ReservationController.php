@@ -21,6 +21,7 @@ class ReservationController extends Controller
     {
         $this->reservationRepository->changeStatusToTermine();
         $reservations = $this->reservationRepository->getReservationsByProprietaire();
+        dd($reservations);
         return view('proprietaire.reservations', ['reservations' => $reservations]);
     }
     public function updateStatus(Request $request, $id)

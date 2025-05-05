@@ -153,7 +153,7 @@
                 <!-- Terrains Grid - Responsive -->
                 <div id="terrains_container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     @forelse ($terrains as $terrain)
-                        <div class="bg-[#685f5fe8] rounded-xl shadow-md overflow-hidden 
+                        <div class="bg-[#18191d] rounded-xl shadow-md overflow-hidden 
                             border-t-4 
                             @if($terrain->status == 'disponible')
                                 border-green-500
@@ -175,7 +175,7 @@
                                     @elseif($terrain->status == 'occupé')
                                         bg-yellow-500
                                     @elseif($terrain->status == 'maintenance')
-                                        bg-red-500
+                                        bg-[#580a21a1] 
                                     @else
                                         bg-gray-500
                                     @endif
@@ -193,27 +193,31 @@
                                     <span class="text-[#d8d9dd]">{{ $terrain->city }}, {{ $terrain->adress }}</span>
                                 </div>
                                 <div class="flex flex-wrap gap-1 sm:gap-2 mb-3">
-                                    <span class="bg-[#580a21]/20 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->surface }}</span>
-                                    <span class="bg-gray-600/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->capacity }} vs {{ $terrain->capacity }}</span>
+                                    <span class="bg-[#580a219c]  text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->surface }}</span>
+                                    <span class="bg-gray-700/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">{{ $terrain->capacity }} vs {{ $terrain->capacity }}</span>
                                 </div>
-                                <div class="flex justify-between items-center pt-3 border-t border-gray-600/30">
+                                <div class="flex justify-between items-center pt-3 border-t border-gray-700/30">
                                     <span class="text-white font-bold text-sm sm:text-base">{{ $terrain->price }} Dh/h</span>
                                     
-                                    <a href="{{ route('details_terrain',$terrain->id) }}" class="bg-[#580a21] hover:bg-[#420718] text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
+                                    <a href="{{ route('details_terrain',$terrain->id) }}" class="bg-[#580a21]  hover:bg-[#580a21d8]  text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
                                         Voir détails
                                     </a>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 p-8 bg-[#685f5fe8] rounded-xl shadow text-center">
+                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 p-8 bg-[#18191d] rounded-xl shadow text-center">
                             <p class="text-[#d8d9dd] text-lg">Aucun terrain ne correspond à vos critères.</p>
-                            <a href="" class="inline-block mt-4 text-[#580a21] hover:underline">Voir tous les terrains</a>
+                            <a href="" class="inline-block mt-4 text-red-500 hover:underline">Voir tous les terrains</a>
                         </div>
                     @endforelse
                 </div>
             </div>
         </div>
+
+        <div class="mt-8 flex justify-center">
+    {{ $terrains->links('pagination::tailwind') }}
+</div>
     </div>
 </section>
 
@@ -306,7 +310,7 @@
         
         // Générer le HTML pour chaque terrain
         html += `
-            <div class="bg-[#685f5fe8] rounded-xl shadow-md overflow-hidden 
+            <div class="bg-[#18191d] rounded-xl shadow-md overflow-hidden 
                 border-t-4 ${borderColor}
                 hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
                 <div class="relative">
@@ -329,12 +333,12 @@
                         <span class="text-[#d8d9dd]">${terrain.city}, ${terrain.adress}</span>
                     </div>
                     <div class="flex flex-wrap gap-1 sm:gap-2 mb-3">
-                        <span class="bg-[#580a21]/20 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">${terrain.surface}</span>
-                        <span class="bg-gray-600/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">${terrain.capacity} vs ${terrain.capacity}</span>
+                        <span class="bg-red-900/20 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">${terrain.surface}</span>
+                        <span class="bg-gray-700/30 text-[#d8d9dd] text-xs px-2 py-1 rounded-full">${terrain.capacity} vs ${terrain.capacity}</span>
                     </div>
-                    <div class="flex justify-between items-center pt-3 border-t border-gray-600/30">
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-700/30">
                         <span class="text-white font-bold text-sm sm:text-base">${terrain.price} Dh/h</span>
-                        <a href="/terrains/${terrain.id}" class="bg-[#580a21] hover:bg-[#420718] text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
+                        <a href="/terrains/${terrain.id}" class="bg-red-600 hover:bg-red-700 text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 text-xs sm:text-sm">
                             Voir détails
                         </a>
                     </div>

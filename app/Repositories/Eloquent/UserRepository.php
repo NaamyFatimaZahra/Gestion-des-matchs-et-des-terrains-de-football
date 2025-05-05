@@ -2,13 +2,66 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interface\UserRepositoryInterface;
+
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
+    // Auth
+      public function create(array $userData)
+    {
+        return User::create([
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'password' => Hash::make($userData['password']),
+            'city' => $userData['city'],
+            'role_id' => $userData['role_id'],
+            'status' => $userData['role_id'] === 2 ? 'pending' : 'active',
+            'profile_picture' => 'default.jpg'
+        ]);
+    }
+    
+    public function getRolesExceptAdmin()
+    {
+        return Role::where('name', '!=', 'Admin')->get();
+    }
+    
+    public function findRoleIdByName($name)
+    {
+        return Role::where('name', '=', $name)->value('id');
+    }
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     public function updateProfilePicture(User $user, string $picturePath): bool
 {
     $user->profile_picture = $picturePath;

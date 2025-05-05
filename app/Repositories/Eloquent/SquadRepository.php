@@ -161,8 +161,6 @@ class SquadRepository implements SquadRepositoryInterface
    public function getInvitationsByPlayerSquads()
 {
     $userId = Auth::id(); 
-
-    
     $squadIds = DB::table('usersquads')
         ->where('user_id', $userId)
         ->where('admin', 0)
@@ -173,7 +171,7 @@ class SquadRepository implements SquadRepositoryInterface
     foreach ($squadIds as $squadId) {
           $squad=Squad::find($squadId);
           
-           $memberInvitation= $squad->players()->where('acceptationUser','en attente')
+           $memberInvitation= $squad->players()->where('user_id', $userId)->where('acceptationUser','en attente')
            ->where('InvitationType','admin')->with('squads')->get();
            
 
@@ -208,4 +206,5 @@ class SquadRepository implements SquadRepositoryInterface
     }
     return false;
  }
+
 }

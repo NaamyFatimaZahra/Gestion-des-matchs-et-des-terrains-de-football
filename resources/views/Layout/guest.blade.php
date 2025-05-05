@@ -91,9 +91,9 @@
             <li><a href="{{ route('joueur.squads') }}" class="nav-link hover:text-gray-300 transition duration-300">squads</a></li>
             <li><a href="{{ route('joueur.requests') }}" class="nav-link hover:text-gray-300 transition duration-300">requests</a></li>
             <li><a href="{{ route('joueur.invitations') }}" class="nav-link hover:text-gray-300 transition duration-300">Invitations</a></li>
+            <li><a href="{{ route('joueur.squads.user') }}" class="nav-link hover:text-gray-300 transition duration-300">mes squads</a></li>
           @endif
           
-          <li><a href="{{ route('joueur.squads.user') }}" class="nav-link hover:text-gray-300 transition duration-300">mes squads</a></li>
           <li class="flex items-center relative h-fit w-fit mx-4">
             <input
               type="text"

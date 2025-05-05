@@ -16,11 +16,11 @@ class InvitationController extends Controller
     private $squadRepository;
     public function __construct(SquadRepositoryInterface $squadRepository)
     {
-        $this->squadRepository = $squadRepository;
+        $this->squadRepository = $squadRepository; 
     }
    public function index(){
         $invitations = $this->squadRepository->getInvitationsByPlayerSquads();
-        
+    
         return view('joueur.invitations',['invitations'=>$invitations]);
    }
 
