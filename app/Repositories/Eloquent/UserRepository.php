@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 class UserRepository implements UserRepositoryInterface
 {
    
-    public function updateProfilePicture(User $user, string $picturePath): bool
+    public function updateProfilePicture( $user, string $picturePath): bool
 {
     $user->profile_picture = $picturePath;
     return $user->save();

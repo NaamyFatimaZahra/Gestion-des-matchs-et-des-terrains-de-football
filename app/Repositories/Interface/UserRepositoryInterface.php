@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryInterface
 {
-   public function updateProfilePicture(User $user, string $picturePath): bool;
+   public function updateProfilePicture( $user, string $picturePath): bool;
    public function updateUserProfile(int $userId, array $data): bool;
     public function getAllNonAdminUsers(): Collection;
     
