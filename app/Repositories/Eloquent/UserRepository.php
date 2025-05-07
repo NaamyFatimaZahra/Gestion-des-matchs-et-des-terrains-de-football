@@ -2,88 +2,37 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interface\UserRepositoryInterface;
-
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
-    // Auth
-      public function create(array $userData)
-    {
-        return User::create([
-            'name' => $userData['name'],
-            'email' => $userData['email'],
-            'password' => Hash::make($userData['password']),
-            'city' => $userData['city'],
-            'role_id' => $userData['role_id'],
-            'status' => $userData['role_id'] === 2 ? 'pending' : 'active',
-            'profile_picture' => 'default.jpg'
-        ]);
-    }
-    
-    public function getRolesExceptAdmin()
-    {
-        return Role::where('name', '!=', 'Admin')->get();
-    }
-    
-    public function findRoleIdByName($name)
-    {
-        return Role::where('name', '=', $name)->value('id');
-    }
    
-
-
-//   Profile
- public function updateUserProfile(int $userId, array $data)
-    {
-        $user = User::find($userId);
+    public function updateProfilePicture(User $user, string $picturePath): bool
+{
+    $user->profile_picture = $picturePath;
+    return $user->save();
+}
+   public function updateUserProfile(int $userId, array $data): bool
+{
+        $user = User::findOrFail($userId);
         
-        if (!$user) {
+        // Mettre à jour les attributs
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->city = $data['city'] ?? $user->city;
+        $user->phone_number = $data['phone_number'] ?? $user->phone_number;
+        $user->bio = $data['bio'] ?? $user->bio;
+        
+       
+        if ($user->save()) {
+            return true;
+        } else {
             return false;
         }
-        
-        
-        return $user->update($data);
-    }
     
-    public function updateProfilePicture(int $userId, string $path)
-    {
-        $user = User::find($userId);
-        
-        if (!$user) {
-            return false;
-        }
-        $user->profile_picture=$path;
-        
-        
-        return $user->save();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
     public function getAllNonAdminUsers(): Collection
     {
         return User::with('role')

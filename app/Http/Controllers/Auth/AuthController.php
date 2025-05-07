@@ -5,76 +5,84 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Services\Interfaces\AuthServiceInterface;
+use App\Mail\SendEmailConfirmation;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    protected $authService;
-    
-    public function __construct(AuthServiceInterface $authService)
-    {
-        $this->authService = $authService;
-    }
-    
-    public function showLogin()
-    {
+    public function showLogin(){
         return view("Auth.login");
     }
 
-    public function login(LoginRequest $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
+   public function login(LoginRequest $request) {
+    $credentials = $request->only('email', 'password');
+    $remember = $request->has('remember');
 
-        if ($this->authService->attemptLogin($credentials, $remember)) {
-            $request->session()->regenerate();
-            
-            $user = Auth::user();
-            $redirect = $this->authService->getRedirectPath($user);
-            
-            return redirect()->route($redirect['route'])->with('success', $redirect['message']);
+    if (Auth::attempt($credentials, $remember)) {
+        $request->session()->regenerate();
+        
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
+        
+        // Vérifier si l'utilisateur est admin
+        if ($user->role_id == Role::where('name','=', 'admin')->value('id')) {
+            return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
+        } else if ($user->role_id == Role::where('name','=', 'proprietaire')->value('id')) {
+            return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
+        } else {
+            return redirect('/home')->with('success', 'Connexion réussie !');
         }
-
-        return back()->withErrors([
-            'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
-        ])->onlyInput('email');
     }
-    
-    public function showRegister()
-    {
-        $roles = $this->authService->getRoles();
+
+    // Si l'authentification a échoué
+    return back()->withErrors([
+        'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
+    ])->onlyInput('email');
+}
+    public function showRegister(){
+         $roles = Role::where('name', '!=', 'Admin')->get();
         return view("Auth.register", ['roles' => $roles]);
     }
 
     public function register(RegisterRequest $request)
     {
-        $userData = [
+        // Créer l'utilisateur
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
-            'city' => $request->city,
-            'role_id' => $request->role
-        ];
-        
-        $user = $this->authService->register($userData);
-        
+            'password' => Hash::make($request->password),
+            'city' => $request->city, 
+            'role_id' => $request->role,
+            'status'=>$request->role===2 ?'pending':'active',
+            'profile_picture' => 'default.jpg' 
+        ]);
+
+       
         Auth::login($user);
+       
+    if ($user->role_id == Role::where('name',"=", 'admin')->value('id')) {
+        return redirect()->route('admin.dashboard')->with('success', 'Connexion administrative réussie !');
+    } elseif($user->role_id == Role::where('name',"=", 'proprietaire')->value('id')) {
+        return redirect()->route('proprietaire.dashboard')->with('success', 'Connexion administrative réussie !');
+    }else {
         
-        $redirect = $this->authService->getRedirectPath($user);
-        
-        if (is_string($redirect['route'])) {
-            return redirect($redirect['route'])->with('success', 'Inscription réussie !');
-        } else {
-            return redirect()->route($redirect['route'])->with('success', 'Inscription réussie !');
-        }
+        return redirect('/home')->with('success', 'Inscription réussie !');
+    }
     }
 
+    // Logout method
     public function logout(Request $request)
     {
-        $this->authService->logout($request);
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         
         return redirect()->route('showLogin')->with('success', 'Déconnexion réussie !');
+    
     }
 }
