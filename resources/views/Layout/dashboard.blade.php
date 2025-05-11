@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite('resources/css/app.css')
     <title> @yield('title') </title>
@@ -19,7 +19,7 @@
         }
         /* Add these transition styles */
         .sidebar-transition {
-            transition: width 0.3s ease;
+            transition: width 0.3s ease, transform 0.3s ease;
             overflow-x: hidden; /* Empêche le débordement horizontal */
         }
         .menu-item {
@@ -39,11 +39,73 @@
         #main-content {
             transition: margin-left 0.3s ease;
         }
+        
+        /* Style pour la sidebar mobile */
+        @media (max-width: 639px) {
+            .sidebar-mobile {
+                transform: translateX(-100%);
+            }
+            .sidebar-mobile.active {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Overlay pour mobile */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Style pour le bouton de fermeture du sidebar mobile */
+        #mobile-close-btn {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #420718;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 60;
+        }
+        
+        /* Afficher le bouton de fermeture uniquement en mode mobile lorsque la sidebar est active */
+        @media (max-width: 640px) {
+            #sidebar.active #mobile-close-btn {
+                display: flex;
+            }
+        }
     </style>
 </head>
-<body class="flex h-screen text-gray-800 bg-[#101114]">
-     <!-- Sidebar (maintenant fixed) -->
-    <div class="group fixed top-0 left-0 h-screen bg-[#580a21] w-[5rem] flex flex-col items-start py-4 z-50 hover:w-[13rem] px-3 sidebar-transition">
+<body class="flex  h-screen text-gray-800 bg-rose-50">
+    <button id="mobile-menu-toggle" class="fixed top-4 left-4 z-50 sm:hidden bg-[#580a21] text-white p-2 px-3 rounded-md shadow-lg">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay for mobile -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    
+    <!-- Sidebar avec état par défaut différent selon device -->
+    <div id="sidebar" class="fixed top-0 left-0 h-screen bg-[#580a21] w-[5rem] flex flex-col items-start py-4 z-50 hover:w-[13rem] px-3 sidebar-transition sidebar-mobile sm:transform-none sm:block hidden">
+        <!-- Bouton de fermeture (uniquement visible en mobile) -->
+        <button id="mobile-close-btn" class="sm:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        
         <!-- logo -->
         <div class="text-white relative hover:text-white cursor-pointer h-[3rem] w-[4rem]">
            <a href="{{ route('home') }}" class="">
@@ -139,33 +201,123 @@
     </div>  
 
     <!-- Middle Panel (avec marge à gauche pour la sidebar) -->
-    <div id="main-content" class="flex-1   flex flex-col ml-20 pl-4 transition-all duration-300">
+    <div id="main-content" class="flex-1 flex flex-col  md:items-end transition-all duration-300">
         <!-- Search Bar -->
-        <div class="bg-[#18191d] p-3 flex items-center justify-between border-b border-gray-800 sticky top-0 z-40 shadow-sm">
-            <div class="flex items-center bg-[#27292d] rounded-lg px-3 py-2 w-64">
-                <input type="text" placeholder="Type to Search..." class="bg-transparent border-none outline-none text-sm flex-1 text-gray-300">
-                <i class="fas fa-search text-gray-500 ml-2"></i>
+        <div class="bg-rose-50 p-3 flex items-center  justify-between border-b border-rose-50 fixed w-[100%] md:w-[89%] lg:w-[92%] top-0 z-40 ">
+            <div class="flex items-center  m-auto md:m-0 rounded-lg px-3 py-2 w-64">
+                <input type="text" placeholder="Type to Search..." class="py-[7px] ml-5 pl-3  rounded-sm border-solid border-rose-50 outline-none text-sm flex-1 text-gray-600">
+                <i class="fas fa-search text-gray-400 ml-2"></i>
             </div>
             <div class="flex items-center space-x-4">
                
-                <div class="flex space-x-2">
+                <div class="">
                     <div class="w-6 h-6 rounded-full flex items-center justify-center">         
                         <a href="{{ route('profile') }}">   
-                            <i class="fa-solid fa-circle-user text-[1.4rem] text-[#7f082cc8]"></i>
+                            <i class="fa-solid fa-circle-user text-[1.4rem] text-[#420718e2]"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flex-1">
+        <div class="flex-1 mt-[6rem]  md:w-[89%] lg:w-[92%] ">
             @yield('content')
           
         </div>
-        <footer class="bg-[#18191d] border-t border-gray-800 p-4 shadow-inner w-full">
+        <footer class="bg-rose-50 border-t border-rose-50 p-4 shadow-inner w-full">
             <div class="container mx-auto text-center text-gray-500 text-sm">
                 &copy; 2025 SportStats - Tous droits réservés
             </div>
         </footer>
     </div>
+
+    <!-- Script pour gérer l'affichage de la sidebar en mobile -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            const mainContent = document.getElementById('main-content');
+            
+            // Fonction pour basculer la sidebar
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                mobileOverlay.classList.toggle('active');
+                
+                // Pour les écrans mobiles, afficher la barre latérale à une largeur plus grande
+                if (sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('hidden');
+                    sidebar.style.width = '13rem'; // Élargir la sidebar en mode mobile
+                    
+                    // Afficher tous les textes des menus en mobile
+                    const menuTexts = document.querySelectorAll('.menu-text');
+                    menuTexts.forEach(text => {
+                        text.style.opacity = '1';
+                        text.style.visibility = 'visible';
+                    });
+                } else {
+                    if (window.innerWidth < 640) { // sm breakpoint
+                        setTimeout(() => {
+                            sidebar.classList.add('hidden');
+                        }, 300); // Attendre la fin de l'animation
+                    }
+                }
+            }
+            
+            // Fonction pour fermer la sidebar en mobile
+            function closeSidebar() {
+                sidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                
+                if (window.innerWidth < 640) { // sm breakpoint
+                    setTimeout(() => {
+                        sidebar.classList.add('hidden');
+                    }, 300); // Attendre la fin de l'animation
+                }
+            }
+            
+            // Écouteur d'événement pour le bouton de menu mobile
+            mobileMenuToggle.addEventListener('click', toggleSidebar);
+            
+            // Écouteur d'événement pour le bouton de fermeture
+            mobileCloseBtn.addEventListener('click', closeSidebar);
+            
+            // Cliquer sur l'overlay ferme la sidebar
+            mobileOverlay.addEventListener('click', closeSidebar);
+            
+            // Ajuster l'affichage lors du redimensionnement de la fenêtre
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 640) { // sm breakpoint
+                    sidebar.classList.remove('active');
+                    sidebar.classList.remove('hidden'); // S'assurer que sidebar est visible sur desktop
+                    mobileOverlay.classList.remove('active');
+                    sidebar.style.width = '5rem'; // Réinitialiser à la largeur par défaut
+                    
+                    // Réinitialiser l'opacité des textes
+                    const menuTexts = document.querySelectorAll('.menu-text');
+                    menuTexts.forEach(text => {
+                        text.style.opacity = '';
+                        text.style.visibility = '';
+                    });
+                } else {
+                    // Sur mobile, cacher la sidebar si elle n'est pas active
+                    if (!sidebar.classList.contains('active')) {
+                        sidebar.classList.add('hidden');
+                    }
+                }
+            });
+            
+            // Vérifier l'état initial selon la taille d'écran
+            if (window.innerWidth < 640) {
+                // Sur mobile, cacher la sidebar sauf si elle est active
+                if (!sidebar.classList.contains('active')) {
+                    sidebar.classList.add('hidden');
+                }
+            } else {
+                // Sur desktop, toujours afficher la sidebar
+                sidebar.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

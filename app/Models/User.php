@@ -69,5 +69,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Squad::class,'usersquads');
     }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 
 }

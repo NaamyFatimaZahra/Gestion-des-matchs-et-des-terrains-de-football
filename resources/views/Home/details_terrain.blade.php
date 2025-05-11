@@ -330,9 +330,10 @@
                             <i class="fas fa-user text-gray-500"></i>
                         </div>
                         <div>
+                           
                             <div class="font-medium text-gray-800">{{ 
-                            Auth::check() && Auth::user()->name === $comment->user->name ? 'VOUS' : $comment->user->name 
-                            }}</div>
+
+ Auth::check() && Auth::user()->id === $comment->user_id ? 'VOUS' : ($comment->user ? $comment->user->name : 'Unknown User') }}                            </div>
                             <div class="text-sm text-gray-600">{{ $comment->created_at->format('d/m/Y') }}</div>
                         </div>
                     </div>

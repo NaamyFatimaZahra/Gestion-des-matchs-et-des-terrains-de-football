@@ -82,7 +82,8 @@
                         <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                         <span class="text-sm font-medium">{{ $squad->players()->where('acceptationUser', 'accepté')->count() }} acceptés</span>
                     </div>
-                    <div class="flex items-center bg-[#580a21]/70 px-4 py-2 rounded-lg">
+              
+                  <div class="flex items-center bg-[#580a21]/70 px-4 py-2 rounded-lg">
                         <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                         <span class="text-sm font-medium">{{ $squad->players()->where('acceptationUser', 'en attente')->count() }} en attente</span>
                     </div>
@@ -123,6 +124,7 @@
                     $player->pivot->position === 'GK' &&
                     $player->pivot->equipe === "1";
           });
+         
             @endphp
           @if (!empty($gkPlayer))
           <div class="group relative w-[5rem] md:w-[9rem] h-fit col-start-4 col-span-1 row-start-1 row-span-1 justify-self-center self-start">
@@ -2376,6 +2378,7 @@
     formData.append('equipe', equipe);
     formData.append('position', position);
     formData.append('squad_id', squadId); 
+     formData.append('invitationType', 'admin');
     formData.append('side', side);
      formData.append('_token', '{{ csrf_token() }}'); 
     fetch("{{ route('joueur.squad.add') }}", {
