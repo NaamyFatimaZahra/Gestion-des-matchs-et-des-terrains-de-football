@@ -18,7 +18,7 @@ class TerrainRepository implements TerrainRepositoryInterface
 
     public function getAll(): LengthAwarePaginator
     {
-        $perPage = 1;
+        $perPage = 5;
         return Terrain::paginate($perPage);
     }
     public function getTerrainsByCity($city): Collection

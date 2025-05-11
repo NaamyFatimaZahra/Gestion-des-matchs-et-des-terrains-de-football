@@ -26,7 +26,12 @@ class UserController extends Controller
         return view('admin.users.index', ['users' => $users]);
     }
     
-   
+     public function filter($type, $value)
+    {
+        $transformedUsers=$this->userRepository->getFilteredUsers($type,$value);
+
+        return response()->json($transformedUsers);
+    }
     public function updateStatus(Request $request, User $user)
     {
         $request->validate([

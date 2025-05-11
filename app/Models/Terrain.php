@@ -41,5 +41,19 @@ class Terrain extends Model
     public function comments(){
         return $this->hasMany(Comment::class)->whereNull('deleted_at');
     }
-   
+    
+    /**
+     * Get the reservations for the terrain.
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function reservationsCount()
+    {
+        return $this->hasMany(Reservation::class)
+            ->selectRaw('terrain_id, count(*) as aggregate')
+            ->groupBy('terrain_id');
+    }
 }

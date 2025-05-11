@@ -4,14 +4,15 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Service;
 use App\Repositories\Interface\ServiceRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class ServiceRepository implements ServiceRepositoryInterface
 {
    
-    public function getAll(): Collection
+    public function getAll():LengthAwarePaginator
     {
-        return Service::all();
+        return Service::paginate(5);
     }
 
   

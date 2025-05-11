@@ -219,7 +219,7 @@
                 </div>
             </div>
         </div>
-        <div class="flex-1 mt-[6rem]  md:w-[89%] lg:w-[92%] ">
+        <div class="flex-1 mt-[4rem]  md:w-[89%] lg:w-[92%] ">
             @yield('content')
           
         </div>
