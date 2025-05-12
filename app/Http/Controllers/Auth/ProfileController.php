@@ -24,12 +24,20 @@ class ProfileController extends Controller
         $user = Auth::user();
         return view('Auth.profile',['user' => $user]);
     }
-
+     public function profileJoueurIndex(){
+        $user = Auth::user();
+        return view('Auth.profile-joueur', ['user' => $user]);
+     }
 
     public function edit()
     {
         $user = Auth::user();
         return view('Auth.profile-edit', ['user' => $user]);
+    }
+    public function profileJoueurEdit()
+    {
+        $user = Auth::user();
+        return view('Auth.profile-joueur-edit', ['user' => $user]);
     }
 
     public function update(Request $request, UserRepositoryInterface $userRepository)

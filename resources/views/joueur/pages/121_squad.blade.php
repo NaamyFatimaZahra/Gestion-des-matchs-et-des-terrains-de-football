@@ -71,7 +71,8 @@
                 </div>
             </div>
            
-                <div class="flex items-center bg-[#4a0a1b]/90 px-4 py-2 rounded-lg">
+                <div class="flex pb-6 md:pb-0">
+                  <div class="flex items-center bg-[#4a0a1b]/90 px-4 py-2 rounded-lg">
                         <div class="w-3 h-3 bg-[#555353] rounded-full mr-2"></div>
                         <span class="text-sm font-medium">{{ 10- $squad->players()->count() }} empty</span>
                     </div>
@@ -83,13 +84,14 @@
                         <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                         <span class="text-sm font-medium">{{ $squad->players()->where('acceptationUser', 'en attente')->count() }} en attente</span>
                     </div>
+                </div>
               
               @if ($squad->players()->where('user_id', Auth::user()->id)->where('admin',1)->count()===1)
-          <div class="flex space-x-4">
-        <form action="{{ route('squads.destroy', $squad->id) }}" method="POST" >
+          <div class="flex  space-x-4">
+        <form  action="{{ route('squads.destroy', $squad->id) }}" method="POST" >
             @csrf
             @method('DELETE')
-            <button type="submit" class="bg-[#70182e] text-white px-5 py-3 rounded-lg hover:bg-[#580a21] transition-all duration-300 flex items-center justify-center">
+            <button type="submit" class="bg-[#70182e]  text-white px-5 py-3 rounded-lg hover:bg-[#580a21] transition-all duration-300 flex items-center justify-center">
                 Supprimer
             </button>
         </form>

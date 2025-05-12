@@ -11,7 +11,7 @@
         />
     </div>
   
-    <div class="min-h-[100vh] text-[white] relative z-10 pt-16">
+    <div class="min-h-[100vh] text-[white] relative z-10 pt-12 mt:pt-16">
         <header class="bg-[#580a21] py-20 text-center">
             <div class="text-xs uppercase tracking-wide mb-2">
                 <a href="#" class="hover:text-red-500">Home</a> / 

@@ -1,11 +1,10 @@
-
-@extends('Layout.dashboard')
+@extends('Layout.guest')
 
 @section('title', 'Modifier Profil')
 @section('content')
 
 <!-- Main Content -->
-<div class="container  px-4 sm:px-6 lg:px-8 mt-9 w-full">
+<div class="container  px-4 sm:px-6 lg:px-8 mt-[7rem] w-full">
     <!-- Messages de succès et d'erreur -->
     @if(session('success'))
     <div id="success-alert" class="bg-rose-50 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">

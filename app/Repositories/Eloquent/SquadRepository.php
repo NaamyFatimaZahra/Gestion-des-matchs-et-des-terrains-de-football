@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class SquadRepository implements SquadRepositoryInterface
 {
     public function getAllSquads(){
-        return Squad::all();
+        return Squad::paginate(12);
     }
     public function getSquadByJoueur(){
         
@@ -24,12 +24,10 @@ class SquadRepository implements SquadRepositoryInterface
 
     $squads = [];
 
-    foreach ($squadIds as $squadId) {
-          $squad=Squad::find($squadId);
+    
+       $squads = Squad::whereIn('id', $squadIds)->paginate(12);
        
-             $squads[] =  $squad;
-        
-    }
+    
     
     return  $squads; 
     }

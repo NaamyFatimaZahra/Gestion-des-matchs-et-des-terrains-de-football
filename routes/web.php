@@ -129,7 +129,9 @@ Route::prefix('joueur')->middleware(['auth','role:joueur','checkPlayerStatus'])-
     Route::get('/reservations/{date}/{terrainId}/{squadId}',[joueurReservation::class,'getReservationsByDate']);
     Route::post('/reservations/add',[joueurReservation::class,'addReservations']);
     Route::get('/squad/reservations/{squadId}',[joueurReservation::class,'getReservationsBySquad']);
-
+    Route::get('/profile', [ProfileController::class, 'profileJoueurIndex'])->name('profile.joueur');
+    Route::get('/profile/edit', [ProfileController::class, 'profileJoueurEdit'])->name('profile.joueur.edit');
+   
 });
 
 
