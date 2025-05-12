@@ -12,16 +12,12 @@ class ReservationConfirmationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $reservation;
+    public $player;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param Reservation $reservation
-     * @return void
-     */
-    public function __construct(Reservation $reservation)
+    public function __construct($reservation, $player = null)
     {
         $this->reservation = $reservation;
+        $this->player = $player;
     }
 
     /**
@@ -32,6 +28,6 @@ class ReservationConfirmationMail extends Mailable
     public function build()
     {
         return $this->subject('Confirmation de votre réservation')
-                    ->view('Emails.confirmationReservation');
+            ->view('Emails.confirmationReservation');
     }
 }

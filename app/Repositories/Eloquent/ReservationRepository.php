@@ -44,8 +44,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     return Reservation::whereHas('terrain', function ($query) use ($proprietaireId) {
         $query->where('proprietaire_id', $proprietaireId);
     })
-    ->with('terrain')
-    ->with('reservationUsers')->get();
+    ->with('terrain')->paginate(7);
    
 }
 public function getReservationsByTerrain($terrainId)
@@ -88,22 +87,26 @@ public function getReservationsByTerrain($terrainId)
 
 public function sendConfirmationEmail($id)
 {
-    
-    $reservation = Reservation::where('id', $id)->with(['reservationUsers', 'terrain'])->first();
-    
-    if (!$reservation) {
-       
-        return redirect()->back()->with('error', 'Réservation non trouvée');
-    }
-    
-    foreach ($reservation->reservationUsers as $reservationUser) {
-     
-            Mail::to($reservationUser->email)->send(new ReservationConfirmationMail($reservation));
+
         
+        $reservations = Reservation::where('id', $id)->with(['terrain', 'squad', 'squad.players'])->get();
+
+        if ($reservations->isEmpty()) {
+            return redirect()->back()->with('error', 'Réservation non trouvée');
+        }
+
+        foreach ($reservations as $reservation) {
+           
+            if ($reservation->squad && $reservation->squad->players) {
+                foreach ($reservation->squad->players as $player) {
+                   
+                    Mail::to($player->email)->send(new ReservationConfirmationMail($reservation, $player));
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Emails de confirmation envoyés avec succès');
     }
-    
-    
-}
     
     public function checkTerrainAvailability($terrainId, $date, $heureDebut, $heureFin, $excludeReservationId = null)
     {

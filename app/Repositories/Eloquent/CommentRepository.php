@@ -31,7 +31,7 @@ class CommentRepository implements CommentRepositoryInterface
    }
 
     
-   public function getCommentsByProprietaire($perPage = 10)
+   public function getCommentsByProprietaire()
 { 
     $proprietaireId = Auth::id();
     return Comment::with(['user', 'terrain'])
@@ -39,7 +39,7 @@ class CommentRepository implements CommentRepositoryInterface
             $query->where('proprietaire_id', $proprietaireId);
         })
         ->orderBy('created_at', 'desc')
-        ->paginate($perPage);
+        ->paginate(6);
 }
     public function deleteComment(Comment $comment): bool
     {

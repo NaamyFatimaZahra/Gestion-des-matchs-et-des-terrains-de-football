@@ -18,9 +18,9 @@ class Reservation extends Model
         'deleted_at'
     ];
 
-    public function user()
+    public function squad()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Squad::class);
     }
 
     public function terrain()

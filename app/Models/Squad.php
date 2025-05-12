@@ -24,6 +24,9 @@ class Squad extends Model
     /**
      * Relation avec l'utilisateur propriétaire
      */
+    public function reservations(){
+        return $this->hasMany(Reservation::class);
+    }
     public function players()
     {
         return $this->belongsToMany(User::class,'usersquads')

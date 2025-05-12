@@ -17,11 +17,9 @@ class CommentController extends Controller
         $this->commentRepository = $commentRepository;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        // Get comments with pagination (default 10 per page)
-        $perPage = $request->input('per_page', 10);
-        $comments = $this->commentRepository->getCommentsByProprietaire($perPage);
+        $comments = $this->commentRepository->getCommentsByProprietaire();
         
         return view('proprietaire.comments', ['comments' => $comments]);
     }

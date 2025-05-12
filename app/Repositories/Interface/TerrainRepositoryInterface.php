@@ -20,7 +20,7 @@ interface TerrainRepositoryInterface
 
     public function getFilteredTerrains($type, $value);
      public function findById($id);
-    public function getAllByProprietaire(): Collection;
+    public function getAllByProprietaire();
     
    
     public function updateStatus(Request $request, Terrain $terrain): bool;

@@ -194,9 +194,9 @@
             @if (Auth::check() && Auth::user()->role->id===3)
             <li><a href="{{ route('joueur.squadBuilder.create') }}" class="block py-2 hover:text-gray-300 transition duration-300">squad builder</a></li>
             <li><a href="{{ route('joueur.squads') }}" class="block py-2 hover:text-gray-300 transition duration-300">squads</a></li>
+            <li><a href="{{ route('joueur.squads.user') }}" class="block py-2 hover:text-gray-300 transition duration-300">mes Squads</a></li>
             @endif
 
-            <li><a href="{{ route('joueur.squads.user') }}" class="block py-2 hover:text-gray-300 transition duration-300">mes Squads</a></li>
 
             <li class="py-2">
               <div class="relative">

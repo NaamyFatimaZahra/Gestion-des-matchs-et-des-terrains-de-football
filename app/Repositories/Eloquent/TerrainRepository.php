@@ -57,12 +57,12 @@ class TerrainRepository implements TerrainRepositoryInterface
 
 
 
-    public function getAllByProprietaire(): Collection
+    public function getAllByProprietaire()
     {
         $proprietaireId = Auth::id();
         return Terrain::withoutTrashed()
             ->where('proprietaire_id', '=', $proprietaireId)
-            ->get();
+            ->paginate(6);
     }
 
     public function updateStatus(Request $request, Terrain $terrain): bool
