@@ -79,9 +79,9 @@ class TerrainRepository implements TerrainRepositoryInterface
     public function create(TerrainRequest $request, int $userId): Terrain
     {
         $validated = $request->validated();
-
+       
         DB::beginTransaction();
-        try {
+       
             // Créer un nouveau terrain avec les données validées
             $terrain = new Terrain();
             $terrain->name = $validated['name'];
@@ -102,7 +102,7 @@ class TerrainRepository implements TerrainRepositoryInterface
 
             // Associer les services au terrain
             foreach ($validated['services'] as $serviceId) {
-                $terrain->services()->attach($serviceId, ['price' => 0]);
+                $terrain->services()->attach($serviceId);
             }
 
             // Traiter les images
@@ -121,11 +121,9 @@ class TerrainRepository implements TerrainRepositoryInterface
             }
 
             DB::commit();
+           
             return $terrain;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+       
     }
 
 

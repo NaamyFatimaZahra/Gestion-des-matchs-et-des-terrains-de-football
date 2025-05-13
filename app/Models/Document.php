@@ -10,7 +10,7 @@ class Document extends Model
            'id',
            'terrain_id',
            'photo_path',
-           'is_main'
+           
     ];
 
     public function terrain(){

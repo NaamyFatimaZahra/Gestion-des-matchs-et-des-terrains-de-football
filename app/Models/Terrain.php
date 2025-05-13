@@ -28,7 +28,7 @@ class Terrain extends Model
     ];
 
     public function services(){
-          return $this->belongsToMany(Service::class,'terrain_service')->withPivot('price');
+          return $this->belongsToMany(Service::class,'terrain_service');
     }
     public function  proprietaire(){
         return $this->belongsTo(User::class);

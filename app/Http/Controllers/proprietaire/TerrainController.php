@@ -62,7 +62,6 @@ class TerrainController extends Controller
         try {
             $userId = Auth::id();
             $this->terrainRepository->create($request, $userId);
-            
             return redirect()->route('proprietaire.terrains.index')
                 ->with('success', 'Le terrain a été ajouté avec succès.');
         } catch (\Exception $e) {
